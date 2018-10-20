@@ -50,7 +50,7 @@ Board.prototype = {
     		//logic of movement here ..
 			this._animationFunction = this.moveHandtoTile.bind(this)
 			this._app.ticker.add(this._animationFunction);
-			this._animationStartingPos = {x:this._hand._container.position.x, y:this._hand._container.position.y};
+			this._animationStartingPos = {x:this._hand.container.position.x, y:this._hand.container.position.y};
     		this._animation_t1 = 0;
     		this._animation_t2 = 0;
     		this._randomDir = Math.random() >= 0.5;
@@ -70,23 +70,23 @@ Board.prototype = {
 
     	//to move towards a tile
     	if (this._animation_t1 < 60) {
-    		this._hand._container.position.x = this._animationStartingPos.x + this.easeOutQuart(this._animation_t1/60) * (this._selectedTile._container.position.x - this._animationStartingPos.x);
-    		this._hand._container.position.y = this._animationStartingPos.y + this.easeOutQuart(this._animation_t1/60) * (this._selectedTile._container.position.y - this._animationStartingPos.y);
+    		this._hand.container.position.x = this._animationStartingPos.x + this.easeOutQuart(this._animation_t1/60) * (this._selectedTile.container.position.x - this._animationStartingPos.x);
+    		this._hand.container.position.y = this._animationStartingPos.y + this.easeOutQuart(this._animation_t1/60) * (this._selectedTile.container.position.y - this._animationStartingPos.y);
     		this._animation_t1 = this._animation_t1 + delta;
     	}
 
     	//to move towards mouse click
     	if (this._animation_t1 > 50 && this._animation_t2 < 60){
-    		this._hand._container.position.x = this._selectedTile._container.position.x + this.easeOutQuart(this._animation_t2/60) * (this._mouseclickPos.x - this._selectedTile._container.position.x);
-    		this._hand._container.position.y = this._selectedTile._container.position.y + this.easeOutQuart(this._animation_t2/60) * (this._mouseclickPos.y - this._selectedTile._container.position.y);	
+    		this._hand.container.position.x = this._selectedTile.container.position.x + this.easeOutQuart(this._animation_t2/60) * (this._mouseclickPos.x - this._selectedTile.container.position.x);
+    		this._hand.container.position.y = this._selectedTile.container.position.y + this.easeOutQuart(this._animation_t2/60) * (this._mouseclickPos.y - this._selectedTile.container.position.y);	
     		this._animation_t2 = this._animation_t2 + delta;
     	}
 
     	//todo: move hand out of window and move tile with it
 
     	if (this._randomDir)
-    		this._hand._container.rotation += 0.004 * delta;
+    		this._hand.container.rotation += 0.004 * delta;
     	else
-    		this._hand._container.rotation -= 0.004 * delta;
+    		this._hand.container.rotation -= 0.004 * delta;
     }
 };

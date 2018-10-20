@@ -5,7 +5,7 @@ let Hand = function (app) {
     this._shadowpath = 'assets/hand-locked-shadow.png';
     this._handsprite;
     this._shadowsprite;
-    this._container;
+    this.container;
     this._visible = true;
         
     this.init(app);
@@ -14,22 +14,22 @@ let Hand = function (app) {
 Hand.prototype = {
     init: function(app){
         //Create container and assign it for rendering
-        this._container = new PIXI.Container();
-        app.stage.addChild(this._container);
+        this.container = new PIXI.Container();
+        app.stage.addChild(this.container);
 
         // create a new Sprite from an image path
         this._handsprite = PIXI.Sprite.fromImage(this._handpath);          
         this._shadowsprite = PIXI.Sprite.fromImage(this._shadowpath);
         
         this._shadowsprite.x = -40; this._shadowsprite.y = 25;
-        this._container.addChild(this._shadowsprite);
-        this._container.addChild(this._handsprite);
-        this._container.pivot.x = 30;
-        this._container.pivot.y = 175;
-        this._container.x = app.screen.width / 2 + 30;
-        this._container.y = app.screen.height + 120;   
-        this._container.scale.set(0.6);
-        this._container.rotation = -0.25
+        this.container.addChild(this._shadowsprite);
+        this.container.addChild(this._handsprite);
+        this.container.pivot.x = 30;
+        this.container.pivot.y = 175;
+        this.container.x = app.screen.width / 2 + 30;
+        this.container.y = app.screen.height + 120;   
+        this.container.scale.set(0.6);
+        this.container.rotation = -0.25
 
     }
 };

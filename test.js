@@ -11,12 +11,38 @@ window.onload = function(){
     let tile2 = new Tile(app, board);
     let tile3 = new Tile(app, board);
  
-    tile2._container.position.set(100,200)
-    tile3._container.position.set(300,323)
-    tile2._container.children[2].text='B'
+    tile2.container.position.set(100,200)
+    tile3.container.position.set(300,323)
+    tile2.container.children[2].text='B';
+////////////////////////////////////////////////// hager test /////////////////////
 
-
-
+	let bag=new Bag();
+	var user1=bag.generateUserTiles();
+	console.log(user1);
+	var exTiles=[user1[0],user1[2]];
+	console.log(bag.exchange(2,exTiles));
+	let tile4 = new Tile(app, board);
+	let tile5 = new Tile(app, board);
+	let tile6 = new Tile(app, board);
+	let tile7 = new Tile(app, board);
+	
+	tile1.container.position.set(145,623);
+	tile2.container.position.set(173,623);
+    tile3.container.position.set(201,623);
+	tile4.container.position.set(229,623);
+	tile5.container.position.set(257,623);
+    tile6.container.position.set(285,623);
+	tile7.container.position.set(313,623);
+	
+	
+	tile1.container.children[2].text=user1[0];
+	tile2.container.children[2].text=user1[1];
+    tile3.container.children[2].text=user1[2];
+	tile4.container.children[2].text=user1[3];
+	tile5.container.children[2].text=user1[4];
+    tile6.container.children[2].text=user1[5];
+	tile7.container.children[2].text=user1[6];
+///////////////////////////////////////////////////////////////////////////////////
     let hand = new Hand(app);
     board.setHand(hand);
     app.ticker.add(function(delta) {
