@@ -1,6 +1,6 @@
 console.log("tile file loaded");
 
-let Tile = function (app) {
+let Tile = function (app, board) {
 	this._tilepath = 'assets/blank-tile.png';
     this._shadowpath = 'assets/blank-tile-shadow.png';
     this._tilesprite;
@@ -9,6 +9,7 @@ let Tile = function (app) {
     this._container;
     this._clickable = true; //true on my turn only
     this._visible = true;
+    this._board = board;
     this._app = app;
         
     this._dummy = true;
@@ -31,6 +32,7 @@ Tile.prototype = {
         this._text.x = 12; this._text.y = 6;
         this._tilesprite.interactive = this._clickable;
         this._tilesprite.buttonMode = this._clickable;
+        //this._tilesprite.cursor = 'wait'  //wow! loading cursor
         this._container.addChild(this._shadowsprite);
         this._container.addChild(this._tilesprite);
         this._container.addChild(this._text);
@@ -38,7 +40,7 @@ Tile.prototype = {
         this._container.pivot.y = 22;
         this._container.x = app.screen.width / 2;
         this._container.y = app.screen.height / 2;   
-        this._container.scale.set(0.7);
+        this._container.scale.set(0.65); //0.7
         // important note: el event el byndah el onclick kan hwa el 'this' fa 3amlt mwdo3 bind da
         // bind(this) bet return function gdida wel this bta3etha hya el 7aga el ana ba3ethalha! wow
         this._tilesprite.on('pointerdown', this.myonClick.bind(this)); // Pointers normalize touch and mouse
@@ -50,16 +52,16 @@ Tile.prototype = {
     myonClick: function(){
         //console.log(this)
         this._container.rotation += 0.05;
-
         if (this._dummy){
             this._dodo = this.dummFunc.bind(this) //da lazmto eni b7awesh pointer 3l function el gdida el rag3ali mn el bind 3ashan lma a2ol remove y3rf hyshil min
             // we da kolo asln 3ashan lma ba3at el function mn gher bind, el this etghyaret
             this._app.ticker.add(this._dodo);
-        }
-        else{
+        } else {
             this._app.ticker.remove(this._dodo);
         }
         this._dummy = !this._dummy;
+
+        this._board.selectTile(this);
     },
 
     dummFunc: function(delta){

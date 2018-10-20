@@ -25,9 +25,9 @@ Hand.prototype = {
         this._container.addChild(this._shadowsprite);
         this._container.addChild(this._handsprite);
         this._container.pivot.x = 30;
-        this._container.pivot.y = 190;
-        this._container.x = app.screen.width / 2;
-        this._container.y = app.screen.height / 2 + 10;   
+        this._container.pivot.y = 175;
+        this._container.x = app.screen.width / 2 + 30;
+        this._container.y = app.screen.height + 120;   
         this._container.scale.set(0.6);
         this._container.rotation = -0.25
 
