@@ -1,12 +1,12 @@
 console.log("hand file loaded");
 
 let Hand = function (app) {
-	this._handpath = 'assets/hand-locked.png';
-    this._shadowpath = 'assets/hand-locked-shadow.png';
-    this._handsprite;
-    this._shadowsprite;
+	this.handPath = 'assets/hand-locked.png';
+    this.shadowPath = 'assets/hand-locked-shadow.png';
+    this.handSprite;
+    this.shadowSprite;
     this.container;
-    this._visible = true;
+    this.visible = true;
         
     this.init(app);
 }
@@ -18,12 +18,12 @@ Hand.prototype = {
         app.stage.addChild(this.container);
 
         // create a new Sprite from an image path
-        this._handsprite = PIXI.Sprite.fromImage(this._handpath);          
-        this._shadowsprite = PIXI.Sprite.fromImage(this._shadowpath);
+        this.handSprite = PIXI.Sprite.fromImage(this.handPath);          
+        this.shadowSprite = PIXI.Sprite.fromImage(this.shadowPath);
         
-        this._shadowsprite.x = -40; this._shadowsprite.y = 25;
-        this.container.addChild(this._shadowsprite);
-        this.container.addChild(this._handsprite);
+        this.shadowSprite.x = -40; this.shadowSprite.y = 25;
+        this.container.addChild(this.shadowSprite);
+        this.container.addChild(this.handSprite);
         this.container.pivot.x = 30;
         this.container.pivot.y = 175;
         this.container.x = app.screen.width / 2 + 30;

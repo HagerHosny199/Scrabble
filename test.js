@@ -45,10 +45,6 @@ window.onload = function(){
 ///////////////////////////////////////////////////////////////////////////////////
     let hand = new Hand(app);
     board.setHand(hand);
-    app.ticker.add(function(delta) {
-        //hand._container.rotation = 0.002 * delta * window.mouseX - 1;
-    });
-
 
     //TODO:
     // - e3ml mwdo3 el animation bta3 el eid enha lma ados 7eta tania twadi el tile fiha we temshi 

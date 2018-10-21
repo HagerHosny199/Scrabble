@@ -1,19 +1,22 @@
 console.log("board file loaded");
 
 let Board = function (app) {
-	this._path = 'assets/scrabble.png';
-    this._sprite;
-    this._visible = true;
-    this._clickable = true;
-    this._selectedTile = null;
-    this._app = app; 
+	this.path = 'assets/scrabble.png';
+    this.sprite;
+    this.visible = true;
+    this.clickable = true;
+    this.selectedTile = null;
+    this.app = app; 
 
-    this._animationStartingPos;
-    this._animation_t1;
-    this._animation_t2;
-    this._hand;
-    this._mouseclickPos; //el local mmkn y3ml mshakel hna
-    this._randomDir; 
+    this.animationStartingPos;
+    this.animationT1;
+    this.animationT2;
+    this.animationT3;
+    this.hand;
+    this.mouseClickPos; //el local mmkn y3ml mshakel hna
+    this.randomDir; 
+    this.moving = false;
+    this.tileSound = null;
     // todo: 
     // - el text score
     // - el asma2
@@ -28,65 +31,79 @@ Board.prototype = {
     init: function(app){
        
         // create a new Sprite from an image path
-        this._sprite = PIXI.Sprite.fromImage(this._path);          
-        app.stage.addChild(this._sprite);
-        this._sprite.interactive = this._clickable;
-        //this._sprite.hitArea = new PIXI.Rectangle(0, 0, 100, 100); //3ashan ados 3l le3ba bs
+        this.sprite = PIXI.Sprite.fromImage(this.path);          
+        app.stage.addChild(this.sprite);
+        this.sprite.interactive = this.clickable;
+        this.tileSound = PIXI.sound.Sound.from('assets/tile-sound-effect.wav');
 
-        this._sprite.scale.set(0.6);
-        this._sprite.on('pointerdown', this.myonClick.bind(this)); // Pointers normalize touch and mouse
+        //this.sprite.hitArea = new PIXI.Rectangle(0, 0, 100, 100); //3ashan ados 3l le3ba bs
+
+        this.sprite.scale.set(0.6);
+        this.sprite.on('pointerdown', this.myonClick.bind(this)); // Pointers normalize touch and mouse
 
     },
     setHand: function(hand){
-    	this._hand = hand;
+    	this.hand = hand;
     },
     myonClick: function(e){
     	e.data.local = {
-    		x: e.data.global.x - this._sprite.position.x,
-    		y: e.data.global.y - this._sprite.position.y
+    		x: e.data.global.x - this.sprite.position.x,
+    		y: e.data.global.y - this.sprite.position.y
     	}
-    	this._mouseclickPos = e.data.local;
-    	if (this._selectedTile){
+    	this.mouseClickPos = e.data.local;
+    	if (this.selectedTile && !this.moving){
     		//logic of movement here ..
 			this._animationFunction = this.moveHandtoTile.bind(this)
-			this._app.ticker.add(this._animationFunction);
-			this._animationStartingPos = {x:this._hand.container.position.x, y:this._hand.container.position.y};
-    		this._animation_t1 = 0;
-    		this._animation_t2 = 0;
-    		this._randomDir = Math.random() >= 0.5;
-
-
+			this.app.ticker.add(this._animationFunction);
+			this.animationStartingPos = {x:this.hand.container.position.x, y:this.hand.container.position.y};
+            this.selectedTile.animationStartingPos = {x:this.selectedTile.container.position.x, y:this.selectedTile.container.position.y};
+    		this.animationT1 = 0;
+    		this.animationT2 = 0;
+            this.animationT3 = 0;
+            console.log(this.selectedTile.animationStartingPos)
+    		this.randomDir = Math.random() >= 0.5;
+            this.moving = true;
     	}
     },
     selectTile: function(tile){
-    	this._selectedTile = tile;
+    	this.selectedTile = tile;
     	//should be able to unselect too
     },
     easeOutQuart: function (t) { return 1-(--t)*t*t*t },
     moveHandtoTile: function(delta){
     	// terminating condition
-    	if (this._animation_t1 > 60 && this._animation_t2 > 60) 
-    		this._app.ticker.remove(this._animationFunction);
+    	if (this.animationT1 > 60 && this.animationT2 > 60 && this.animationT3 > 60) {
+    		this.app.ticker.remove(this._animationFunction);
+            this.moving = false;
+        }
 
     	//to move towards a tile
-    	if (this._animation_t1 < 60) {
-    		this._hand.container.position.x = this._animationStartingPos.x + this.easeOutQuart(this._animation_t1/60) * (this._selectedTile.container.position.x - this._animationStartingPos.x);
-    		this._hand.container.position.y = this._animationStartingPos.y + this.easeOutQuart(this._animation_t1/60) * (this._selectedTile.container.position.y - this._animationStartingPos.y);
-    		this._animation_t1 = this._animation_t1 + delta;
+    	if (this.animationT1 < 60) {
+    		this.hand.container.position.x = this.animationStartingPos.x + this.easeOutQuart(this.animationT1/60) * (this.selectedTile.animationStartingPos.x - this.animationStartingPos.x);
+    		this.hand.container.position.y = this.animationStartingPos.y + this.easeOutQuart(this.animationT1/60) * (this.selectedTile.animationStartingPos.y - this.animationStartingPos.y);
+    		this.animationT1 = this.animationT1 + delta;
     	}
 
     	//to move towards mouse click
-    	if (this._animation_t1 > 50 && this._animation_t2 < 60){
-    		this._hand.container.position.x = this._selectedTile.container.position.x + this.easeOutQuart(this._animation_t2/60) * (this._mouseclickPos.x - this._selectedTile.container.position.x);
-    		this._hand.container.position.y = this._selectedTile.container.position.y + this.easeOutQuart(this._animation_t2/60) * (this._mouseclickPos.y - this._selectedTile.container.position.y);	
-    		this._animation_t2 = this._animation_t2 + delta;
+    	if (this.animationT1 > 50 && this.animationT2 < 60){
+    		this.hand.container.position.x = this.selectedTile.animationStartingPos.x + this.easeOutQuart(this.animationT2/60) * (this.mouseClickPos.x - this.selectedTile.animationStartingPos.x);
+    		this.hand.container.position.y = this.selectedTile.animationStartingPos.y + this.easeOutQuart(this.animationT2/60) * (this.mouseClickPos.y - this.selectedTile.animationStartingPos.y);	
+    		this.selectedTile.container.position.x = this.hand.container.position.x;
+            this.selectedTile.container.position.y = this.hand.container.position.y;
+            this.animationT2 = this.animationT2 + delta;
     	}
 
-    	//todo: move hand out of window and move tile with it
+        //to move hand out of game
+        if (this.animationT2 > 50 && this.animationT3 < 60){
+            //this.tileSound.play();
+            this.hand.container.position.x = this.mouseClickPos.x + this.easeOutQuart(this.animationT3/60) * (this.app.screen.width / 2 + 30 - this.mouseClickPos.x);
+            this.hand.container.position.y = this.mouseClickPos.y + this.easeOutQuart(this.animationT3/60) * (this.app.screen.height + 120 - this.mouseClickPos.y); 
+            this.animationT3 = this.animationT3 + delta;
+        }
 
-    	if (this._randomDir)
-    		this._hand.container.rotation += 0.004 * delta;
-    	else
-    		this._hand.container.rotation -= 0.004 * delta;
+    	//if (this.randomDir)
+    	//	this.hand.container.rotation += 0.004 * delta;
+    	//else
+    	//	this.hand.container.rotation -= 0.004 * delta;
     }
 };
