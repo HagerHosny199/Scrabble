@@ -29,7 +29,6 @@ let Board = function (app) {
 
 Board.prototype = {
     init: function(app){
-       
         // create a new Sprite from an image path
         this.sprite = PIXI.Sprite.fromImage(this.path);          
         app.stage.addChild(this.sprite);
@@ -37,9 +36,9 @@ Board.prototype = {
         this.tileSound = PIXI.sound.Sound.from('assets/tile-sound-effect.wav');
 
         //this.sprite.hitArea = new PIXI.Rectangle(0, 0, 100, 100); //3ashan ados 3l le3ba bs
-
-        this.sprite.scale.set(0.6);
+		this.sprite.scale.set(0.6);
         this.sprite.on('pointerdown', this.myonClick.bind(this)); // Pointers normalize touch and mouse
+		
 
     },
     setHand: function(hand){

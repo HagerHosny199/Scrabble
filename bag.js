@@ -48,12 +48,12 @@ Bag.prototype = {
 			
 	},
 	
-	//this function generates the 7 tiles of the user 
-	generateUserTiles:function(){
+	//this function generates the n tiles of the user 
+	generateUserTiles:function(n){
 		var tiles={};
 		var num=0;
 		//generate random 
-			while(num<7)
+			while(num<n)
 			{
 				this.random=this.generateRandom();
 				if(availableTiles[this.random-1]>0)

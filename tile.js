@@ -1,4 +1,4 @@
-let Tile= function(app,board){
+let Tile= function(app,board,num){
 	this.position; //this represents the tile pos in the board
 	this.value; //this represents the value of the tile 
 	this.tileText; //this represents the tile character
@@ -12,7 +12,7 @@ let Tile= function(app,board){
     this.shadowPath = 'assets/blank-tile-shadow.png';
     this.clickable = true; //true on my turn only
     this.visible = true;
-	
+
 	this.init(app);
 }
 
@@ -56,6 +56,8 @@ Tile.prototype = {
         this.container.y = app.screen.height / 2;   
         this.container.scale.set(0.7); 
 		
+		this.animation=0;
+		//this.initTiles(0.01);
 		// important note: el event el byndah el onclick kan hwa el 'this' fa 3amlt mwdo3 bind da
         // bind(this) bet return function gdida wel this bta3etha hya el 7aga el ana ba3ethalha! wow
         this.tileSprite.on('pointerdown', this.myonClick.bind(this)); // Pointers normalize touch and mouse
@@ -87,7 +89,8 @@ Tile.prototype = {
 
     dummFunc: function(delta){
         this.container.rotation += 0.03 * delta;
-    }
+    },
+	
 	
 };
 
