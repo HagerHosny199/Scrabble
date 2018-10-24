@@ -19,7 +19,7 @@ window.onload = function(){
     let hand = new Hand(app);
     board.setHand(hand);
 	//let reward=new Reward(app);
-	let gen=new GenerateTiles(app);
+	let gen=new GenerateTiles(app,board);
     //TODO:
     // - e3ml mwdo3 el animation bta3 el eid enha lma ados 7eta tania twadi el tile fiha we temshi 
     // - e3ml l dwayer el bttla3 3l squares lama a hover 3leha

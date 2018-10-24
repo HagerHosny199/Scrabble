@@ -1,5 +1,6 @@
-let GenerateTiles= function(app){
+let GenerateTiles= function(app,board){
 	this.app=app;
+	this.board=board;
 	this.container;
 	this.bag;
 	this.tiles=[];
@@ -7,7 +8,7 @@ let GenerateTiles= function(app){
 	this.bagValues=[];
 	this.values=[];
 	this.availableTiles=[];
-	this.framePath = 'assets/frame.png';
+	this.framePath = 'assets/resultboard.png';
 	this.frameSprite;
 	this.init(app);
 }
@@ -23,8 +24,8 @@ GenerateTiles.prototype={
 		
 		// create a new Sprite from an image path
         this.frameSprite = PIXI.Sprite.fromImage(this.framePath); 
-		this.frameSprite.position.set(490,280);
-		this.container.scale.set(0.5); 
+		this.frameSprite.position.set(-700,200);
+		this.container.scale.set(0.6); 
 		this.container.addChild(this.frameSprite);
 		
 		//create array of the available tiles in the global bag
@@ -33,27 +34,69 @@ GenerateTiles.prototype={
 		//get the map of the chars
 		this.chars=this.bag.getChar();
 		//get the value of each tile 
-		this.bagValues=this.bag.getValues();
+		this.bagValues=this.bag.getValues();	
 		
+		///create a ticker
+		this.ticker  =  new PIXI.ticker.Ticker();
+		this.ticker.add((deltaTime) => {
+			this.loop(app);
+		});
+		this.ticker.start();
 		//load the tiles to be rendered 
 		this.loadTiles();
+		this.ticker.add((deltaTime) => {
+			this.loopTiles(app);
+		});
+		this.ticker.start();
 		
 	},
 	
 	loadTiles:function()
 	{
 		var j=0;
+		var x=288;
+		var y=-350;
 		//create array of the tiles 
 		for(var i=0;i<27;i++)
 		{
 			if(availableTiles[i]>0)
 			{
-				this.tiles[j]=this.availableTiles[i];
-				this.values[j]=this.bagValues[i];
+				this.tiles[j]=new Tile(this.app,this.board);
+				this.tiles[j].container.position.set(x,y);
+				this.tiles[j].container.children[2].text=this.chars[i];
+				this.tiles[j].container.children[3].text=this.bagValues[i];
+				this.availableTiles[i]--;
+				this.tiles[j].container.scale.set(1); 
 				j++;
+				if(j%6==0)
+				{
+					y+=55;
+					x=288;
+				}
+				else
+					x+=53;
 			}
 		}
+		
+		
+	},
+	loop:function(app){
+	app.render(this.container);
+		this.frameSprite.position.x += 10; 
+		if(this.frameSprite.position.x==400)
+			this.ticker.stop();
+				
+		
+	},
+	loopTiles:function(app){
+	app.render(this.container);
+		for(var i=0;i<this.tiles.length;i++)
+		this.tiles[i].container.position.y += 5; 
+		
 	}
+	
+	
+	
 	
 	
 };
