@@ -4,6 +4,7 @@ let Reward = function(app){
 	this.rewardPath='assets/congrate.png';
 	this.init(app);
 	this.ticker;
+	this.sound;
 }
 
 Reward.prototype={
@@ -13,6 +14,9 @@ Reward.prototype={
 		this.container = new PIXI.Container();
 		//assign the container for the global one for rendering
 		app.stage.addChild(this.container);
+		
+		//create the sound effect 
+		this.sound = PIXI.sound.Sound.from('assets/TaDa.mp3');
 		
 		// create a new Sprite from an image path
         this.rewardSprite = PIXI.Sprite.fromImage(this.rewardPath);   
@@ -26,11 +30,11 @@ Reward.prototype={
 			this.loop(app);
 		});
 		this.ticker.start();
-		
+		this.sound.play();
 	},
 	loop:function(app){
 		app.render(this.container);
-		this.rewardSprite.position.y -= 3; 
+		this.rewardSprite.position.y -= 8; 
 		if(this.rewardSprite.position.y<-400)
 		{
 			this.ticker.stop();

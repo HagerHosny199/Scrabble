@@ -33,7 +33,7 @@ Board.prototype = {
         this.sprite = PIXI.Sprite.fromImage(this.path);          
         app.stage.addChild(this.sprite);
         this.sprite.interactive = this.clickable;
-        this.tileSound = PIXI.sound.Sound.from('assets/tile-sound-effect.wav');
+        this.tileSound = PIXI.sound.Sound.from('assets/tile-sound-effect.mp3');
 
         //this.sprite.hitArea = new PIXI.Rectangle(0, 0, 100, 100); //3ashan ados 3l le3ba bs
 		this.sprite.scale.set(0.6);
@@ -66,6 +66,7 @@ Board.prototype = {
     },
     selectTile: function(tile){
     	this.selectedTile = tile;
+		//this.soundTile.play();
     	//should be able to unselect too
     },
     easeOutQuart: function (t) { return 1-(--t)*t*t*t },

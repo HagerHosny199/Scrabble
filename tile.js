@@ -24,6 +24,8 @@ Tile.prototype = {
 		//assign the container for the global one for rendering
 		app.stage.addChild(this.container);
 		
+		//adding sound effect 
+		this.tileSound = PIXI.sound.Sound.from('assets/tile-sound-effect.mp3');
 		// create a new Sprite from an image path
         this.tileSprite = PIXI.Sprite.fromImage(this.tilePath);          
         this.shadowSprite = PIXI.Sprite.fromImage(this.shadowPath);
@@ -83,6 +85,7 @@ Tile.prototype = {
     myonClick: function(){
         //console.log(this)
         this.container.rotation += 0.05;
+		this.tileSound.play();
         if (this.dummy){
             this.dodo = this.dummFunc.bind(this) //da lazmto eni b7awesh pointer 3l function el gdida el rag3ali mn el bind 3ashan lma a2ol remove y3rf hyshil min
             // we da kolo asln 3ashan lma ba3at el function mn gher bind, el this etghyaret
