@@ -3,6 +3,7 @@ let GenerateTiles= function(app,board){
 	this.board=board;
 	this.container;
 	this.bag;
+	this.sound;
 	this.tiles=[];
 	this.chars=[];
 	this.bagValues=[];
@@ -28,6 +29,9 @@ GenerateTiles.prototype={
 		this.container.scale.set(0.6); 
 		this.container.addChild(this.frameSprite);
 		
+		//create the sound effect 
+		this.sound = PIXI.sound.Sound.from('assets/Metroid_Door-Brandino480-995195341.mp3');
+		
 		//create array of the available tiles in the global bag
 		this.bag=new Bag();
 		this.availableTiles=this.bag.getBag();
@@ -42,12 +46,12 @@ GenerateTiles.prototype={
 			this.loop(app);
 		});
 		this.ticker.start();
+		this.sound.play();
 		//load the tiles to be rendered 
 		this.loadTiles();
 		this.ticker.add((deltaTime) => {
 			this.loopTiles(app);
 		});
-		this.ticker.start();
 		
 	},
 	
@@ -82,7 +86,7 @@ GenerateTiles.prototype={
 	},
 	loop:function(app){
 	app.render(this.container);
-		this.frameSprite.position.x += 10; 
+		this.frameSprite.position.x += 20; 
 		if(this.frameSprite.position.x==400)
 			this.ticker.stop();
 				
@@ -91,7 +95,7 @@ GenerateTiles.prototype={
 	loopTiles:function(app){
 	app.render(this.container);
 		for(var i=0;i<this.tiles.length;i++)
-		this.tiles[i].container.position.y += 5; 
+		this.tiles[i].container.position.y += 10; 
 		
 	}
 	
