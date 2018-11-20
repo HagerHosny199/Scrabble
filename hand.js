@@ -1,21 +1,21 @@
-console.log("hand file loaded");
 
-let Hand = function (app) {
+let Hand = function () {
 	this.handPath = 'assets/hand-locked.png';
     this.shadowPath = 'assets/hand-locked-shadow.png';
     this.handSprite;
     this.shadowSprite;
     this.container;
     this.visible = true;
+    this.app = Graphics.get().app;
         
-    this.init(app);
+    this.init();
 }
 
 Hand.prototype = {
-    init: function(app){
+    init: function(){
         //Create container and assign it for rendering
         this.container = new PIXI.Container();
-        app.stage.addChild(this.container);
+        this.app.stage.addChild(this.container);
 
         // create a new Sprite from an image path
         this.handSprite = PIXI.Sprite.fromImage(this.handPath);          
@@ -26,8 +26,8 @@ Hand.prototype = {
         this.container.addChild(this.handSprite);
         this.container.pivot.x = 30;
         this.container.pivot.y = 175;
-        this.container.x = app.screen.width / 2 + 30;
-        this.container.y = app.screen.height + 120;   
+        this.container.x = this.app.screen.width / 2 + 30;
+        this.container.y = this.app.screen.height + 120;   
         this.container.scale.set(0.6);
         this.container.rotation = -0.25
 
