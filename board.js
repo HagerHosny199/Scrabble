@@ -34,6 +34,7 @@ Board.prototype = {
             x: e.data.global.x - this.sprite.position.x,
             y: e.data.global.y - this.sprite.position.y
         }
+		
         let x = e.data.local.x; let y = e.data.local.y;
         // these numbers needs a better way to be calculated
         // (225, 100) ---------------------- (670, 100)
@@ -45,7 +46,7 @@ Board.prototype = {
         //     |                                  |
         //     |                                  |
         // (225, 575) ----------------------- (670, 575)
-
+		console.log(x,y);
         if ( x < 225 || x > 670 || y < 100 || y > 575)
             console.log("Click out of board bounds");
         else {

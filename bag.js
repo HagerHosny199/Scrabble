@@ -13,8 +13,42 @@ Bag.prototype = {
 	},
 	
 	//this function is used to exchange certain num of tiles 
-	exchange:function(num,exTiles){
-		var i=0;
+	exchange:function(tiles,exTiles){
+		var retTiles=[];
+		for(var i =0;i<7;i++)
+		{
+			console.log(exTiles);
+			//need to be exchanged
+			if(exTiles[i]==1)
+			{
+				if(availableTiles.length>=0)
+				{
+					//keep generating random number until meeting the conditions
+					while(true)
+					{
+						this.random=this.generateRandom();
+						if(availableTiles[this.random-1]>0) //check if there is avilable chars
+						{
+							if(this.characters[this.random-1] != tiles[i]) //check that the tile is not the same as the original
+							{
+								//put the original tiles to the bag
+								if(exTiles[i]==' ')
+									availableTiles[26]++;
+								else
+									availableTiles[exTiles[i]-65]++;
+								//add the tile to the returned bag
+								tiles[i].container.children[2].text=this.characters[this.random-1];
+								tiles[i].container.children[3].text=this.values[this.random-1];
+								availableTiles[this.random-1]--;
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		return tiles;
+		/*var i=0;
 		var tiles={};
 		//check if there is the required num 
 		if(availableTiles.length>=num)
@@ -44,14 +78,14 @@ Bag.prototype = {
 				i--;
 			}
 			return tiles;
-		}
-		return 0;
+		}*/
 			
 	},
 	
 	//this function generates the n tiles of the user 
 	generateUserTiles:function(n){
 		var tiles={};
+		var value={};
 		var num=0;
 		//generate random 
 			while(num<n)
@@ -61,12 +95,12 @@ Bag.prototype = {
 					{
 						//add the tile to the returned bag
 						tiles[num]=this.characters[this.random-1];
+						value[num]=this.values[this.random-1];
 						availableTiles[this.random-1]--;
 						num++;
 					}
 			}
-			//console.log("now iam in the bag ",tiles);
-		return tiles;
+		return [value,tiles];
 	},
 	
 	//this function generates random num between 1 and 27

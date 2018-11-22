@@ -6,14 +6,17 @@ let Tile= function(){
 	this.container; //this is our container :D 
 	this.tileSprite; //used to load the tile image
 	this.shadowSprite; //used to add shadow to the tile
+	this.shadowSprite2; //used to add shadow to the tile
 	this.app=Graphics.get().app;
 	
 	this.tilePath = 'assets/blank-tile.png';
     this.shadowPath = 'assets/blank-tile-shadow.png';
+    this.shadowPath2 = 'assets/blank-tile-shadow-red.png';
     this.tileSound = null;
     this.clickable = true; //true on my turn only
     this.visible = true;
-
+	this.selected=false;
+    this.exchangeTiles=[0,0,0,0,0,0,0];
 	this.init();
 }
 
@@ -29,6 +32,7 @@ Tile.prototype = {
 		// create a new Sprite from an image path
         this.tileSprite = PIXI.Sprite.fromImage(this.tilePath);          
         this.shadowSprite = PIXI.Sprite.fromImage(this.shadowPath);
+		this.shadowSprite2 = PIXI.Sprite.fromImage(this.shadowPath2);
 		
 		//create text style
 		let style = new PIXI.TextStyle({ fontFamily: 'Arial', fontSize: 28, dropShadow: true, dropShadowColor: '#000000',
@@ -45,6 +49,8 @@ Tile.prototype = {
 		//adding shadow to the tile
         this.shadowSprite.x = -7; 
 		this.shadowSprite.y = -3;
+		this.shadowSprite2.x = -7; 
+		this.shadowSprite2.y = -3;
 		//set the text position
         this.tileText.x = 12;
 		this.tileText.y = 6;
@@ -93,7 +99,35 @@ Tile.prototype = {
         if (typeof GameplayManager.get() != 'undefined') //lw kona fl game f3ln we 3mlna initialize ll object
         	GameplayManager.get().tileClick(this);
     },
-
+	addShadow:function()
+	{
+		console.log(this.container.position.y);
+		//get the tile num 
+		var i=2;
+		var j=(this.container.position.y -280)/40;
+		var num=(this.container.position.x-394)/40;
+		while(num>=7 || num<0)
+		{
+			num=(this.container.position.x-i*394)/40;
+			i++;
+		}
+		num=num+j*3;
+		console.log("i=",i," j=" ,j," num=",num);
+		if(this.selected==false)
+		{
+			this.container.addChild(this.shadowSprite2);
+			this.selected=true;
+			this.exchangeTiles[num]=1;
+		}
+		else
+		{
+			this.container.removeChildAt(4);
+			this.selected=false;
+			this.exchangeTiles[num]=0;
+		}
+		console.log(this.exchangeTiles);
+		return this.exchangeTiles;
+	}
     // we di ba2i l 7etta el fo2 bta3et l laf
     // dummFunc: function(delta){
     //     this.container.rotation += 0.03 * delta;
