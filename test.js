@@ -14,11 +14,12 @@ window.onload = function(){
 
     //create the gameManager when the game starts , not in the menu
     let gameManager = new GameplayManager();
-
+	
 	//let reward=new Reward(gameManager.app);
 	let tiles=gameManager.generateUsersTiles(7);
-	let gen=new GenerateTiles(gameManager.app,this.board,tiles);
-
+	//let gen=new GenerateTiles(gameManager.app,this.board,tiles);
+	//tiles=bag.shuffle(tiles);
+	
 }
 
 function randomInt(min, max) {

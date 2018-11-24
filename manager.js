@@ -93,8 +93,38 @@ GameplayManager.prototype = {
     	
     	// NOTE: the network/communication module can call this function after setting the selected tile
     	// with the desired (row, col) position to simulate the mouse click on game board
-		
-    	if (row>14 || col>14) return;
+		console.log(row,col);
+    	if((row==11|| row==12 )&& col>=17 && col<=19)
+		{
+			//shuffle condition 
+			this.userTiles=this.bag.shuffle(this.userTiles);
+			console.log("shuffle");
+		}
+		else if(row==13  && col>=17 && col<=19)
+		{
+			let gen;
+			if(this.exchange==false)//exchange condition
+				gen=new GenerateTiles(this.app,this.board,this.userTiles);
+			console.log("exchange");
+			
+		}
+		else if ((row==14|| row==15)  && col>=18 && col<=19)
+		{
+			//OK cond 
+			console.log("OK");
+			//check if the available tiles less than 7 
+			if(this.availableTiles<7)
+			{
+				//now this is not my turn 
+				//this.turn = !this.turn; 
+				//complete the tiles to have 7
+				this.userTiles=this.bag.completeTiles(this.userTiles,this.availableTiles);
+				this.availableTiles=7; //m7tagen nzbot el cond de 
+				console.log(this.userTiles[5]);
+			}
+			//else ignore the press
+		}
+		else if (row>14 || col>14) return;
 		//check if exchange and go 
 		if (this.exchange==true && row>=8 && row <=9 && col>=8 && col <=9)
 		{
@@ -106,7 +136,7 @@ GameplayManager.prototype = {
 			this.userTiles=this.bag.exchange(this.userTiles,this.exchangedTiles);
 			
 			
-		}
+		} 
     	else if (this.selectedTile && !this.moving){
     		// el satreen dol lma nezlo ta7t 7sal error , we da ma3nah en function l animation bta3et ticker btbda2 ttndeh awellll ma a2olaha add , 3ashan kda ml7e2sh ywsal lel satren dol lma kaono ta7t we drab error en this.hand = null
             if (this.turn) this.hand = this.hands[0];
@@ -142,7 +172,7 @@ GameplayManager.prototype = {
             this.moving = false;
 			this.character=this.selectedTile.container.children[2].text;
             this.selectedTile = null; //da el satr el wa7id el bymna3 eni al3ab fi dor el odami , 3ashan hwa lw doro , we kan m3aia el selected tile hya hya we dost ai 7ta fl board , ana msh bas2al hna hwa dori wla la2 , 3ashan asln l mfrod el animation y7sal fi dori we msh dori kda kda
-        	this.turn = this.turn; //my turn is true
+        	//this.turn = this.turn; //my turn is true
 			this.destroyTiles(this.selctedNum);
         }
 

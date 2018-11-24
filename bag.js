@@ -81,7 +81,22 @@ Bag.prototype = {
 		}*/
 			
 	},
-	
+	completeTiles:function(tiles,availableTiles)
+	{
+		var temp;
+		console.log("now",availableTiles);
+		for(var i=availableTiles;i<7;i++)
+		{
+			temp=this.generateUserTiles(1);
+			tiles[i].container.children[2].text=temp[1][0];
+			tiles[i].container.children[3].text=temp[0][0];
+			tiles[i].container.position.x=145+29*i;
+			tiles[i].container.position.y=623;
+			console.log(temp[1]);
+		}
+		
+		return tiles;
+	},
 	//this function generates the n tiles of the user 
 	generateUserTiles:function(n){
 		var tiles={};
@@ -102,7 +117,29 @@ Bag.prototype = {
 			}
 		return [value,tiles];
 	},
-	
+	//this function take an array of tiles and shuffle them 
+	shuffle:function(array)
+	{
+		var currentIndex = array.length, tempChar,tempValue, randomIndex;
+
+	  // While there remain elements to shuffle...
+	    while (0 !== currentIndex) 
+		{
+			// Pick a remaining element...
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex -= 1;
+
+			// And swap it with the current element.
+			tempChar = array[currentIndex].container.children[2].text;
+			tempValue = array[currentIndex].container.children[3].text;
+			array[currentIndex].container.children[2].text = array[randomIndex].container.children[2].text;
+			array[currentIndex].container.children[3].text = array[randomIndex].container.children[3].text;
+			array[randomIndex].container.children[2].text = tempChar;
+			array[randomIndex].container.children[3].text = tempValue;
+		}
+		//console.log(array);
+		return array;
+	},
 	//this function generates random num between 1 and 27
 	generateRandom:function()
 	{

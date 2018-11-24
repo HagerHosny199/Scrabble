@@ -1,6 +1,6 @@
 
 let Board = function () {
-	this.path = 'assets/scrabble.png';
+	this.path = 'assets/scrabble2.png';
     this.sprite;
     this.visible = true;
     this.clickable = true;
@@ -47,9 +47,13 @@ Board.prototype = {
         //     |                                  |
         // (225, 575) ----------------------- (670, 575)
 		console.log(x,y);
-        if ( x < 225 || x > 670 || y < 100 || y > 575)
+		if ( !(x>753  && x<827   && y>555 && y<584)&&
+		!(x>753  && x<826  && y>504 && y<536)&& 
+		!(x>753 && x<827 && y>460 && y<490 )&&
+		( x < 225 || x > 670 || y < 100 || y > 575))
             console.log("Click out of board bounds");
-        else {
+        else 
+		{
             // calculate (row, col)
             let col = (x - 225) / ((670 - 225)/15);
             let row = (y - 100) / ((575 - 100)/15);
