@@ -11,7 +11,8 @@ window.onload = function(){
     // type in console : 
     // GameplayManager.get().selectedTile = tiles[0]
     // GameplayManager.get().boardClick(1,2)
-
+	
+	//GameplayManager.get().aiTurn()
     //create the gameManager when the game starts , not in the menu
     let gameManager = new GameplayManager();
 	

@@ -116,7 +116,7 @@ GameplayManager.prototype = {
 			if(this.availableTiles<7)
 			{
 				//now this is not my turn 
-				//this.turn = !this.turn; 
+				this.turn = !this.turn; 
 				//complete the tiles to have 7
 				this.userTiles=this.bag.completeTiles(this.userTiles,this.availableTiles);
 				this.availableTiles=7; //m7tagen nzbot el cond de 
@@ -257,5 +257,13 @@ GameplayManager.prototype = {
 	{
 		this.exchange=!this.exchange;
 	}
-	
+	,
+	aiTurn:function()
+	{
+		//here we need to chnge the number of calls based on the server output
+		this.selectedTile = tiles[0];
+		this.boardClick(1,2);
+		this.turn=!this.turn;
+		console.log("now the turn = ",this.turn );
+	}
 };

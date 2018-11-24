@@ -1,6 +1,6 @@
 
 let Board = function () {
-	this.path = 'assets/scrabble2.png';
+	this.path = 'assets/scrabble3.png';
     this.sprite;
     this.visible = true;
     this.clickable = true;
