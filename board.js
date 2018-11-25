@@ -6,11 +6,6 @@ let Board = function () {
     this.clickable = true;
     this.selectedTile = null;
     this.app = Graphics.get().app; 
-
-    // todo: 
-    // - el text score
-    // - el asma2
-    // - array 2D 3ashan te3raf min free we min la2 (fl a5er 5ales di) [mftkrsh m7tagha 3ashan l tile mghtya l moraba3 asln msh h3rf adoso]
     
     this.init();
 }
@@ -26,6 +21,11 @@ Board.prototype = {
 		this.sprite.scale.set(0.6);
         this.sprite.on('pointerdown', this.myonClick.bind(this)); // Pointers normalize touch and mouse
 		
+        // show :
+        // "You" , "otherplayer"
+        // "score: 0" , "score: 0"
+        // "time remaining: 0" , "time remaining: 0"
+        // el sa3b hyb2a eni a3ed el time mn minutes le seconds w keda, lw la2et 7aga fiha timer tdini l time a7san
 
     },
     
