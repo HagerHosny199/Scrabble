@@ -1,50 +1,54 @@
 
-let Menu = function (app) {
-	this.path = 'assets/mode.jpg';
+let Menu = function (app,type) {
+	this.path;
     this.sprite;
     this.visible = true;
     this.clickable = true;
 	this.mouseClickPos;
     this.app = app; 
-
+	this.button1=null;
+	this.button2=null;
+	this.button3=null;
+	this.type=type;
 
     this.init(app);
 }
 
 Menu.prototype = {
     init: function(app){
+		if(this.type=='mode')
+			this.path = 'assets/mode_.png';
+		else if(this.type=='play')
+			this.path = 'assets/play_.png';
+		else 
+			this.path = 'assets/first_.png';
         // create a new Sprite from an image path
         this.sprite = PIXI.Sprite.fromImage(this.path);          
         app.stage.addChild(this.sprite);
-        this.sprite.interactive = this.clickable;
         this.sound = PIXI.sound.Sound.from('assets/tile-sound-effect.mp3');
 		this.sound.play();
         //this.sprite.hitArea = new PIXI.Rectangle(0, 0, 100, 100); //3ashan ados 3l le3ba bs
-		this.sprite.scale.set(0.53);
-        this.sprite.on('pointerdown', this.myonClick.bind(this)); // Pointers normalize touch and mouse
+		this.sprite.scale.set(1);
+		if(this.type=='first')
+		{
+			this.button1=new Button(this.app,'human',1,'first');
+			this.button2=new Button(this.app,'ai',2,'first');
+		}
+		else if(this.type=='mode')
+		{
+			this.button1=new Button(this.app,'trainer',1,'mode');
+			this.button2=new Button(this.app,'ai',2,'mode');
+		}
+		else
+		{
+			this.button1=new Button(this.app,'play',1,'play');
+			this.button2=new Button(this.app,'score',2,'play');
+			this.button3=new Button(this.app,'quit',3,'play');
+			
+		}
+		
 		
 
     },
-    myonClick: function(e){
-    	e.data.local = {
-    		x: e.data.global.x - this.sprite.position.x,
-    		y: e.data.global.y - this.sprite.position.y
-    	}
-    	this.mouseClickPos = e.data.local;
-		console.log(this.mouseClickPos);
-    	if (this.selectedTile && !this.moving){
-    		//logic of movement here ..
-			this._animationFunction = this.moveHandtoTile.bind(this)
-			this.app.ticker.add(this._animationFunction);
-			this.animationStartingPos = {x:this.hand.container.position.x, y:this.hand.container.position.y};
-            this.selectedTile.animationStartingPos = {x:this.selectedTile.container.position.x, y:this.selectedTile.container.position.y};
-    		this.animationT1 = 0;
-    		this.animationT2 = 0;
-            this.animationT3 = 0;
-            console.log(this.selectedTile.animationStartingPos)
-    		this.randomDir = Math.random() >= 0.5;
-            this.moving = true;
-    	}
-    }
-    
+   
 };
