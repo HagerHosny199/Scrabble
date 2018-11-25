@@ -13,6 +13,11 @@ let Graphics = function() {
     //PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST; // Scale mode for all textures, will retain pixelation, da 7lw lel pixel art bs bye3ml alias fl sewar el 3adia
     PIXI.settings.RENDER_OPTIONS.antialias = true;
 
+    //this.app.renderer.view.style.position = 'absolute'
+    //this.app.renderer.view.style.display = 'block'
+    //this.app.renderer.autoResize = true
+    //this.app.renderer.resize(window.innerWidth-20, window.innerHeight-20);
+    
     Graphics.instance = this;
     Graphics.get = function(){
         return Graphics.instance;
