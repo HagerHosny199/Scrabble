@@ -98,8 +98,6 @@ GameplayManager.prototype = {
     				'row': null,
     				'col': null
     			});
-			this.selctedNum=(tile.container.position.x-145)/29;
-			console.log(this.selctedNum);
 				//TODO call a function in Tile class to set the sprite to Glow effect (selected)
     	}
     },
@@ -144,7 +142,7 @@ GameplayManager.prototype = {
 				//now this is not my turn 
 				this.turn = !this.turn; 
 				//complete the tiles to have 7
-				[this.tileAppend,ethis.userTiles]=this.bag.completeTiles(this.userTiles,this.tileAppend);
+				[this.tileAppend,this.availableTiles,this.userTiles]=this.bag.completeTiles(this.userTiles,this.availableTiles,this.tileAppend);
 				this.availableTiles=7; //m7tagen nzbot el cond de 
 				console.log("ok :",this.turn);
 				
@@ -215,15 +213,16 @@ GameplayManager.prototype = {
     easeOutQuart: function (t) { return 1-(--t)*t*t*t },
     moveHandtoTile: function(delta){
     	delta = delta*1.2;
+    	
     	// terminating condition
     	if (this.animationT1 > 60 && this.animationT2 > 60 && this.animationT3 > 60) {
+    		console.log("this should mark ending animation")
             this.moving = false;
 			this.character=this.selectedTile.container.children[2].text;
 			this.movements.shift();
             //this.selectedTile = null; //da el satr el wa7id el bymna3 eni al3ab fi dor el odami , 3ashan hwa lw doro , we kan m3aia el selected tile hya hya we dost ai 7ta fl board , ana msh bas2al hna hwa dori wla la2 , 3ashan asln l mfrod el animation y7sal fi dori we msh dori kda kda
         	//this.turn = this.turn; //my turn is true
-			this.destroyTiles();
-
+			
 			//mfrod b2a lw el queue msh fadya mashelsh di , lw msh fadia we awel wa7da 3ndha row kman
 			if (!this.movements.length)
 				this.app.ticker.remove(this._animationFunction);
@@ -237,14 +236,15 @@ GameplayManager.prototype = {
 		    	this.animationT2 = 0;
 		        this.animationT3 = 0;
 		        this.mouseClickPos = {x: ((670 - 225)/15) * this.movements[0].col + 225 + ((670 - 225)/15)/2, y: ((575 - 100)/15) * this.movements[0].row + 100 + ((575 - 100)/15) / 2};
-
+		        this.moving = true;
 			}
+
+			this.destroyTiles();
         }
         // starting condition
         if (this.animationT1 == 0 && this.animationT2 == 0 && this.animationT3 == 0){
         	this.selectedTile = this.movements[0].selectedTile;
         }
-
     	//to move towards a tile
     	if (this.animationT1 < 60) {
     		this.hand.container.position.x = this.animationStartingPos.x + this.easeOutQuart(this.animationT1/60) * (this.selectedTile.animationStartingPos.x - this.animationStartingPos.x);
@@ -263,18 +263,18 @@ GameplayManager.prototype = {
 
         //to move hand out of game
         if (this.animationT2 > 50 && this.animationT3 < 60){
-        	if (this.movements.length>1) //y3ni na2es wa7da kman 3l a2al b3d el ana fiha
+        	if (this.movements.length>1 && this.movements[this.movements.length-1].row!=null) //y3ni na2es wa7da kman 3l a2al b3d el ana fiha
         	{
-        		this.animationT3 = 60
+        		this.animationT3 = 61
         		console.log("heereeeeeeeeeeeeeeeeeee")
         	}
             //this.tileSound.play();
             else {
-            this.hand.container.position.x = this.mouseClickPos.x + this.easeOutQuart(this.animationT3/60) * (this.app.screen.width / 2 + 30 - this.mouseClickPos.x);
-            if (this.turn)
-            	this.hand.container.position.y = this.mouseClickPos.y + this.easeOutQuart(this.animationT3/60) * (this.app.screen.height + 120 - this.mouseClickPos.y); 
-            else
-            	this.hand.container.position.y = this.mouseClickPos.y + this.easeOutQuart(this.animationT3/60) * (-120 - this.mouseClickPos.y);	
+	            this.hand.container.position.x = this.mouseClickPos.x + this.easeOutQuart(this.animationT3/60) * (this.app.screen.width / 2 + 30 - this.mouseClickPos.x);
+	            if (this.turn)
+	            	this.hand.container.position.y = this.mouseClickPos.y + this.easeOutQuart(this.animationT3/60) * (this.app.screen.height + 120 - this.mouseClickPos.y); 
+	            else
+	            	this.hand.container.position.y = this.mouseClickPos.y + this.easeOutQuart(this.animationT3/60) * (-120 - this.mouseClickPos.y);	
             }
              
             this.animationT3 = this.animationT3 + delta;
@@ -347,9 +347,15 @@ GameplayManager.prototype = {
 	aiTurn:function()
 	{
 		//here we need to chnge the number of calls based on the server output
-		this.selectedTile = tiles[0];
-		this.turn=!this.turn;
+		this.movements.push({
+					'selectedTile': tiles[0],
+					'row': null,
+					'col': null
+				});
 		this.boardClick(1,2);
 		console.log("now the turn = ",this.turn );
+	},
+	aiOk:function() {
+		this.turn = !this.turn;
 	}
 };
