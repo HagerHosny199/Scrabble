@@ -269,10 +269,6 @@ GameplayManager.prototype = {
 		this.selectedTile = tiles[0];
 		this.turn=!this.turn;
 		this.boardClick(1,2);
-<<<<<<< HEAD
-=======
-		
->>>>>>> a38769de3e64cc148446b1b26c219f3db2bc946b
 		console.log("now the turn = ",this.turn );
 	}
 };
