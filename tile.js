@@ -81,7 +81,7 @@ Tile.prototype = {
     myonClick: function(){
 		//this.selected=true;
     	// if the hand is moving , don't allow any clicks
-    	if (GameplayManager.get().getmovingornot()) return;
+    	// if (GameplayManager.get().getmovingornot()) return;  // msh lazm dlwa2ty a3rf 3shan  mmkn ados we hwa shaghal fl 7raka 3adi , actions queue
 
     	let plusOrMinus = Math.random() < 0.5 ? -1 : 1;
         this.container.rotation += 0.05 * plusOrMinus;

@@ -10,6 +10,7 @@ let GameplayManager = function(){
 
 	this.turn = true; //my turn is true
 	this.selectedTile = null;
+	this.movements = [];
 	this.hands = [null,null];
 	this.app = Graphics.get().app;
 
@@ -79,9 +80,24 @@ GameplayManager.prototype = {
 		}
     	else if (this.turn == true)
 		{
-    		this.selectedTile = tile;
-			this.selctedNum=(tile.container.position.x-145)/29;
-			console.log(this.selctedNum);
+    		//old
+    		//this.selectedTile = tile;
+			
+    		//new 
+    		if (this.movements.length == 0)
+    			this.movements.push({
+    				'selectedTile': tile,
+    				'row': null,
+    				'col': null
+    			});
+    		else if (this.movements[0].row == null) //lw awel movement fl list lsa ma5adtsh l desired location , y3ni dost 3la tile we b3dha tile tani
+    			this.movements[0].selectedTile = tile;
+    		else //lw el case en fi wa7da bttle3eb b2a dlwa2ty wana 3aiz a7ot wa7da tania fl movements
+    			this.movements.push({
+    				'selectedTile': tile,
+    				'row': null,
+    				'col': null
+    			});
 				//TODO call a function in Tile class to set the sprite to Glow effect (selected)
     	}
     },
@@ -126,7 +142,11 @@ GameplayManager.prototype = {
 				//now this is not my turn 
 				this.turn = !this.turn; 
 				//complete the tiles to have 7
+<<<<<<< HEAD
 				[this.tileAppend,this.userTiles]=this.bag.completeTiles(this.userTiles,this.availableTiles,this.tileAppend);
+=======
+				[this.tileAppend,this.availableTiles,this.userTiles]=this.bag.completeTiles(this.userTiles,this.availableTiles,this.tileAppend);
+>>>>>>> 83c1a58b26671f3f15b07c16468303f1b50ae55b
 				this.availableTiles=7; //m7tagen nzbot el cond de 
 				console.log("ok :",this.turn);
 				
@@ -146,45 +166,89 @@ GameplayManager.prototype = {
 			
 			
 		} 
-    	else if (this.selectedTile && !this.moving){
-    		// el satreen dol lma nezlo ta7t 7sal error , we da ma3nah en function l animation bta3et ticker btbda2 ttndeh awellll ma a2olaha add , 3ashan kda ml7e2sh ywsal lel satren dol lma kaono ta7t we drab error en this.hand = null
-            if (this.turn) this.hand = this.hands[0];
-            else this.hand = this.hands[1];
+    	//old
+    	//else if (this.selectedTile){
+    	//new
+    	else if (this.movements.length){
+    		//el click l gdida mlhash => y3ni doosa gdida we lsa mlhash mkan 3l board . awel aw tani aw talet wa7da msh far2a 
+    		if (this.movements[this.movements.length-1].row==null){ 
+	    		// el satreen dol lma nezlo ta7t 7sal error , we da ma3nah en function l animation bta3et ticker btbda2 ttndeh awellll ma a2olaha add , 3ashan kda ml7e2sh ywsal lel satren dol lma kaono ta7t we drab error en this.hand = null
+	            if (this.turn) this.hand = this.hands[0];
+	            else this.hand = this.hands[1];
 
-    		//logic of movement here ..
-			this._animationFunction = this.moveHandtoTile.bind(this)
-			this.app.ticker.add(this._animationFunction);
-			this.animationStartingPos = {x:this.hand.container.position.x, y:this.hand.container.position.y};
-            this.selectedTile.animationStartingPos = {x:this.selectedTile.container.position.x, y:this.selectedTile.container.position.y};
-    		this.animationT1 = 0;
-    		this.animationT2 = 0;
-            this.animationT3 = 0;
-            this.moving = true;
-
-            // simulating the mouse click position by calculating the mouseclick position that would give this row col
-            // note: animation function uses this value and i didnt want to change it so i recalculated what it needed
-            this.mouseClickPos = {x: ((670 - 225)/15) * col + 225 + ((670 - 225)/15)/2, y: ((575 - 100)/15) * row + 100 + ((575 - 100)/15) / 2};
-			// set the desired hand to move 
-
+	    		//logic of movement here ..
+	    		if (this.movements.length == 1) //awel wa7da tt7at we htndah hya el animation ticker
+	    		{
+					this._animationFunction = this.moveHandtoTile.bind(this)
+					this.movements[this.movements.length-1].row = row;
+					this.movements[this.movements.length-1].col = col;
+					this.animationStartingPos = {x:this.hand.container.position.x, y:this.hand.container.position.y};
+		            this.movements[this.movements.length-1].selectedTile.animationStartingPos = {x:this.movements[this.movements.length-1].selectedTile.container.position.x, y:this.movements[this.movements.length-1].selectedTile.container.position.y};
+		    		this.animationT1 = 0;
+		    		this.animationT2 = 0;
+		            this.animationT3 = 0;
+		            this.moving = true;
+		            this.app.ticker.add(this._animationFunction);
+		            // simulating the mouse click position by calculating the mouseclick position that would give this row col
+		            // note: animation function uses this value and i didnt want to change it so i recalculated what it needed
+		            this.mouseClickPos = {x: ((670 - 225)/15) * col + 225 + ((670 - 225)/15)/2, y: ((575 - 100)/15) * row + 100 + ((575 - 100)/15) / 2};
+	        	} else {
+	        		//msh awel wa7da
+	        		this.movements[this.movements.length-1].row = row;
+					this.movements[this.movements.length-1].col = col;
+		            this.movements[this.movements.length-1].selectedTile.animationStartingPos = {x:this.movements[this.movements.length-1].selectedTile.container.position.x, y:this.movements[this.movements.length-1].selectedTile.container.position.y};
+		            console.log("new animation added")
+	        	}
+	            
+			} 
+			// aw lma yb2a fi 7aga btt7arak dlwa2ty asln 
+			else {
+				this.movements.push({
+					'selectedTile': this.selectedTile,
+					'row': row,
+					'col': col
+				});
+			}
     	}
 
-    	// TODO: hwa fi else? a el mmkn n7tago lma ndos 3l board gher kda? 
 
     },
 
     easeOutQuart: function (t) { return 1-(--t)*t*t*t },
     moveHandtoTile: function(delta){
-    	delta = delta*1.3;
+    	delta = delta*1.2;
+    	
     	// terminating condition
     	if (this.animationT1 > 60 && this.animationT2 > 60 && this.animationT3 > 60) {
-    		this.app.ticker.remove(this._animationFunction);
+    		console.log("this should mark ending animation")
             this.moving = false;
 			this.character=this.selectedTile.container.children[2].text;
+			this.movements.shift();
             //this.selectedTile = null; //da el satr el wa7id el bymna3 eni al3ab fi dor el odami , 3ashan hwa lw doro , we kan m3aia el selected tile hya hya we dost ai 7ta fl board , ana msh bas2al hna hwa dori wla la2 , 3ashan asln l mfrod el animation y7sal fi dori we msh dori kda kda
         	//this.turn = this.turn; //my turn is true
+			
+			//mfrod b2a lw el queue msh fadya mashelsh di , lw msh fadia we awel wa7da 3ndha row kman
+			if (!this.movements.length)
+				this.app.ticker.remove(this._animationFunction);
+			else if (this.movements[0].row==null)
+				this.app.ticker.remove(this._animationFunction);
+			else if (this.movements[0].row!=null){
+				//re initialize animation
+				console.log("new animation should start now")
+				this.animationStartingPos = {x:this.hand.container.position.x, y:this.hand.container.position.y};
+		    	this.animationT1 = 0;
+		    	this.animationT2 = 0;
+		        this.animationT3 = 0;
+		        this.mouseClickPos = {x: ((670 - 225)/15) * this.movements[0].col + 225 + ((670 - 225)/15)/2, y: ((575 - 100)/15) * this.movements[0].row + 100 + ((575 - 100)/15) / 2};
+		        this.moving = true;
+			}
+
 			this.destroyTiles();
         }
-
+        // starting condition
+        if (this.animationT1 == 0 && this.animationT2 == 0 && this.animationT3 == 0){
+        	this.selectedTile = this.movements[0].selectedTile;
+        }
     	//to move towards a tile
     	if (this.animationT1 < 60) {
     		this.hand.container.position.x = this.animationStartingPos.x + this.easeOutQuart(this.animationT1/60) * (this.selectedTile.animationStartingPos.x - this.animationStartingPos.x);
@@ -203,12 +267,20 @@ GameplayManager.prototype = {
 
         //to move hand out of game
         if (this.animationT2 > 50 && this.animationT3 < 60){
+        	if (this.movements.length>1 && this.movements[this.movements.length-1].row!=null) //y3ni na2es wa7da kman 3l a2al b3d el ana fiha
+        	{
+        		this.animationT3 = 61
+        		console.log("heereeeeeeeeeeeeeeeeeee")
+        	}
             //this.tileSound.play();
-            this.hand.container.position.x = this.mouseClickPos.x + this.easeOutQuart(this.animationT3/60) * (this.app.screen.width / 2 + 30 - this.mouseClickPos.x);
-            if (this.turn)
-            	this.hand.container.position.y = this.mouseClickPos.y + this.easeOutQuart(this.animationT3/60) * (this.app.screen.height + 120 - this.mouseClickPos.y); 
-            else
-            	this.hand.container.position.y = this.mouseClickPos.y + this.easeOutQuart(this.animationT3/60) * (-120 - this.mouseClickPos.y); 
+            else {
+	            this.hand.container.position.x = this.mouseClickPos.x + this.easeOutQuart(this.animationT3/60) * (this.app.screen.width / 2 + 30 - this.mouseClickPos.x);
+	            if (this.turn)
+	            	this.hand.container.position.y = this.mouseClickPos.y + this.easeOutQuart(this.animationT3/60) * (this.app.screen.height + 120 - this.mouseClickPos.y); 
+	            else
+	            	this.hand.container.position.y = this.mouseClickPos.y + this.easeOutQuart(this.animationT3/60) * (-120 - this.mouseClickPos.y);	
+            }
+             
             this.animationT3 = this.animationT3 + delta;
            
 		}
@@ -279,9 +351,15 @@ GameplayManager.prototype = {
 	aiTurn:function()
 	{
 		//here we need to chnge the number of calls based on the server output
-		this.selectedTile = tiles[0];
-		this.turn=!this.turn;
+		this.movements.push({
+					'selectedTile': tiles[0],
+					'row': null,
+					'col': null
+				});
 		this.boardClick(1,2);
 		console.log("now the turn = ",this.turn );
+	},
+	aiOk:function() {
+		this.turn = !this.turn;
 	}
 };

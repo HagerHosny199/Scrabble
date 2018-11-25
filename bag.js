@@ -136,6 +136,7 @@ Bag.prototype = {
 	shuffle:function(array)
 	{
 		var currentIndex = array.length, tempChar,tempValue, randomIndex;
+			console.log(array)
 
 	  // While there remain elements to shuffle...
 	    while (0 !== currentIndex) 
@@ -143,7 +144,9 @@ Bag.prototype = {
 			// Pick a remaining element...
 			randomIndex = Math.floor(Math.random() * currentIndex);
 			currentIndex -= 1;
-			if(array[currentIndex].getUsed()==0&& array[randomIndex].getUsed()==0)
+
+			if(array[currentIndex].getUsed()==0 && array[randomIndex].getUsed()==0)
+
 			{// And swap it with the current element.
 			tempChar = array[currentIndex].container.children[2].text;
 			tempValue = array[currentIndex].container.children[3].text;
