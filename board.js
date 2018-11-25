@@ -32,7 +32,7 @@ Board.prototype = {
 		this.button1=new Button(this.app,'exchange',1,'board');
 		this.button2=new Button(this.app,'shuffle',2,'board');
 		this.button3=new Button(this.app,'ok',3,'board');
-        
+                
         // show :
         // "You" , "otherplayer"
         // "score: 0" , "score: 0"

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <title>Scrabble</title>
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <script src="pixi.min.js"></script>
     <script src="pixi-sound.js"></script>
     <script src="graphics.js"></script>
@@ -22,8 +22,71 @@
 
     <script src="test.js"></script>
 
+    <style>
+
+        @media only screen and (min-width: 1024px ) { 
+            #container{ 
+                border-style:solid;
+                display: inline-block;
+                width: 796px;
+                height: 613px;
+                overflow:hidden;
+                position: absolute; /* aw relative, da mohem 3ashan l overflow yshtghal! */
+                left:50%;
+                margin-top: 30px;
+                -webkit-transform: translate(-50%, 0);
+                   -moz-transform: translate(-50%, 0);
+                    -ms-transform: translate(-50%, 0);
+                     -o-transform: translate(-50%, 0);
+                        transform: translate(-50%, 0);
+            }
+            #msg{
+                display: none;
+            }
+        }
+ 
+        @media only screen and (max-width: 1024px ) and (orientation:portrait){ 
+            #container{
+                display: none;
+            }
+            #msg{
+                display: block;
+            }
+        }
+
+        @media only screen and (max-width: 1024px ) and (orientation:landscape) {
+            body{
+                margin: 0;
+                padding: 0;  
+            }
+            #container{ 
+                border-style:solid;
+                display: block;
+                width: 98vw;
+                height: 98vh;
+                overflow:hidden;
+                position: absolute; /* aw relative, da mohem 3ashan l overflow yshtghal! */
+                left:50%;
+                -webkit-transform: translate(-50%, 0);
+                   -moz-transform: translate(-50%, 0);
+                    -ms-transform: translate(-50%, 0);
+                     -o-transform: translate(-50%, 0);
+                        transform: translate(-50%, 0);
+            }
+            #msg{
+                display: none;
+            }
+
+
+        }
+        
+    </style>
+
 </head>
 <body>
-<p> askjsadksaj </p>
+<div id="container"> </div>
+<p id="msg"> please flip your device into landscape orientation or if you're using a desktop browser, maximize your window</p>
+<!-- <img src="assets/ai.png" style="transform: translate(-500px, 0)  scale(0.5);"> -->
+<!-- el wade7 kda en zy link l fiddle, el transform bytnafez wa7da wa7da kda mn l awel lel a5er, wel scale wel rotate cocentric y3ni mn l center bta3ha , 7ata ba3d ma tt7rak bytnafez mn l center bta3ha , msh da ma3nah en kda el tartib myfre2sh lw translate we scale?? ymkn l byefre2 fl kont b3mlo b2a eni basta5dm l height wel width bt3ha fl 7esba we ymkn da by22ell m3 l transform -->
 </body>
 </html>
