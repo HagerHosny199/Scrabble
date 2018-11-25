@@ -81,7 +81,7 @@ Bag.prototype = {
 		}*/
 			
 	},
-	completeTiles:function(tiles,tileAppend)
+	completeTiles:function(tiles,availableTiles,tileAppend)
 	{
 		var temp;
 		console.log("now",availableTiles);
@@ -100,16 +100,17 @@ Bag.prototype = {
 				temp=this.generateUserTiles(1);
 				tiles[i].container.children[2].text=temp[1][0];
 				tiles[i].container.children[3].text=temp[0][0];
-				tiles[i].container.position.x=145+29*(tileAppend-1);
+				tiles[i].container.position.x=145+29*(availableTiles);
 				tiles[i].container.position.y=623;
 				tiles[i].container.rotation=0;
 				tiles[i].setUsed(0); //
 				tileAppend++;
+				availableTiles++;
 				//console.log(temp[1]);
 			}
 		}
 		
-		return [tileAppend,tiles];
+		return [tileAppend,availableTiles,tiles];
 	},
 	//this function generates the n tiles of the user 
 	generateUserTiles:function(n){
@@ -142,7 +143,7 @@ Bag.prototype = {
 			// Pick a remaining element...
 			randomIndex = Math.floor(Math.random() * currentIndex);
 			currentIndex -= 1;
-			if(array[currentIndex].getUsed()==0)
+			if(array[currentIndex].getUsed()==0&& array[randomIndex].getUsed()==0)
 			{// And swap it with the current element.
 			tempChar = array[currentIndex].container.children[2].text;
 			tempValue = array[currentIndex].container.children[3].text;
@@ -151,6 +152,8 @@ Bag.prototype = {
 			array[randomIndex].container.children[2].text = tempChar;
 			array[randomIndex].container.children[3].text = tempValue;
 			}
+			else
+				console.log("nott shuffle");
 		}
 		//console.log(array);
 		return array;

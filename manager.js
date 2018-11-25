@@ -126,7 +126,7 @@ GameplayManager.prototype = {
 				//now this is not my turn 
 				this.turn = !this.turn; 
 				//complete the tiles to have 7
-				[this.tileAppend,ethis.userTiles]=this.bag.completeTiles(this.userTiles,this.tileAppend);
+				[this.tileAppend,this.userTiles]=this.bag.completeTiles(this.userTiles,this.availableTiles,this.tileAppend);
 				this.availableTiles=7; //m7tagen nzbot el cond de 
 				console.log("ok :",this.turn);
 				
