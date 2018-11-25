@@ -6,7 +6,9 @@ let Board = function () {
     this.clickable = true;
     this.selectedTile = null;
     this.app = Graphics.get().app; 
-
+	this.button1=null;
+	this.button2=null;
+	this.button3=null;
     // todo: 
     // - el text score
     // - el asma2
@@ -25,7 +27,9 @@ Board.prototype = {
         //this.sprite.hitArea = new PIXI.Rectangle(0, 0, 100, 100); //3ashan ados 3l le3ba bs
 		this.sprite.scale.set(0.6);
         this.sprite.on('pointerdown', this.myonClick.bind(this)); // Pointers normalize touch and mouse
-		
+		this.button1=new Button(this.app,'exchange',1,'board');
+		this.button2=new Button(this.app,'shuffle',2,'board');
+		this.button3=new Button(this.app,'ok',3,'board');
 
     },
     
@@ -55,7 +59,7 @@ Board.prototype = {
             let col = (x - 225) / ((670 - 225)/15);
             let row = (y - 100) / ((575 - 100)/15);
             //console.log("click on row:" + Math.floor(row) + ", col: " + Math.floor(col));
-            GameplayManager.get().boardClick(Math.floor(row), Math.floor(col));
+            GameplayManager.get().boardClick(Math.floor(row), Math.floor(col),null);
         }
 
     }

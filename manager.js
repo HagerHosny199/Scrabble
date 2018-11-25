@@ -35,6 +35,7 @@ let GameplayManager = function(){
 	//this.genTiles=new GenerateTiles(this.app,null,this.userTiles);
 	this.exchange=false;
 	this.exchangedTiles=[];
+	this.used=[0,0,0,0,0,0,0];
     GameplayManager.instance = this;
     
 
@@ -89,18 +90,18 @@ GameplayManager.prototype = {
 
     getmovingornot: function(){return this.moving},
 
-    boardClick: function(row,col){
+    boardClick: function(row,col,action){
     	
     	// NOTE: the network/communication module can call this function after setting the selected tile
     	// with the desired (row, col) position to simulate the mouse click on game board
-		console.log(row,col);
-    	if((row==11|| row==12 )&& col>=17 && col<=19)
+		console.log(row,col,action);
+    	if(action=='shuffle'&& this.turn==true)
 		{
 			//shuffle condition 
 			this.userTiles=this.bag.shuffle(this.userTiles);
 			console.log("shuffle");
 		}
-		else if(row==13  && col>=17 && col<=19)
+		else if(action=='exchange'&& this.turn==true)
 		{
 			let gen;
 			if(this.exchange==false)//exchange condition
@@ -108,7 +109,7 @@ GameplayManager.prototype = {
 			console.log("exchange");
 			
 		}
-		else if ((row==14|| row==15)  && col>=18 && col<=19)
+		else if (action=='ok' && this.turn==true)
 		{
 			//OK cond 
 			console.log("OK");
@@ -120,7 +121,8 @@ GameplayManager.prototype = {
 				//complete the tiles to have 7
 				this.userTiles=this.bag.completeTiles(this.userTiles,this.availableTiles);
 				this.availableTiles=7; //m7tagen nzbot el cond de 
-				console.log(this.userTiles[5]);
+				console.log("ok :",this.turn);
+				
 			}
 			//else ignore the press
 		}
@@ -171,9 +173,9 @@ GameplayManager.prototype = {
     		this.app.ticker.remove(this._animationFunction);
             this.moving = false;
 			this.character=this.selectedTile.container.children[2].text;
-            this.selectedTile = null; //da el satr el wa7id el bymna3 eni al3ab fi dor el odami , 3ashan hwa lw doro , we kan m3aia el selected tile hya hya we dost ai 7ta fl board , ana msh bas2al hna hwa dori wla la2 , 3ashan asln l mfrod el animation y7sal fi dori we msh dori kda kda
+            //this.selectedTile = null; //da el satr el wa7id el bymna3 eni al3ab fi dor el odami , 3ashan hwa lw doro , we kan m3aia el selected tile hya hya we dost ai 7ta fl board , ana msh bas2al hna hwa dori wla la2 , 3ashan asln l mfrod el animation y7sal fi dori we msh dori kda kda
         	//this.turn = this.turn; //my turn is true
-			this.destroyTiles(this.selctedNum);
+			this.destroyTiles();
         }
 
     	//to move towards a tile
@@ -236,21 +238,24 @@ GameplayManager.prototype = {
 	destroyTiles:function(num)
 	{
 		//add instance from the moved tile
-		this.userTiles[this.tileAppend]=new Tile();
+		/*this.userTiles[this.tileAppend]=new Tile();
 		this.userTiles[this.tileAppend].container.position.set(this.userTiles[num].container.position.x,this.userTiles[num].container.position.y);
-		this.userTiles[this.tileAppend].container.children[2].text=this.character;
+		this.userTies[this.tileAppend].container.children[2].text=this.character;
 		this.tileAppend++;
+		*/
+		this.used[num]=1;
 		//shift left the tiles 
 		for(var i=num+1;i<this.availableTiles;i++)
 		{
-			this.userTiles[i-1].container.position.set(145+29*(i-1),623);
-			this.userTiles[i-1].container.children[2].text=this.userTiles[i].container.children[2].text
+			this.userTiles[i].container.position.set(145+29*(i-1),623);
+			//this.userTiles[i].container.children[2].text=this.userTiles[i].container.children[2].text;
+			this.userTiles[i].container.rotation=0;
 		}
 		//remove the last one from the view
-		this.userTiles[this.availableTiles-1].container.position.set(-100,-100);
+		//this.userTiles[this.availableTiles-1].container.position.set(-100,-100);
 		//decrement the avilable tiles number
 		this.availableTiles--;
-		
+		this.selectedTile = null;
 		
 	},
 	setExchange:function()
@@ -262,8 +267,9 @@ GameplayManager.prototype = {
 	{
 		//here we need to chnge the number of calls based on the server output
 		this.selectedTile = tiles[0];
-		this.boardClick(1,2);
 		this.turn=!this.turn;
+		this.boardClick(1,2);
+		
 		console.log("now the turn = ",this.turn );
 	}
 };
