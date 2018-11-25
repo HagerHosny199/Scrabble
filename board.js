@@ -6,6 +6,14 @@ let Board = function () {
     this.clickable = true;
     this.selectedTile = null;
     this.app = Graphics.get().app; 
+
+	this.button1=null;
+	this.button2=null;
+	this.button3=null;
+    // todo: 
+    // - el text score
+    // - el asma2
+    // - array 2D 3ashan te3raf min free we min la2 (fl a5er 5ales di) [mftkrsh m7tagha 3ashan l tile mghtya l moraba3 asln msh h3rf adoso]
     
     this.init();
 }
@@ -21,6 +29,10 @@ Board.prototype = {
 		this.sprite.scale.set(0.6);
         this.sprite.on('pointerdown', this.myonClick.bind(this)); // Pointers normalize touch and mouse
 		
+		this.button1=new Button(this.app,'exchange',1,'board');
+		this.button2=new Button(this.app,'shuffle',2,'board');
+		this.button3=new Button(this.app,'ok',3,'board');
+        
         // show :
         // "You" , "otherplayer"
         // "score: 0" , "score: 0"
@@ -55,7 +67,7 @@ Board.prototype = {
             let col = (x - 225) / ((670 - 225)/15);
             let row = (y - 100) / ((575 - 100)/15);
             //console.log("click on row:" + Math.floor(row) + ", col: " + Math.floor(col));
-            GameplayManager.get().boardClick(Math.floor(row), Math.floor(col));
+            GameplayManager.get().boardClick(Math.floor(row), Math.floor(col),null);
         }
 
     }

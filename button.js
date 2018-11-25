@@ -42,6 +42,26 @@ Button.prototype = {
 			}
 			
 		}
+		else if(this.mode=='board')
+		{
+			this.sprite.scale.set(0.6);
+			if(this.pos==1)
+			{
+				this.sprite.x=750;
+				this.sprite.y=455;
+			}
+			else if (this.pos==2)
+			{
+				this.sprite.x=750;
+				this.sprite.y=500;
+			}
+			else
+			{
+				this.sprite.x=750;
+				this.sprite.y=545;
+			}
+			
+		}
 		else
 		{
 			if(this.pos==1)
@@ -87,6 +107,15 @@ Button.prototype = {
 				console.log("mode:trainer");
 			else if (this.name=='ai')
 				console.log("mode:AI");
+		}
+		else if (this.mode=="board")
+		{
+			console.log("boaaaard",this.name);
+			// calculate (row, col)
+            let col = (this.mouseClickPos.x - 225) / ((670 - 225)/15);
+            let row = (this.mouseClickPos.y - 100) / ((575 - 100)/15);
+            GameplayManager.get().boardClick(Math.floor(row), Math.floor(col),this.name);
+       
 		}
     }
     
