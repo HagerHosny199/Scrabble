@@ -174,7 +174,7 @@ GameplayManager.prototype = {
 
     easeOutQuart: function (t) { return 1-(--t)*t*t*t },
     moveHandtoTile: function(delta){
-
+    	delta = delta*1.3;
     	// terminating condition
     	if (this.animationT1 > 60 && this.animationT2 > 60 && this.animationT3 > 60) {
     		this.app.ticker.remove(this._animationFunction);
@@ -282,7 +282,6 @@ GameplayManager.prototype = {
 		this.selectedTile = tiles[0];
 		this.turn=!this.turn;
 		this.boardClick(1,2);
-		
 		console.log("now the turn = ",this.turn );
 	}
 };

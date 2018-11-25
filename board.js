@@ -6,6 +6,7 @@ let Board = function () {
     this.clickable = true;
     this.selectedTile = null;
     this.app = Graphics.get().app; 
+
 	this.button1=null;
 	this.button2=null;
 	this.button3=null;
@@ -27,9 +28,16 @@ Board.prototype = {
         //this.sprite.hitArea = new PIXI.Rectangle(0, 0, 100, 100); //3ashan ados 3l le3ba bs
 		this.sprite.scale.set(0.6);
         this.sprite.on('pointerdown', this.myonClick.bind(this)); // Pointers normalize touch and mouse
+		
 		this.button1=new Button(this.app,'exchange',1,'board');
 		this.button2=new Button(this.app,'shuffle',2,'board');
 		this.button3=new Button(this.app,'ok',3,'board');
+        
+        // show :
+        // "You" , "otherplayer"
+        // "score: 0" , "score: 0"
+        // "time remaining: 0" , "time remaining: 0"
+        // el sa3b hyb2a eni a3ed el time mn minutes le seconds w keda, lw la2et 7aga fiha timer tdini l time a7san
 
     },
     
