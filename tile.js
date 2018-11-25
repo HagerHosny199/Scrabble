@@ -8,7 +8,7 @@ let Tile= function(){
 	this.shadowSprite; //used to add shadow to the tile
 	this.shadowSprite2; //used to add shadow to the tile
 	this.app=Graphics.get().app;
-	
+	this.used=0;
 	this.tilePath = 'assets/blank-tile.png';
     this.shadowPath = 'assets/blank-tile-shadow.png';
     this.shadowPath2 = 'assets/blank-tile-shadow-red.png';
@@ -79,6 +79,7 @@ Tile.prototype = {
 	},
 
     myonClick: function(){
+		//this.selected=true;
     	// if the hand is moving , don't allow any clicks
     	// if (GameplayManager.get().getmovingornot()) return;  // msh lazm dlwa2ty a3rf 3shan  mmkn ados we hwa shaghal fl 7raka 3adi , actions queue
 
@@ -104,30 +105,44 @@ Tile.prototype = {
 		console.log(this.container.position.y);
 		//get the tile num 
 		var i=2;
-		var j=(this.container.position.y -280)/40;
-		var num=(this.container.position.x-394)/40;
-		while(num>=7 || num<0)
+		//var j=(this.container.position.y -280)/40;
+		//var num=(this.container.position.x-394)/40;
+		/*while(num>=7 || num<0)
 		{
 			num=(this.container.position.x-i*394)/40;
 			i++;
-		}
-		num=num+j*3;
-		console.log("i=",i," j=" ,j," num=",num);
+		}*/
+		//num=num+j*3;
+		//console.log("i=",i," j=" ,j," num=",num);
 		if(this.selected==false)
 		{
 			this.container.addChild(this.shadowSprite2);
 			this.selected=true;
-			this.exchangeTiles[num]=1;
+			//this.exchangeTiles[num]=1;
 		}
 		else
 		{
 			this.container.removeChildAt(4);
 			this.selected=false;
-			this.exchangeTiles[num]=0;
+			//this.exchangeTiles[num]=0;
 		}
-		console.log(this.exchangeTiles);
-		return this.exchangeTiles;
+		console.log(this.selected);
+		return this;
+	},
+	setUsed:function(num=1)
+	{
+		this.used=num;
+	},
+	getUsed:function()
+	{
+		return this.used;
+	},
+	getSelected:function()
+	{
+		return this.selected;
 	}
+		
+	
     // we di ba2i l 7etta el fo2 bta3et l laf
     // dummFunc: function(delta){
     //     this.container.rotation += 0.03 * delta;

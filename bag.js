@@ -17,9 +17,9 @@ Bag.prototype = {
 		var retTiles=[];
 		for(var i =0;i<7;i++)
 		{
-			console.log(exTiles);
+			console.log("used or not ",tiles[i].getUsed());
 			//need to be exchanged
-			if(exTiles[i]==1)
+			if(exTiles[i]==1 && tiles[i].getUsed()!=1)
 			{
 				if(availableTiles.length>=0)
 				{
@@ -81,21 +81,35 @@ Bag.prototype = {
 		}*/
 			
 	},
-	completeTiles:function(tiles,availableTiles)
+	completeTiles:function(tiles,tileAppend)
 	{
 		var temp;
 		console.log("now",availableTiles);
-		for(var i=availableTiles;i<7;i++)
+		for(var i=0;i<7;i++)
 		{
-			temp=this.generateUserTiles(1);
-			tiles[i].container.children[2].text=temp[1][0];
-			tiles[i].container.children[3].text=temp[0][0];
-			tiles[i].container.position.x=145+29*i;
-			tiles[i].container.position.y=623;
-			console.log(temp[1]);
+			if(tiles[i].getUsed()==1)
+			{
+				//append the tile to the end of the array
+				tiles[tileAppend]=new Tile();
+				tiles[tileAppend].container.position.set(tiles[i].container.position.x,tiles[i].container.position.y);
+				tiles[tileAppend].container.children[2].text=tiles[i].container.children[2].text;
+				tiles[tileAppend].setUsed(1); //
+				
+				
+				//generate new tile 
+				temp=this.generateUserTiles(1);
+				tiles[i].container.children[2].text=temp[1][0];
+				tiles[i].container.children[3].text=temp[0][0];
+				tiles[i].container.position.x=145+29*(tileAppend-1);
+				tiles[i].container.position.y=623;
+				tiles[i].container.rotation=0;
+				tiles[i].setUsed(0); //
+				tileAppend++;
+				//console.log(temp[1]);
+			}
 		}
 		
-		return tiles;
+		return [tileAppend,tiles];
 	},
 	//this function generates the n tiles of the user 
 	generateUserTiles:function(n){
@@ -128,14 +142,15 @@ Bag.prototype = {
 			// Pick a remaining element...
 			randomIndex = Math.floor(Math.random() * currentIndex);
 			currentIndex -= 1;
-
-			// And swap it with the current element.
+			if(array[currentIndex].getUsed()==0)
+			{// And swap it with the current element.
 			tempChar = array[currentIndex].container.children[2].text;
 			tempValue = array[currentIndex].container.children[3].text;
 			array[currentIndex].container.children[2].text = array[randomIndex].container.children[2].text;
 			array[currentIndex].container.children[3].text = array[randomIndex].container.children[3].text;
 			array[randomIndex].container.children[2].text = tempChar;
 			array[randomIndex].container.children[3].text = tempValue;
+			}
 		}
 		//console.log(array);
 		return array;

@@ -37,6 +37,7 @@ let GameplayManager = function(){
 	this.exchange=false;
 	this.exchangedTiles=[];
 	this.used=[0,0,0,0,0,0,0];
+	this.gen=null;
     GameplayManager.instance = this;
     
 
@@ -64,12 +65,18 @@ GameplayManager.prototype = {
 		if(this.exchange == true) //de mmkn tdrb f case en e7na el etnin bndos f nfs el w2t 
 		{
 			//highlight the tile only
-			var ex=tile.addShadow();
+			
+			var genTiles=this.gen.getTiles();
+			console.log(genTiles);
+			tile=tile.addShadow();
 			for(var i =0;i<7;i++)
 			{
-				if(ex[i]==1)
+				if(genTiles[i].getSelected()==true)
 					this.exchangedTiles[i]=1;
+				else
+					this.exchangedTiles[i]=0;
 			}
+			console.log("exch:",this.exchangedTiles,tile.getSelected());
 		}
     	else if (this.turn == true)
 		{
@@ -121,9 +128,9 @@ GameplayManager.prototype = {
 		}
 		else if(action=='exchange'&& this.turn==true)
 		{
-			let gen;
-			if(this.exchange==false)//exchange condition
-				gen=new GenerateTiles(this.app,this.board,this.userTiles);
+			console.log("now we go to the exchange function with tiles",this.userTiles)
+			if(this.exchange==false )//exchange condition
+				this.gen=new GenerateTiles(this.app,this.board,this.userTiles);
 			console.log("exchange");
 			
 		}
@@ -137,7 +144,7 @@ GameplayManager.prototype = {
 				//now this is not my turn 
 				this.turn = !this.turn; 
 				//complete the tiles to have 7
-				this.userTiles=this.bag.completeTiles(this.userTiles,this.availableTiles);
+				[this.tileAppend,ethis.userTiles]=this.bag.completeTiles(this.userTiles,this.tileAppend);
 				this.availableTiles=7; //m7tagen nzbot el cond de 
 				console.log("ok :",this.turn);
 				
@@ -303,21 +310,27 @@ GameplayManager.prototype = {
 		this.userTiles=tiles;
 		return tiles;
 	},
-	destroyTiles:function(num)
+	destroyTiles:function()
 	{
 		//add instance from the moved tile
 		/*this.userTiles[this.tileAppend]=new Tile();
-		this.userTiles[this.tileAppend].container.position.set(this.userTiles[num].container.position.x,this.userTiles[num].container.position.y);
-		this.userTies[this.tileAppend].container.children[2].text=this.character;
+		this.userTiles[this.tileAppend].container.position.set(this.selectedTile.container.position.x,this.selectedTile.container.position.y);
+		this.userTies[this.tileAppend].container.children[2].text=this.selectedTile.container.children[2].text;
 		this.tileAppend++;
 		*/
-		this.used[num]=1;
+		
+		var j =0;
+		this.selectedTile.setUsed(1);
 		//shift left the tiles 
-		for(var i=num+1;i<this.availableTiles;i++)
+		for(var i=0;i<7;i++)
 		{
-			this.userTiles[i].container.position.set(145+29*(i-1),623);
-			//this.userTiles[i].container.children[2].text=this.userTiles[i].container.children[2].text;
-			this.userTiles[i].container.rotation=0;
+			if(this.userTiles[i].getUsed()==0)
+			{	
+				this.userTiles[i].container.position.set(145+29*(j),623);
+				//this.userTiles[i].container.children[2].text=this.userTiles[i].container.children[2].text;
+				this.userTiles[i].container.rotation=0;
+				j++;
+			}
 		}
 		//remove the last one from the view
 		//this.userTiles[this.availableTiles-1].container.position.set(-100,-100);

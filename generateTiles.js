@@ -49,6 +49,7 @@ GenerateTiles.prototype={
 		this.bagValues=this.bag.getValues();	
 		//start exchange
 		GameplayManager.get().setExchange();
+		console.log("getting user tiles =",this.userTiles)
 		///create a ticker
 		this.ticker  =  new PIXI.ticker.Ticker();
 		this.ticker.add((deltaTime) => {
@@ -68,10 +69,13 @@ GenerateTiles.prototype={
 	{
 		var x=394;
 		var y=-640;
+		var j=0;
 		//create array of the tiles 
 		for(var i=0;i<this.userTiles.length;i++)
 		{
-			//if(availableTiles[i]>0)
+			console.log("used2:",this.userTiles[i].getUsed());
+			
+			//if(this.userTiles[i].getUsed()==0)
 			{
 				this.tiles[i]=new Tile(this.app,this.board);
 				this.tiles[i].container.position.set(x,y);
@@ -79,14 +83,21 @@ GenerateTiles.prototype={
 				this.tiles[i].container.children[3].text=this.userTiles[i].container.children[3].text;
 				this.availableTiles[i]--;
 				this.tiles[i].container.scale.set(0.7); 
+				
 				if((i+1)%3==0)
 				{
 					y+=40;
 					x=394;
 				}
 				else
+				{
 					x+=40;
+				}
+				if(this.userTiles[i].getUsed()==1)
+					this.tiles[i].container.position.set(-100,-100);
+				
 			}
+			
 		}
 		
 		
@@ -110,8 +121,10 @@ GenerateTiles.prototype={
 	loopTiles:function(app){
 	app.render(this.container);
 		for(var i=0;i<this.tiles.length;i++)
-		this.tiles[i].container.position.y += 10; 
-		
+		{  
+			if(this.userTiles[i].getUsed()==0)
+				this.tiles[i].container.position.y += 10; 
+		}
 	},
 	loopTiles2:function(app){
 	app.render(this.container);
@@ -131,6 +144,10 @@ GenerateTiles.prototype={
 	this.ticker.add((deltaTime) => {
 		this.loopTiles2(this.app);
 	});
+	},
+	getTiles:function()
+	{
+		return this.tiles;
 	}
 	
 	
