@@ -144,7 +144,9 @@ Bag.prototype = {
 			// Pick a remaining element...
 			randomIndex = Math.floor(Math.random() * currentIndex);
 			currentIndex -= 1;
+
 			if(array[currentIndex].getUsed()==0 && array[randomIndex].getUsed()==0)
+
 			{// And swap it with the current element.
 			tempChar = array[currentIndex].container.children[2].text;
 			tempValue = array[currentIndex].container.children[3].text;
@@ -153,6 +155,8 @@ Bag.prototype = {
 			array[randomIndex].container.children[2].text = tempChar;
 			array[randomIndex].container.children[3].text = tempValue;
 			}
+			else
+				console.log("nott shuffle");
 		}
 		//console.log(array);
 		return array;

@@ -6,7 +6,7 @@ let Board = function () {
     this.clickable = true;
     this.selectedTile = null;
     this.app = Graphics.get().app; 
-
+	this.sound=null;
 	this.button1=null;
 	this.button2=null;
 	this.button3=null;
@@ -32,7 +32,8 @@ Board.prototype = {
 		this.button1=new Button(this.app,'exchange',1,'board');
 		this.button2=new Button(this.app,'shuffle',2,'board');
 		this.button3=new Button(this.app,'ok',3,'board');
-                
+        this.sound = PIXI.sound.Sound.from('assets/game_scrabble_game_board_put_in_box_2.mp3');
+		this.sound.play();      
         // show :
         // "You" , "otherplayer"
         // "score: 0" , "score: 0"

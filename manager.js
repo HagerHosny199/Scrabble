@@ -38,6 +38,8 @@ let GameplayManager = function(){
 	this.exchangedTiles=[];
 	this.used=[0,0,0,0,0,0,0];
 	this.gen=null;
+	this.menu=null;
+	this.board=null;
     GameplayManager.instance = this;
     
 
@@ -50,14 +52,20 @@ GameplayManager.get = function(){
 
 GameplayManager.prototype = {
     init: function(){
-    	this.hands[0] = new Hand();
+    	
+		this.menu= new Menu(this.app,'play');
+    },
+	initBoard:function()
+	{
+		this.board=new Board();
+		this.hands[0] = new Hand();
     	this.hands[1] = new Hand();
     	
     	this.hands[1].container.x = this.app.screen.width / 2 + 30;
         this.hands[1].container.y = -120;
-        this.hands[1].container.rotation = 3.25
-    },
-
+        this.hands[1].container.rotation = 3.25;
+		this.userTiles=this.generateUsersTiles(7);
+	},
 
     // called from the tile onClick function
     tileClick: function(tile){
@@ -142,7 +150,7 @@ GameplayManager.prototype = {
 				//now this is not my turn 
 				this.turn = !this.turn; 
 				//complete the tiles to have 7
-				[this.tileAppend,this.availableTiles,this.userTiles]=this.bag.completeTiles(this.userTiles,this.availableTiles,this.tileAppend);
+				[this.tileAppend,this.userTiles]=this.bag.completeTiles(this.userTiles,this.availableTiles,this.tileAppend);
 				this.availableTiles=7; //m7tagen nzbot el cond de 
 				console.log("ok :",this.turn);
 				

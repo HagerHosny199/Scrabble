@@ -3,7 +3,7 @@ window.onload = function(){
 
     //initializing PIXI
     let gfx = new Graphics();    
-    let board = new Board();
+    //let board = new Board();
 	let bag=new Bag();
 	
 
@@ -15,9 +15,10 @@ window.onload = function(){
 	//GameplayManager.get().aiTurn()
     //create the gameManager when the game starts , not in the menu
     let gameManager = new GameplayManager();
-	//let menu= new Menu(gameManager.app,'first'); //ana asef bs el 3mlto fl responsive bawazlek l menu , ma3reftesh a7afez 3l etnen
+	//let menu= new Menu(gameManager.app,'play'); //ana asef bs el 3mlto fl responsive bawazlek l menu , ma3reftesh a7afez 3l etnen
+	//while(menu.getNext()==false);
 	//let reward=new Reward(gameManager.app);
-	let tiles=gameManager.generateUsersTiles(7);
+	//let tiles=gameManager.generateUsersTiles(7);
 	//let gen=new GenerateTiles(gameManager.app,this.board,tiles);
 	//tiles=bag.shuffle(tiles);
 	
