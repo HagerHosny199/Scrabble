@@ -52,17 +52,18 @@ GameplayManager.get = function(){
 
 GameplayManager.prototype = {
     init: function(){
-    	this.hands[0] = new Hand();
-    	this.hands[1] = new Hand();
     	
-    	this.hands[1].container.x = this.app.screen.width / 2 + 30;
-        this.hands[1].container.y = -120;
-        this.hands[1].container.rotation = 3.25;
 		this.menu= new Menu(this.app,'play');
     },
 	initBoard:function()
 	{
 		this.board=new Board();
+		this.hands[0] = new Hand();
+    	this.hands[1] = new Hand();
+    	
+    	this.hands[1].container.x = this.app.screen.width / 2 + 30;
+        this.hands[1].container.y = -120;
+        this.hands[1].container.rotation = 3.25;
 		this.userTiles=this.generateUsersTiles(7);
 	},
 
