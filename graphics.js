@@ -25,13 +25,22 @@ let Graphics = function() {
         if (x.matches) { // If media query matches
             // scale the canvas object to make the height fit into the screen height exactly
             // and center it 
+            window.scrollTo(0,1)
             let canvas = document.getElementsByTagName('canvas')[0] 
             //console.log(canvas.clientHeight)
             //console.log(window.innerHeight)
-            let o = "translate(" + (-window.innerHeight/2) + "px," + (-canvas.clientHeight/2) + "px)" +  " scale(" + window.innerHeight/canvas.clientHeight + ")" ;
-            //console.log(o)
+            let o = " scale(" + (window.innerHeight+24)/canvas.clientHeight + ")";
             canvas.style.transform = o;
-            
+            let viewportOffset = canvas.getBoundingClientRect();
+            let y = viewportOffset.top;
+            let x = viewportOffset.left;    
+            o = o + " translate(" + ( (-x - 50)  * canvas.clientHeight/(window.innerHeight+24)) + "px, " + ((-y-10) * canvas.clientHeight/(window.innerHeight+24)) + "px)" ; //DARABBT L TRANSLATION FL 1/SCALE RATIO 3ashan yb2a by7rako be nafs el 7agm el ana 3aizo 
+            canvas.style.transform = o;
+            viewportOffset = canvas.getBoundingClientRect();
+            y = viewportOffset.top;
+            x = viewportOffset.left;
+            console.log(x,y)
+            document.getElementById('container').style.width = ( 796 * (window.innerHeight+24)/canvas.clientHeight + 8)+  "px";
         } 
     }
     var x = window.matchMedia("(max-width: 1024px ) and (orientation:landscape)")
