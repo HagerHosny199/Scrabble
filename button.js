@@ -40,18 +40,18 @@ Button.prototype = {
 		{
 			if(this.pos==1)
 			{
-				this.sprite.x=400;
-				this.sprite.y=220;
+				this.sprite.x=380;
+				this.sprite.y=240;
 			}
 			else if (this.pos==2)
 			{
-				this.sprite.x=480;
-				this.sprite.y=340;
+				this.sprite.x=455;
+				this.sprite.y=360;
 			}
 			else
 			{
-				this.sprite.x=480;
-				this.sprite.y=420;
+				this.sprite.x=455;
+				this.sprite.y=440;
 			}
 			
 		}
@@ -60,17 +60,17 @@ Button.prototype = {
 			this.sprite.scale.set(0.6);
 			if(this.pos==1)
 			{
-				this.sprite.x=750;
+				this.sprite.x=743;
 				this.sprite.y=455;
 			}
 			else if (this.pos==2)
 			{
-				this.sprite.x=750;
+				this.sprite.x=740;
 				this.sprite.y=500;
 			}
 			else
 			{
-				this.sprite.x=750;
+				this.sprite.x=740;
 				this.sprite.y=545;
 			}
 			

@@ -10,6 +10,7 @@ let Board = function () {
 	this.button1=null;
 	this.button2=null;
 	this.button3=null;
+	this.score=null;
     // todo: 
     // - el text score
     // - el asma2
@@ -32,7 +33,9 @@ Board.prototype = {
 		this.button1=new Button(this.app,'exchange',1,'board');
 		this.button2=new Button(this.app,'shuffle',2,'board');
 		this.button3=new Button(this.app,'ok',3,'board');
-        this.sound = PIXI.sound.Sound.from('assets/game_scrabble_game_board_put_in_box_2.mp3');
+		this.score=new Score(this.app);
+		this.timer=new Timer(this.app);
+		this.sound = PIXI.sound.Sound.from('assets/game_scrabble_game_board_put_in_box_2.mp3');
 		this.sound.play();      
         // show :
         // "You" , "otherplayer"
@@ -41,7 +44,27 @@ Board.prototype = {
         // el sa3b hyb2a eni a3ed el time mn minutes le seconds w keda, lw la2et 7aga fiha timer tdini l time a7san
 
     },
-    
+    updateTime:function(playerNum,value)
+	{
+		if(playerNum==1)
+			this.timer.container.children[0].text=value;
+		else
+			this.timer.container.children[1].text=value;
+	},
+	updateScore:function(playerNum,value)
+	{
+		
+		if(playerNum==1)
+		{
+			value=value+parseInt(this.score.container.children[1].text,10);
+			this.score.container.children[1].text=value;
+		}
+		else
+		{
+			value=value+parseInt(this.score.container.children[2].text,10);
+			this.score.container.children[2].text=value;
+		}
+	},
     myonClick: function(e){
     	e.data.local = {
             x: e.data.global.x - this.sprite.position.x,

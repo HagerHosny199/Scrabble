@@ -6,7 +6,7 @@ window.onload = function(){
     //let board = new Board();
 	let bag=new Bag();
 	
-
+	//board.updateScore(2,5);
     //to test player2 
     // type in console : 
     // GameplayManager.get().selectedTile = tiles[0]
