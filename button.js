@@ -58,20 +58,25 @@ Button.prototype = {
 		else if(this.mode=='board')
 		{
 			this.sprite.scale.set(0.6);
-			if(this.pos==1)
+			if(this.pos==1) //exchange button
 			{
-				this.sprite.x=743;
-				this.sprite.y=455;
+				this.sprite.x=694;
+				this.sprite.y=465;
 			}
-			else if (this.pos==2)
+			else if (this.pos==2) //suffle button
 			{
-				this.sprite.x=740;
-				this.sprite.y=500;
+				this.sprite.x=780;
+				this.sprite.y=465;
 			}
-			else
+			else if(this.pos==3) //ok button
 			{
-				this.sprite.x=740;
-				this.sprite.y=545;
+				this.sprite.x=692;
+				this.sprite.y=520;
+			}
+			else //pass button
+			{
+				this.sprite.x=783;
+				this.sprite.y=520;
 			}
 			
 		}

@@ -10,6 +10,7 @@ let Board = function () {
 	this.button1=null;
 	this.button2=null;
 	this.button3=null;
+	this.button4=null;
 	this.score=null;
     // todo: 
     // - el text score
@@ -33,6 +34,7 @@ Board.prototype = {
 		this.button1=new Button(this.app,'exchange',1,'board');
 		this.button2=new Button(this.app,'shuffle',2,'board');
 		this.button3=new Button(this.app,'ok',3,'board');
+		this.button3=new Button(this.app,'pass',4,'board');
 		this.score=new Score(this.app);
 		this.timer=new Timer(this.app);
 		this.sound = PIXI.sound.Sound.from('assets/game_scrabble_game_board_put_in_box_2.mp3');

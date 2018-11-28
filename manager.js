@@ -157,6 +157,11 @@ GameplayManager.prototype = {
 			}
 			//else ignore the press
 		}
+		else if (action=='pass' && this.turn==true)
+		{
+			//need to be update based on the communication 
+			console.log("pass buttton is pressed");
+		}
 		else if (row>14 || col>14) return;
 		//check if exchange and go 
 		if (this.exchange==true && row>=8 && row <=9 && col>=8 && col <=9)
