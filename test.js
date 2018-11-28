@@ -3,8 +3,8 @@ window.onload = function(){
 
     //initializing PIXI
     let gfx = new Graphics();    
-    let board = new Board();
-	let bag=new Bag();
+    //let board = new Board();
+	//let bag=new Bag();
 	
 	//board.updateScore(2,5);
     //to test player2 
@@ -14,7 +14,7 @@ window.onload = function(){
 	
 	//GameplayManager.get().aiTurn()
     //create the gameManager when the game starts , not in the menu
-    //let gameManager = new GameplayManager();
+    let gameManager = new GameplayManager();
 	//let menu= new Menu(gameManager.app,'play'); //ana asef bs el 3mlto fl responsive bawazlek l menu , ma3reftesh a7afez 3l etnen
 	//while(menu.getNext()==false);
 	//let reward=new Reward(gameManager.app);
