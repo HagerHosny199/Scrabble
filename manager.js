@@ -334,7 +334,12 @@ GameplayManager.prototype = {
 		this.userTies[this.tileAppend].container.children[2].text=this.selectedTile.container.children[2].text;
 		this.tileAppend++;
 		*/
-		
+		//decrement the avilable tiles number
+		if(this.selectedTile.getUsed()!=1)
+		{
+			console.log("decrement",this.availableTiles-1);
+			this.availableTiles--;
+		}
 		var j =0;
 		this.selectedTile.setUsed(1);
 		//shift left the tiles 
@@ -351,8 +356,7 @@ GameplayManager.prototype = {
 		}
 		//remove the last one from the view
 		//this.userTiles[this.availableTiles-1].container.position.set(-100,-100);
-		//decrement the avilable tiles number
-		this.availableTiles--;
+		
 		this.selectedTile = null;
 		
 		

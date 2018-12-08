@@ -85,6 +85,8 @@ Bag.prototype = {
 	{
 		var temp;
 		console.log("now ffrom comp ava:",availableTiles,"tileAppend=",tileAppend);
+		if (availableTiles<0)
+			availableTiles=0
 		for(var i=0;i<7;i++)
 		{
 			if(tiles[i].getUsed()==1)
