@@ -100,6 +100,8 @@ GameplayManager.prototype = {
     			});
     		else if (this.movements[0].row == null) //lw awel movement fl list lsa ma5adtsh l desired location , y3ni dost 3la tile we b3dha tile tani
     			this.movements[0].selectedTile = tile;
+    		else if (this.movements[this.movements.length-1].row == null)
+    			this.movements[this.movements.length-1].selectedTile = tile;
     		else //lw el case en fi wa7da bttle3eb b2a dlwa2ty wana 3aiz a7ot wa7da tania fl movements
     			this.movements.push({
     				'selectedTile': tile,
@@ -107,6 +109,8 @@ GameplayManager.prototype = {
     				'col': null
     			});
 				//TODO call a function in Tile class to set the sprite to Glow effect (selected)
+
+			console.log(this.movements)
     	}
     },
 
