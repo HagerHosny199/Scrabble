@@ -11,4 +11,4 @@ launch index.html
 - open chrome then http://localhost:8000
 
 # UI 
-![alt text]()
+![](https://github.com/HagerHosny199/Scrabble/blob/master/assets/screenshot.png)
