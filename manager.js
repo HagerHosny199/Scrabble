@@ -135,25 +135,28 @@ GameplayManager.prototype = {
 		else if(action=='exchange'&& this.turn==true)
 		{
 			console.log("now we go to the exchange function with tiles",this.userTiles)
-			if(this.exchange==false )//exchange condition
+			if(this.moving==false && this.exchange==false )//exchange condition
 				this.gen=new GenerateTiles(this.app,this.board,this.userTiles);
 			console.log("exchange");
 			
 		}
-		else if (action=='ok' && this.turn==true)
+		else if ( action=='ok' && this.turn==true)
 		{
 			//OK cond 
-			console.log("OK");
-			//check if the available tiles less than 7 
-			if(this.availableTiles<7)
+			if (this.moving==false )
 			{
-				//now this is not my turn 
-				this.turn = !this.turn; 
-				//complete the tiles to have 7
-				[this.tileAppend,this.userTiles]=this.bag.completeTiles(this.userTiles,this.availableTiles,this.tileAppend);
-				this.availableTiles=7; //m7tagen nzbot el cond de 
-				console.log("ok :",this.turn);
-				
+				console.log("OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK",this.moving);
+				//check if the available tiles less than 7 
+				if(this.availableTiles<7)
+				{
+					//now this is not my turn 
+					this.turn = !this.turn; 
+					//complete the tiles to have 7
+					[this.tileAppend,this.userTiles]=this.bag.completeTiles(this.userTiles,this.availableTiles,this.tileAppend);
+					this.availableTiles=7; //m7tagen nzbot el cond de 
+					console.log("ok :",this.turn);
+					
+				}
 			}
 			//else ignore the press
 		}
@@ -164,7 +167,7 @@ GameplayManager.prototype = {
 		}
 		else if (row>14 || col>14) return;
 		//check if exchange and go 
-		if (this.exchange==true && row>=8 && row <=9 && col>=8 && col <=9)
+		else if (this.exchange==true && row>=8 && row <=9 && col>=8 && col <=9)
 		{
 			//remove the board 
 			GenerateTiles.get().removeBorad();
@@ -344,12 +347,14 @@ GameplayManager.prototype = {
 				this.userTiles[i].container.rotation=0;
 				j++;
 			}
+			//console.log("position=",this.userTiles[i].container.position)
 		}
 		//remove the last one from the view
 		//this.userTiles[this.availableTiles-1].container.position.set(-100,-100);
 		//decrement the avilable tiles number
 		this.availableTiles--;
 		this.selectedTile = null;
+		
 		
 	},
 	setExchange:function()
