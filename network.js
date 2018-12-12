@@ -56,6 +56,31 @@ Network.prototype = {
 	//end:this is the termination of the game
 	end:function(){
 		let endGame=new End();
+	},
+	//exchnge:this function receive the exchanged tiles 
+	//1-update the tiles 
+	//2-Pass the game 
+	exchange:function(tiles){
+
+		//check if it is valid or not 
+		if(tiles.length==0)
+			//not valid state 
+			console.log("not valid");
+		else
+		{
+			//update the tiles 
+			for(var i=0; i<7;i++)
+			{
+				if(tiles[i]!='0')
+				{
+					GameplayManager.get().userTiles[i].container.children[2].text=tiles[i]
+					//this line should be changed
+					//GameplayManager.get().userTiles[i].container.children[3].text=value
+				}
+			}
+			//pass the game
+			this.pass();
+		}
 	}
 	
 }

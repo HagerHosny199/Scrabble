@@ -95,6 +95,7 @@ GameplayManager.prototype = {
 						this.grid[row][col]='X';
 					}
 				}
+			console.log(this.grid)
 		}
 	},
 
@@ -162,8 +163,10 @@ GameplayManager.prototype = {
 			//shuffle condition 
 			this.userTiles=this.bag.shuffle(this.userTiles);
 		else if(action=='exchange'&& this.turn==true)
+		{
 			if(this.moving==false && this.exchange==false )//exchange condition
 				this.gen=new GenerateTiles(this.app,this.board,this.userTiles);
+		}
 		
 		else if ( action=='ok' && this.turn==true)
 		{
