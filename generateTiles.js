@@ -49,7 +49,6 @@ GenerateTiles.prototype={
 		this.bagValues=this.bag.getValues();	
 		//start exchange
 		GameplayManager.get().setExchange();
-		console.log("getting user tiles =",this.userTiles)
 		///create a ticker
 		this.ticker  =  new PIXI.ticker.Ticker();
 		this.ticker.add((deltaTime) => {
@@ -73,30 +72,26 @@ GenerateTiles.prototype={
 		//create array of the tiles 
 		for(var i=0;i<this.userTiles.length;i++)
 		{
-			console.log("used2:",this.userTiles[i].getUsed());
-			
-			//if(this.userTiles[i].getUsed()==0)
+			//generate new tiles to be used with the exchange
+			this.tiles[i]=new Tile();
+			this.tiles[i].container.position.set(x,y);
+			this.tiles[i].container.children[2].text=this.userTiles[i].container.children[2].text;
+			this.tiles[i].container.children[3].text=this.userTiles[i].container.children[3].text;
+			this.availableTiles[i]--;
+			this.tiles[i].container.scale.set(0.7); 
+			//new line so we need to update the x,y
+			if((i+1)%3==0)
 			{
-				this.tiles[i]=new Tile(this.app,this.board);
-				this.tiles[i].container.position.set(x,y);
-				this.tiles[i].container.children[2].text=this.userTiles[i].container.children[2].text;
-				this.tiles[i].container.children[3].text=this.userTiles[i].container.children[3].text;
-				this.availableTiles[i]--;
-				this.tiles[i].container.scale.set(0.7); 
-				
-				if((i+1)%3==0)
-				{
-					y+=40;
-					x=394;
-				}
-				else
-				{
-					x+=40;
-				}
-				if(this.userTiles[i].getUsed()==1)
-					this.tiles[i].container.position.set(-100,-100);
-				
+				y+=40;
+				x=394;
 			}
+			else
+			{
+				x+=40;
+			}
+			if(this.userTiles[i].getUsed()==1)
+				this.tiles[i].container.position.set(-100,-100);
+		
 			
 		}
 		
@@ -140,7 +135,6 @@ GenerateTiles.prototype={
 		this.loop2(this.app);
 	});
 	this.ticker.start();
-	//this.sound.play();
 	this.ticker.add((deltaTime) => {
 		this.loopTiles2(this.app);
 	});

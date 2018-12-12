@@ -15,7 +15,7 @@ let GameplayManager = function(){
 	this.app = Graphics.get().app;
 	this.grid = [];
 	this.lastPlayed = [];
-
+	//this variables used in the animation module
 	this.animationStartingPos;
     this.animationT1;
     this.animationT2;
@@ -24,18 +24,16 @@ let GameplayManager = function(){
     this.moving = false;
     this.tileSound = null;
 	//to generate the tiles of each user
-	//get the available bag
 	this.bag=new Bag();
 	this.user1;
 	this.user2;
-	this.userTiles;
+	this.userTiles=null;
 	//shift logic
 	this.selctedNum;
 	this.availableTiles=7;
 	this.tileAppend=7;
 	this.chracter;
 	//exchange logic
-	//this.genTiles=new GenerateTiles(this.app,null,this.userTiles);
 	this.exchange=false;
 	this.exchangedTiles=[];
 	this.used=[0,0,0,0,0,0,0];
@@ -47,59 +45,69 @@ let GameplayManager = function(){
 
     this.init();
 }
-
+//to get an instance from the manager
 GameplayManager.get = function(){
     return GameplayManager.instance;
 }
 
 GameplayManager.prototype = {
     init: function(){
+    	//init the empty grid with 0
     	for (let row = 0; row < 15; row++){
     		this.grid.push([]);
     		for (let col = 0; col < 15; col++)
     			this.grid[row].push("0");
     	}
-
-    	// Hager , enty konty shelti init board di bs ana mraga3ha hna 3ashan a3rf ashghalo 3ndi , shofi htem3li a y3ni 3ashan yshtghal
-		this.initBoard()
     },
-	initBoard:function()
+	initBoard:function(initGrid)
 	{
+		//create board instance
 		this.board=new Board();
+		//create the 2 hand logic
 		this.hands[0] = new Hand();
     	this.hands[1] = new Hand();
-    	
+    	//updating their start positions
     	this.hands[1].container.x = this.app.screen.width / 2 + 30;
         this.hands[1].container.y = -120;
         this.hands[1].container.rotation = 3.25;
-		//here if the grid has tiles that have been played we need to add them 
-		for(var i=0;i<15;i++)
+		//reinitialization logic of the grid 
+		if(initGrid!=null)
 		{
-			for(var j=0;j<15;j++)
-			{
-				//if it's filled
-				if(grid[15*i+j]!=0)
+			for(var row=0;row<15;row++)
+				for(var col=0;col<15;col++)
 				{
-					//create new tile 
-					let tile=new Tile()
-					//update the position
-					//tile.
-					//
+					//if it's filled
+					if(initGrid[15*row+col]!=0)
+					{
+						//create new tile 
+						let tile=new Tile()
+						//update the position	        
+	           			let x=((670 - 225)/15) * col + 225 + ((670 - 225)/15)/2;
+	           			let y=((575 - 100)/15) * row + 100 + ((575 - 100)/15) / 2;
+						tile.container.position.set(x,y);
+						//set the char
+						tile.container.children[2].text=initGrid[15*row+col];
+						//set the char value
+						tile.container.children[3].text='3'; //this value should be changed 
+						//mark it as used
+						tile.setUsed();
+						//update the grid array
+						this.grid[row][col]='X';
+					}
 				}
-			}
 		}
 	},
 
     // called from the tile onClick function
     tileClick: function(tile){
 		//check exchange condition
-		if(this.exchange == true) //de mmkn tdrb f case en e7na el etnin bndos f nfs el w2t 
+		if(this.exchange == true) 
 		{
-			//highlight the tile only
-			
+			//getting not used tiles
 			var genTiles=this.gen.getTiles();
-			console.log(genTiles);
+			//highlight the tile only
 			tile=tile.addShadow();
+			//to handle the check and uncheck case
 			for(var i =0;i<7;i++)
 			{
 				if(genTiles[i].getSelected()==true)
@@ -107,13 +115,9 @@ GameplayManager.prototype = {
 				else
 					this.exchangedTiles[i]=0;
 			}
-			console.log("exch:",this.exchangedTiles,tile.getSelected());
 		}
     	else if (this.turn == true)
 		{
-    		//old
-    		//this.selectedTile = tile;
-    		console.log("USED: ", tile.getUsed() , ", lastPlayed: ", this.lastPlayed.includes(tile))
 			if (tile.getUsed() && !this.lastPlayed.includes(tile) )
 				return;
     		//new 
@@ -134,8 +138,6 @@ GameplayManager.prototype = {
     				'col': null
     			});
 				//TODO call a function in Tile class to set the sprite to Glow effect (selected)
-
-			console.log(this.movements)
     	}
     },
 
@@ -144,9 +146,9 @@ GameplayManager.prototype = {
     	let t = new Tile();
 		t.container.position.set(500,-100);
 		t.container.children[2].text=tile_char;
-		t.container.children[3].text='3';
+		t.container.children[3].text='3';  //this line should be changed
 		t.setUsed();
-		this.movements.push({ 'selectedTile': t, 'row': null, 'col': null });		
+		this.movements.push({ 'selectedTile': t, 'row': null, 'col': null });	
     },
 
     getmovingornot: function(){return this.moving},
@@ -155,39 +157,27 @@ GameplayManager.prototype = {
     	
     	// NOTE: the network/communication module can call this function after setting the selected tile
     	// with the desired (row, col) position to simulate the mouse click on game board
-		console.log(row,col,action);
+		console.log(row,col,this.userTiles);
     	if(action=='shuffle'&& this.turn==true)
-		{
 			//shuffle condition 
 			this.userTiles=this.bag.shuffle(this.userTiles);
-			console.log("shuffle");
-		}
 		else if(action=='exchange'&& this.turn==true)
-		{
-			console.log("now we go to the exchange function with tiles",this.userTiles)
 			if(this.moving==false && this.exchange==false )//exchange condition
 				this.gen=new GenerateTiles(this.app,this.board,this.userTiles);
-			console.log("exchange");
-			
-		}
+		
 		else if ( action=='ok' && this.turn==true)
 		{
 			//OK cond 
 			if (this.moving==false )
-			{
 				//check if the available tiles less than 7 
 				if(this.availableTiles<7)
 				{
 					//now this is not my turn 
 					this.turn = !this.turn; 
 					//complete the tiles to have 7
-					[this.tileAppend,this.userTiles]=this.bag.completeTiles(this.userTiles,this.availableTiles,this.tileAppend);
-					this.availableTiles=7; //m7tagen nzbot el cond de 
-					console.log("ok :",this.turn);
-					
+					[this.tileAppend,this.availableTiles,this.userTiles]=this.bag.completeTiles(this.userTiles,this.availableTiles,this.tileAppend);
 				}
 				this.movements = [];
-			}
 			//else ignore the press
 		}
 		else if (action=='pass' && this.turn==true)
@@ -208,9 +198,6 @@ GameplayManager.prototype = {
 			
 			
 		} 
-    	//old
-    	//else if (this.selectedTile){
-    	//new
     	else if (! this.isEmpty(row, col))
     		return;
     	else if (this.movements.length){
@@ -370,31 +357,26 @@ GameplayManager.prototype = {
             this.animationT3 = this.animationT3 + delta;
            
 		}
-
-    	//if (this.randomDir)
-    	//	this.hand.container.rotation += 0.004 * delta;
-    	//else
-    	//	this.hand.container.rotation -= 0.004 * delta;
     },
-	generateUsersTiles:function(tiles){
-		this.userTiles=tiles;
+    //this function called by the network module to set the user tiles
+	generateUsersTiles:function(retTiles){
+		let tiles=[]
+		for(var i=0;i<7;i++)
+		{
+			tiles[i]=new Tile();
+			tiles[i].container.position.set(145+29*i,623);
+			tiles[i].container.children[2].text=retTiles[i];
+			tiles[i].container.children[3].text=1;//this line should be updated
+		}
+		this.userTiles=tiles
 	},
 	destroyTiles:function()
 	{
-		//add instance from the moved tile
-		/*this.userTiles[this.tileAppend]=new Tile();
-		this.userTiles[this.tileAppend].container.position.set(this.selectedTile.container.position.x,this.selectedTile.container.position.y);
-		this.userTies[this.tileAppend].container.children[2].text=this.selectedTile.container.children[2].text;
-		this.tileAppend++;
-		*/
-		//decrement the avilable tiles number
-
-		if(this.selectedTile.getUsed()!=1)
-		{
-			console.log("decrement",this.availableTiles-1);
-			this.availableTiles--;
-		}
 		var j =0;
+		//decrement the avilable tiles number
+		if(this.selectedTile.getUsed()!=1)
+			this.availableTiles--;
+		//mark it as used
 		this.selectedTile.setUsed(1);
 		//shift left the tiles 
 		for(var i=0;i<7;i++)
@@ -402,15 +384,10 @@ GameplayManager.prototype = {
 			if(this.userTiles[i].getUsed()==0)
 			{	
 				this.userTiles[i].container.position.set(145+29*(j),623);
-				//this.userTiles[i].container.children[2].text=this.userTiles[i].container.children[2].text;
 				this.userTiles[i].container.rotation=0;
 				j++;
 			}
-			//console.log("position=",this.userTiles[i].container.position)
 		}
-		//remove the last one from the view
-		//this.userTiles[this.availableTiles-1].container.position.set(-100,-100);
-		
 		this.selectedTile = null;
 		
 		

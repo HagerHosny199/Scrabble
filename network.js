@@ -13,30 +13,29 @@ Network.prototype = {
 		let turn=true
 		//init the gameManager this will init the board 
 		let gameManager = new GameplayManager()
-		//generate tiles 
-		gameManger.generateUsersTiles(initTiles)
 		//set the first player
 		if(order==2) turn =false
 		gameManager.setTurn(turn)
 		//init the board
-		gameManager.grid=initBoard
-		gameManager.initBoard()
+		gameManager.initBoard(initBoard)
+		//generate tiles 
+		gameManager.generateUsersTiles(initTiles)
 		//set the score
 		gameManager.board.updateScore(order,score)
 		//set the timer
-		gamemanger.board.updateTime(order,timer)
+		gameManager.board.updateTime(order,timer)
 
 	},
 	//play : this function get (col,row,dir,tiles)
 	//1-set the tiles (if there is a tile in the board skip this cell & if the index==0 skip it)
-	play:function(row,col,dir,tiles_chars){
-		let currentlocation = {row: row, col:col}
-		for (let i = 0; i < tiles_chars.length; i++){
-			while( !GameplayManager.get().isEmpty(currentlocation.row, currentlocation.col) )
-				if (dir==0) currentlocation.col++;
-				else currentlocation.row++;
-			GameplayManager.get().selectTile(tiles_chars[i])
-			GameplayManager.get().boardClick(currentlocation.row, currentlocation.col)
+	play:function(row,col,dir,tilesChars){
+		let currentLocation = {row: row, col:col}
+		for (let i = 0; i < tilesChars.length; i++){
+			while( !GameplayManager.get().isEmpty(currentLocation.row, currentLocation.col) )
+				if (dir==0) currentLocation.col++;
+				else currentLocation.row++;
+			GameplayManager.get().selectTile(tilesChars[i])
+			GameplayManager.get().boardClick(currentLocation.row, currentLocation.col)
 		}
 	},
 	//score: this function get the score needed to be parsed
@@ -53,10 +52,10 @@ Network.prototype = {
 	pass:function(){
 		//set the OK action
 		GameplayManager.get().boardClick(0,0,'OK')
-	}
+	},
 	//end:this is the termination of the game
 	end:function(){
-		
+		let endGame=new End();
 	}
 	
 }

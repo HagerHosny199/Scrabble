@@ -1,15 +1,15 @@
-let End = function (app) 
+let End = function () 
 {
 	this.thankPath='assets/thanks_.png'
 	this.thankSprite=null
 	this.sound =null
 	this.sprite=null
 	this.path='assets/play_.png'
-	this.app=app
+	this.app= Graphics.get().app;
 	this.init()
 }
 End.prototype = {
-	init: function(app){   
+	init: function(){   
 		// create a new Sprite from an image path
         this.sprite = PIXI.Sprite.fromImage(this.path);          
         this.app.stage.addChild(this.sprite);    
@@ -38,7 +38,6 @@ End.prototype = {
 		{
 			this.ticker.stop();
 			this.thankSprite.position.set(300,200);
-			//this.container.parent.removeChild(this.container);
 		}
 	}
 }
