@@ -41,7 +41,7 @@ let GameplayManager = function(){
 	this.menu=null;
 	this.board=null;
     GameplayManager.instance = this;
-    
+    this.network=null;
 
     this.init();
 }
@@ -58,6 +58,7 @@ GameplayManager.prototype = {
     		for (let col = 0; col < 15; col++)
     			this.grid[row].push("0");
     	}
+    	network=new Network();
     },
 	initBoard:function(initGrid)
 	{
@@ -172,21 +173,25 @@ GameplayManager.prototype = {
 		{
 			//OK cond 
 			if (this.moving==false )
+			{
 				//check if the available tiles less than 7 
 				if(this.availableTiles<7)
 				{
 					//now this is not my turn 
 					this.turn = !this.turn; 
+					//send last play to the server
+
 					//complete the tiles to have 7
+					//this line should be changed based on the handler
 					[this.tileAppend,this.availableTiles,this.userTiles]=this.bag.completeTiles(this.userTiles,this.availableTiles,this.tileAppend);
 				}
+			}
 				this.movements = [];
 			//else ignore the press
 		}
 		else if (action=='pass' && this.turn==true)
 		{
-			//need to be update based on the communication 
-			console.log("pass buttton is pressed");
+			this.network.sendPass();
 		}
 		else if (row>14 || col>14) return;
 		//check if exchange and go 
@@ -196,8 +201,9 @@ GameplayManager.prototype = {
 			GenerateTiles.get().removeBorad();
 			//toggle exchange
 			this.setExchange();
-			//exchange the tiles 
-			this.userTiles=this.bag.exchange(this.userTiles,this.exchangedTiles);
+			//exchange the tiles -> send request to the network
+			this.network.sendExchange(this.userTiles,this.exchangedTiles)
+			//this.userTiles=this.bag.exchange(this.userTiles,this.exchangedTiles);
 			
 			
 		} 

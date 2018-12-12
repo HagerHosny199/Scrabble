@@ -1,5 +1,5 @@
-let Network = function (app,type) {
-
+let Network = function () {
+Network.instance = this;
 } 
 
 Network.prototype = {
@@ -81,6 +81,23 @@ Network.prototype = {
 			//pass the game
 			this.pass();
 		}
+	},
+	//this function send request to the server to exchange 
+	sendExchange:function(tiles,exchangedTiles){
+		userTiles=[]
+		for(var i =0 ;i<7;i++)
+		{
+			if(exchangedTiles[i]==1)
+				userTiles[i]=tiles[i].container.children[2].text;
+			else
+				userTiles[i]='0'
+		}
+		//here send userTiles 
+
+	},
+	//this function send pass to the server 
+	sendPass:function(){
+		
 	}
 	
 }
