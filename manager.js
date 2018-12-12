@@ -52,8 +52,7 @@ GameplayManager.get = function(){
 
 GameplayManager.prototype = {
     init: function(){
-    	
-		this.menu= new Menu(this.app,'play');
+		this.initBoard()
     },
 	initBoard:function()
 	{
