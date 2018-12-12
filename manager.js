@@ -58,7 +58,7 @@ GameplayManager.prototype = {
     		for (let col = 0; col < 15; col++)
     			this.grid[row].push("0");
     	}
-    	network=new Network();
+    	this.network=new Network();
     },
 	initBoard:function(initGrid)
 	{
