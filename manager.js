@@ -13,6 +13,8 @@ let GameplayManager = function(){
 	this.movements = [];
 	this.hands = [null,null];
 	this.app = Graphics.get().app;
+	this.grid = [];
+	this.lastPlayed = [];
 
 	this.animationStartingPos;
     this.animationT1;
@@ -52,6 +54,12 @@ GameplayManager.get = function(){
 
 GameplayManager.prototype = {
     init: function(){
+    	for (let row = 0; row < 15; row++){
+    		this.grid.push([]);
+    		for (let col = 0; col < 15; col++)
+    			this.grid[row].push("0");
+    	}
+
 		this.initBoard()
     },
 	initBoard:function()
@@ -89,7 +97,9 @@ GameplayManager.prototype = {
 		{
     		//old
     		//this.selectedTile = tile;
-			
+    		console.log("USED: ", tile.getUsed() , ", lastPlayed: ", this.lastPlayed.includes(tile))
+			if (tile.getUsed() && !this.lastPlayed.includes(tile) )
+				return;
     		//new 
     		if (this.movements.length == 0)
     			this.movements.push({
@@ -114,12 +124,13 @@ GameplayManager.prototype = {
     },
 
 
-    selectTile: function (letter){ //or any kind of identifier for the tile
-    	
-    	//TODO: loop through all the tiles bag to select the required tile
-    	// used when the tile name arrives from the network request
-    	// finds the required tile and calls tileClick(tile) with it
-    
+    selectTile: function (tile_char){ 
+    	let t = new Tile();
+		t.container.position.set(500,-100);
+		t.container.children[2].text=tile_char;
+		t.container.children[3].text='3';
+		t.setUsed();
+		this.movements.push({ 'selectedTile': t, 'row': null, 'col': null });		
     },
 
     getmovingornot: function(){return this.moving},
@@ -160,6 +171,7 @@ GameplayManager.prototype = {
 					console.log("ok :",this.turn);
 					
 				}
+				this.movements = [];
 			}
 			//else ignore the press
 		}
@@ -184,7 +196,10 @@ GameplayManager.prototype = {
     	//old
     	//else if (this.selectedTile){
     	//new
+    	else if (! this.isEmpty(row, col))
+    		return;
     	else if (this.movements.length){
+    		
     		//el click l gdida mlhash => y3ni doosa gdida we lsa mlhash mkan 3l board . awel aw tani aw talet wa7da msh far2a 
     		if (this.movements[this.movements.length-1].row==null){ 
 	    		// el satreen dol lma nezlo ta7t 7sal error , we da ma3nah en function l animation bta3et ticker btbda2 ttndeh awellll ma a2olaha add , 3ashan kda ml7e2sh ywsal lel satren dol lma kaono ta7t we drab error en this.hand = null
@@ -207,22 +222,58 @@ GameplayManager.prototype = {
 		            // simulating the mouse click position by calculating the mouseclick position that would give this row col
 		            // note: animation function uses this value and i didnt want to change it so i recalculated what it needed
 		            this.mouseClickPos = {x: ((670 - 225)/15) * col + 225 + ((670 - 225)/15)/2, y: ((575 - 100)/15) * row + 100 + ((575 - 100)/15) / 2};
+		            //console.log("USED: ", this.movements[this.movements.length-1].selectedTile.getUsed())
+		            if (this.turn == true){
+			            if (this.movements[this.movements.length-1].selectedTile.getUsed())
+							this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '0';		            	
+			           	this.movements[this.movements.length-1].selectedTile.row = row;
+			    		this.movements[this.movements.length-1].selectedTile.col = col;
+			    		this.lastPlayed.push(this.movements[this.movements.length-1].selectedTile)
+			        }
+		            this.grid[row][col] = 'X';
+
 	        	} else {
 	        		//msh awel wa7da
-	        		this.movements[this.movements.length-1].row = row;
-					this.movements[this.movements.length-1].col = col;
-		            this.movements[this.movements.length-1].selectedTile.animationStartingPos = {x:this.movements[this.movements.length-1].selectedTile.container.position.x, y:this.movements[this.movements.length-1].selectedTile.container.position.y};
-		            console.log("new animation added")
+	        		if (this.movements[this.movements.length-1].selectedTile != this.selectedTile){ //el condition da 3ashan ymnda3 el clicking 3la board fi kaza 7eta wel animation shaghal we m5trtesh tile gdida
+						// 3ashan this.selectedTile di wna fl animation mmkn tb2a new selected tile 3adi aw tkon el selected tile b3at l animation el fat 3ashn ba7oto fiha gowa el animation le 7agat Hager
+	        			this.movements[this.movements.length-1].row = row;
+						this.movements[this.movements.length-1].col = col;
+		            	this.movements[this.movements.length-1].selectedTile.animationStartingPos = {x:this.movements[this.movements.length-1].selectedTile.container.position.x, y:this.movements[this.movements.length-1].selectedTile.container.position.y};
+		            	this.movements[this.movements.length-1].selectedTile.row = row;
+		    			this.movements[this.movements.length-1].selectedTile.col = col;
+		            	console.log("new animation added")
+						if (this.turn == true){
+				            if (this.movements[this.movements.length-1].selectedTile.getUsed())
+								this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '0';		            	
+				           	this.movements[this.movements.length-1].selectedTile.row = row;
+				    		this.movements[this.movements.length-1].selectedTile.col = col;
+				        	this.lastPlayed.push(this.movements[this.movements.length-1].selectedTile)
+				        }
+			            this.grid[row][col] = 'X';		        	}
 	        	}
 	            
 			} 
 			// aw lma yb2a fi 7aga btt7arak dlwa2ty asln 
 			else {
-				this.movements.push({
-					'selectedTile': this.selectedTile,
-					'row': row,
-					'col': col
-				});
+
+				if (this.movements[this.movements.length-1].selectedTile != this.selectedTile){ //el condition da 3ashan ymnda3 el clicking 3la board fi kaza 7eta wel animation shaghal we m5trtesh tile gdida
+					// 3ashan this.selectedTile di wna fl animation mmkn tb2a new selected tile 3adi aw tkon el selected tile b3at l animation el fat 3ashn ba7oto fiha gowa el animation le 7agat Hager
+					this.movements[this.movements.length-1].selectedTile.row = row;
+		    		this.movements[this.movements.length-1].selectedTile.col = col;
+					this.movements.push({
+						'selectedTile': this.selectedTile,
+						'row': row,
+						'col': col
+					});
+					if (this.turn == true){
+			            if (this.movements[this.movements.length-1].selectedTile.getUsed())
+							this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '0';		            	
+			           	this.movements[this.movements.length-1].selectedTile.row = row;
+			    		this.movements[this.movements.length-1].selectedTile.col = col;
+			        	this.lastPlayed.push(this.movements[this.movements.length-1].selectedTile)
+			        }
+		            this.grid[row][col] = 'X';				
+		        }
 			}
     	}
 
@@ -257,8 +308,13 @@ GameplayManager.prototype = {
 		        this.mouseClickPos = {x: ((670 - 225)/15) * this.movements[0].col + 225 + ((670 - 225)/15)/2, y: ((575 - 100)/15) * this.movements[0].row + 100 + ((575 - 100)/15) / 2};
 		        this.moving = true;
 			}
-
-			this.destroyTiles();
+			if (this.turn == true)
+				this.destroyTiles();
+			if (!this.turn && !this.movements.length){ // dor l AI 5eles (5alas kol l animations)
+				this.turn = !this.turn;
+				// IMPORTANT
+				this.lastPlayed = [];
+			}
         }
         // starting condition
         if (this.animationT1 == 0 && this.animationT2 == 0 && this.animationT3 == 0){
@@ -315,6 +371,7 @@ GameplayManager.prototype = {
 		
 		console.log(value1);
 		
+		let tiles = []
 		temp=this.bag.generateUserTiles(num);
 		value2=temp[0];
 		this.user2=temp[1];
@@ -338,6 +395,7 @@ GameplayManager.prototype = {
 		this.tileAppend++;
 		*/
 		//decrement the avilable tiles number
+
 		if(this.selectedTile.getUsed()!=1)
 		{
 			console.log("decrement",this.availableTiles-1);
@@ -364,11 +422,13 @@ GameplayManager.prototype = {
 		
 		
 	},
-	setExchange:function()
-	{
+	setExchange:function() {
 		this.exchange=!this.exchange;
-	}
-	,
+	},
+	isEmpty:function(row, col){
+		if (this.grid[row][col] == '0') return true;
+		else return false;
+	},
 	aiTurn:function()
 	{
 		//here we need to chnge the number of calls based on the server output
@@ -382,5 +442,8 @@ GameplayManager.prototype = {
 	},
 	aiOk:function() {
 		this.turn = !this.turn;
+
+		// IMPORTANT
+		this.lastPlayed = [];
 	}
 };
