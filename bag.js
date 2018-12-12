@@ -95,7 +95,7 @@ Bag.prototype = {
 				tiles[tileAppend]=new Tile();
 				tiles[tileAppend].container.position.set(tiles[i].container.position.x,tiles[i].container.position.y);
 				tiles[tileAppend].container.children[2].text=tiles[i].container.children[2].text;
-				tiles[tileAppend].setUsed(1); //
+				tiles[tileAppend].setUsed(1);
 				
 				
 				//generate new tile 

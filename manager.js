@@ -60,6 +60,7 @@ GameplayManager.prototype = {
     			this.grid[row].push("0");
     	}
 
+    	// Hager , enty konty shelti init board di bs ana mraga3ha hna 3ashan a3rf ashghalo 3ndi , shofi htem3li a y3ni 3ashan yshtghal
 		this.initBoard()
     },
 	initBoard:function()
@@ -71,7 +72,22 @@ GameplayManager.prototype = {
     	this.hands[1].container.x = this.app.screen.width / 2 + 30;
         this.hands[1].container.y = -120;
         this.hands[1].container.rotation = 3.25;
-		this.userTiles=this.generateUsersTiles(7);
+		//here if the grid has tiles that have been played we need to add them 
+		for(var i=0;i<15;i++)
+		{
+			for(var j=0;j<15;j++)
+			{
+				//if it's filled
+				if(grid[15*i+j]!=0)
+				{
+					//create new tile 
+					let tile=new Tile()
+					//update the position
+					//tile.
+					//
+				}
+			}
+		}
 	},
 
     // called from the tile onClick function
@@ -159,7 +175,6 @@ GameplayManager.prototype = {
 			//OK cond 
 			if (this.moving==false )
 			{
-				console.log("OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK",this.moving);
 				//check if the available tiles less than 7 
 				if(this.availableTiles<7)
 				{
@@ -361,30 +376,8 @@ GameplayManager.prototype = {
     	//else
     	//	this.hand.container.rotation -= 0.004 * delta;
     },
-	generateUsersTiles:function(num){
-		var value1={};
-		var value2={};
-		
-		var temp=this.bag.generateUserTiles(num);
-		value1=temp[0];
-		this.user1=temp[1];
-		
-		console.log(value1);
-		
-		let tiles = []
-		temp=this.bag.generateUserTiles(num);
-		value2=temp[0];
-		this.user2=temp[1];
-		console.log(value2);
-		for(var i=0;i<num;i++)
-		{
-			tiles[i]=new Tile();
-			tiles[i].container.position.set(145+29*i,623);
-			tiles[i].container.children[2].text=this.user1[i];
-			tiles[i].container.children[3].text=value1[i];
-		}
+	generateUsersTiles:function(tiles){
 		this.userTiles=tiles;
-		return tiles;
 	},
 	destroyTiles:function()
 	{
@@ -444,6 +437,10 @@ GameplayManager.prototype = {
 		this.turn = !this.turn;
 
 		// IMPORTANT
+		this.lastPlayed = [];
+	},
+	setTurn:function(t){
+		this.turn=t
 		this.lastPlayed = [];
 	}
 };

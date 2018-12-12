@@ -86,17 +86,6 @@ Tile.prototype = {
     	let plusOrMinus = Math.random() < 0.5 ? -1 : 1;
         this.container.rotation += 0.05 * plusOrMinus;
 		this.tileSound.play();
-
-		// el 7eta di kont bgrab a3ml function animation tfdal shghala , kant bt5ali l tile tlef 7walen nfsha
-        // if (this.dummy){
-        //     this.dodo = this.dummFunc.bind(this) //da lazmto eni b7awesh pointer 3l function el gdida el rag3ali mn el bind 3ashan lma a2ol remove y3rf hyshil min
-        //     // we da kolo asln 3ashan lma ba3at el function mn gher bind, el this etghyaret
-        //     this.app.ticker.add(this.dodo);
-        // } else {
-        //     this.app.ticker.remove(this.dodo);
-        // }
-        // this.dummy = !this.dummy;
-
         if (typeof GameplayManager.get() != 'undefined') //lw kona fl game f3ln we 3mlna initialize ll object
         	GameplayManager.get().tileClick(this);
     },
@@ -105,15 +94,6 @@ Tile.prototype = {
 		console.log(this.container.position.y);
 		//get the tile num 
 		var i=2;
-		//var j=(this.container.position.y -280)/40;
-		//var num=(this.container.position.x-394)/40;
-		/*while(num>=7 || num<0)
-		{
-			num=(this.container.position.x-i*394)/40;
-			i++;
-		}*/
-		//num=num+j*3;
-		//console.log("i=",i," j=" ,j," num=",num);
 		if(this.selected==false)
 		{
 			this.container.addChild(this.shadowSprite2);
