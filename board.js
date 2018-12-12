@@ -55,13 +55,13 @@ Board.prototype = {
 	},
 	updateScore:function(playerNum,value)
 	{
-		
+		//human player
 		if(playerNum==1)
 		{
 			value=value+parseInt(this.score.container.children[1].text,10);
 			this.score.container.children[1].text=value;
 		}
-		else
+		else //AI
 		{
 			value=value+parseInt(this.score.container.children[2].text,10);
 			this.score.container.children[2].text=value;
