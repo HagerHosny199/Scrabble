@@ -147,6 +147,7 @@ GameplayManager.prototype = {
 		t.container.position.set(500,-100);
 		t.container.children[2].text=tile_char;
 		t.container.children[3].text='3';  //this line should be changed
+		t.turn = true;
 		t.setUsed();
 		this.movements.push({ 'selectedTile': t, 'row': null, 'col': null });	
     },
@@ -154,17 +155,15 @@ GameplayManager.prototype = {
     getmovingornot: function(){return this.moving},
 
     boardClick: function(row,col,action){
-    	
     	// NOTE: the network/communication module can call this function after setting the selected tile
     	// with the desired (row, col) position to simulate the mouse click on game board
-		console.log(row,col,this.userTiles);
     	if(action=='shuffle'&& this.turn==true)
 			//shuffle condition 
 			this.userTiles=this.bag.shuffle(this.userTiles);
-		else if(action=='exchange'&& this.turn==true)
+		else if(action=='exchange'&& this.turn==true){
 			if(this.moving==false && this.exchange==false )//exchange condition
 				this.gen=new GenerateTiles(this.app,this.board,this.userTiles);
-		
+		}
 		else if ( action=='ok' && this.turn==true)
 		{
 			//OK cond 
@@ -201,7 +200,10 @@ GameplayManager.prototype = {
     	else if (! this.isEmpty(row, col))
     		return;
     	else if (this.movements.length){
-    		
+
+    		if (this.selectedTile)
+    			if (this.selectedTile.turn)
+    				return;
     		//el click l gdida mlhash => y3ni doosa gdida we lsa mlhash mkan 3l board . awel aw tani aw talet wa7da msh far2a 
     		if (this.movements[this.movements.length-1].row==null){ 
 	    		// el satreen dol lma nezlo ta7t 7sal error , we da ma3nah en function l animation bta3et ticker btbda2 ttndeh awellll ma a2olaha add , 3ashan kda ml7e2sh ywsal lel satren dol lma kaono ta7t we drab error en this.hand = null
@@ -314,8 +316,9 @@ GameplayManager.prototype = {
 				this.destroyTiles();
 			if (!this.turn && !this.movements.length){ // dor l AI 5eles (5alas kol l animations)
 				this.turn = !this.turn;
-				// IMPORTANT
-				this.lastPlayed = [];
+				this.selectedTile = null;
+				// IMPORTANT - mkanha b2a msh hna , ba2et on play bta3et el AI 
+				// this.lastPlayed = [];
 			}
         }
         // starting condition
