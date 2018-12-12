@@ -1,5 +1,5 @@
-let Network = function (app,type) {
-
+let Network = function () {
+Network.instance = this;
 } 
 
 Network.prototype = {
@@ -71,5 +71,47 @@ Network.prototype = {
 			mngr.grid[mngr.lastPlayed[i].row][mngr.lastPlayed[i].col]='0'
 			mngr.lastPlayed[i].container.position.x = 6000;
 		}
+	},
+	//exchnge:this function receive the exchanged tiles 
+	//1-update the tiles 
+	//2-Pass the game 
+	exchange:function(tiles){
+
+		//check if it is valid or not 
+		if(tiles.length==0)
+			//not valid state 
+			console.log("not valid");
+		else
+		{
+			//update the tiles 
+			for(var i=0; i<7;i++)
+			{
+				if(tiles[i]!='0')
+				{
+					GameplayManager.get().userTiles[i].container.children[2].text=tiles[i]
+					//this line should be changed
+					//GameplayManager.get().userTiles[i].container.children[3].text=value
+				}
+			}
+			//pass the game
+			this.pass();
+		}
+	},
+	//this function send request to the server to exchange 
+	sendExchange:function(tiles,exchangedTiles){
+		userTiles=[]
+		for(var i =0 ;i<7;i++)
+		{
+			if(exchangedTiles[i]==1)
+				userTiles[i]=tiles[i].container.children[2].text;
+			else
+				userTiles[i]='0'
+		}
+		//here send userTiles 
+
+	},
+	//this function send pass to the server 
+	sendPass:function(){
+		
 	}
 }
