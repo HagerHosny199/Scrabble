@@ -30,11 +30,15 @@ Network.prototype = {
 	//1-set the tiles (if there is a tile in the board skip this cell & if the index==0 skip it)
 	play:function(row,col,dir,tilesChars){
 		GameplayManager.get().lastPlayed = [];
+		if (GameplayManager.get().turn) GameplayManager.get().turn = false;
 		let currentLocation = {row: row, col:col}
 		for (let i = 0; i < tilesChars.length; i++){
-			while( !GameplayManager.get().isEmpty(currentLocation.row, currentLocation.col) )
+			while( !GameplayManager.get().isEmpty(currentLocation.row, currentLocation.col) ){
 				if (dir==0) currentLocation.col++;
 				else currentLocation.row++;
+				if (currentLocation.col > 14 || currentLocation.row > 14)
+					return; //not playable
+			}
 			GameplayManager.get().selectTile(tilesChars[i])
 			GameplayManager.get().boardClick(currentLocation.row, currentLocation.col)
 		}

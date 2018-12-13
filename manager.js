@@ -44,6 +44,8 @@ let GameplayManager = function(){
     this.network=null;
 
     this.init();
+    setInterval(this.showTurn, 700);
+
 }
 //to get an instance from the manager
 GameplayManager.get = function(){
@@ -98,6 +100,16 @@ GameplayManager.prototype = {
 				}
 			console.log(this.grid)
 		}
+
+		let container = new PIXI.Container();
+		Graphics.get().app.stage.addChild(container);
+    	let style = new PIXI.TextStyle({ fontFamily: 'Arial', fontSize: 32, fill: '#FFFFFF', dropShadow: false, dropShadowColor: '#000000', dropShadowBlur: 4, dropShadowAngle: Math.PI / 6, dropShadowDistance: 0 });
+		this.turnText = new PIXI.Text('Your turn', style);
+        this.turnText.x =720;
+		this.turnText.y = 360;
+        container.addChild(this.turnText);
+        this.turnText.containerPointer = container;
+
 	},
 
     // called from the tile onClick function
@@ -162,7 +174,7 @@ GameplayManager.prototype = {
     	if(action=='shuffle'&& this.turn==true)
 			//shuffle condition 
 			this.userTiles=this.bag.shuffle(this.userTiles);
-		else if(action=='exchange'&& this.turn==true)
+		else if(action=='exchange'&& this.turn==true && !this.lastPlayed.length)
 		{
 			if(this.moving==false && this.exchange==false )//exchange condition
 				this.gen=new GenerateTiles(this.app,this.board,this.userTiles);
@@ -188,13 +200,13 @@ GameplayManager.prototype = {
 				this.movements = [];
 			//else ignore the press
 		}
-		else if (action=='pass' && this.turn==true)
+		else if (action=='pass' && this.turn==true  && !this.lastPlayed.length)
 		{
 			this.network.sendPass();
 		}
 		else if (row>14 || col>14) return;
 		//check if exchange and go 
-		else if (this.exchange==true && row>=8 && row <=9 && col>=8 && col <=9)
+		else if (this.exchange==true && row>=8 && row <=9 && col>=8 && col <=9  && !this.lastPlayed.length)
 		{
 			//remove the board 
 			GenerateTiles.get().removeBorad();
@@ -203,12 +215,13 @@ GameplayManager.prototype = {
 			//exchange the tiles -> send request to the network
 			this.network.sendExchange(this.userTiles,this.exchangedTiles)
 			//this.userTiles=this.bag.exchange(this.userTiles,this.exchangedTiles);
+			this.turn = false;
 			
 			
 		} 
-    	else if (! this.isEmpty(row, col))
+    	else if (action == null && ! this.isEmpty(row, col))
     		return;
-    	else if (this.movements.length){
+    	else if (action == null && this.movements.length){
 
     		if (this.selectedTile)
     			if (this.selectedTile.turn)
@@ -295,10 +308,9 @@ GameplayManager.prototype = {
 
     easeOutQuart: function (t) { return 1-(--t)*t*t*t },
     moveHandtoTile: function(delta){
-    	delta = delta*1.2;
-    	
+    	delta = delta*2;
     	// terminating condition
-    	if (this.animationT1 > 60 && this.animationT2 > 60 && this.animationT3 > 60) {
+    	if (this.animationT1 >= 60 && this.animationT2 >= 60 && this.animationT3 >= 60) {
     		console.log("this should mark ending animation")
             this.moving = false;
 			this.character=this.selectedTile.container.children[2].text;
@@ -335,14 +347,14 @@ GameplayManager.prototype = {
         	this.selectedTile = this.movements[0].selectedTile;
         }
     	//to move towards a tile
-    	if (this.animationT1 < 60) {
+    	if (this.animationT1 <= 60) {
     		this.hand.container.position.x = this.animationStartingPos.x + this.easeOutQuart(this.animationT1/60) * (this.selectedTile.animationStartingPos.x - this.animationStartingPos.x);
     		this.hand.container.position.y = this.animationStartingPos.y + this.easeOutQuart(this.animationT1/60) * (this.selectedTile.animationStartingPos.y - this.animationStartingPos.y);
     		this.animationT1 = this.animationT1 + delta;
     	}
 
     	//to move towards mouse click
-    	if (this.animationT1 > 50 && this.animationT2 < 60){
+    	if (this.animationT1 >= 50 && this.animationT2 <= 60){
     		this.hand.container.position.x = this.selectedTile.animationStartingPos.x + this.easeOutQuart(this.animationT2/60) * (this.mouseClickPos.x - this.selectedTile.animationStartingPos.x);
     		this.hand.container.position.y = this.selectedTile.animationStartingPos.y + this.easeOutQuart(this.animationT2/60) * (this.mouseClickPos.y - this.selectedTile.animationStartingPos.y);	
     		this.selectedTile.container.position.x = this.hand.container.position.x;
@@ -351,13 +363,11 @@ GameplayManager.prototype = {
     	}
 
         //to move hand out of game
-        if (this.animationT2 > 50 && this.animationT3 < 60){
+        if (this.animationT2 >= 50 && this.animationT3 <= 60){
         	if (this.movements.length>1 && this.movements[this.movements.length-1].row!=null) //y3ni na2es wa7da kman 3l a2al b3d el ana fiha
         	{
         		this.animationT3 = 61
-        		console.log("heereeeeeeeeeeeeeeeeeee")
         	}
-            //this.tileSound.play();
             else {
 	            this.hand.container.position.x = this.mouseClickPos.x + this.easeOutQuart(this.animationT3/60) * (this.app.screen.width / 2 + 30 - this.mouseClickPos.x);
 	            if (this.turn)
@@ -431,5 +441,11 @@ GameplayManager.prototype = {
 	setTurn:function(t){
 		this.turn=t
 		this.lastPlayed = [];
+	},
+	showTurn:function(){
+		if (GameplayManager.get().turn)
+			GameplayManager.get().turnText.containerPointer.children[0].text = "Your turn"
+		else 
+			GameplayManager.get().turnText.containerPointer.children[0].text = "AI's turn"
 	}
 };
