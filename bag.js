@@ -106,6 +106,11 @@ Bag.prototype = {
 				tiles[i].container.position.y=623;
 				tiles[i].container.rotation=0;
 				tiles[i].setUsed(0); //
+				// Bassem : 7atet da wna msh fahem awi 3ashan bs asala7 el kan by7sl fl grid , 3ashan kont bab2a bal3ab 
+				// mn l rack we byb2a lihom arkam row we col we da mynfa3sh 3ashan hy5aloha '.' fl grid
+				tiles[i].row = undefined;
+				tiles[i].col = undefined;
+				//--
 				tileAppend++;
 				availableTiles++;
 				//console.log(temp[1]);

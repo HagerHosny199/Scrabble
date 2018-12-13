@@ -58,7 +58,7 @@ GameplayManager.prototype = {
     	for (let row = 0; row < 15; row++){
     		this.grid.push([]);
     		for (let col = 0; col < 15; col++)
-    			this.grid[row].push("0");
+    			this.grid[row].push(".");
     	}
     	this.network=new Network();
     },
@@ -185,20 +185,28 @@ GameplayManager.prototype = {
 			//OK cond 
 			if (this.moving==false )
 			{
+				// first check if the tiles are arranged in a correct format
+				// if not, return 
+				if (!this.checkValidity())
+					return;
+
+				//now this is not my turn 
+				this.turn = !this.turn; 
+				//send last play to the server TODO
+
 				//check if the available tiles less than 7 
 				if(this.availableTiles<7)
 				{
-					//now this is not my turn 
-					this.turn = !this.turn; 
-					//send last play to the server
-
 					//complete the tiles to have 7
 					//this line should be changed based on the handler
 					[this.tileAppend,this.availableTiles,this.userTiles]=this.bag.completeTiles(this.userTiles,this.availableTiles,this.tileAppend);
 				}
 			}
-				this.movements = [];
+
+			// mthya2li mfrod di t5osh gowa el if el fo2
+			this.movements = [];
 			//else ignore the press
+
 		}
 		else if (action=='pass' && this.turn==true  && !this.lastPlayed.length)
 		{
@@ -250,11 +258,14 @@ GameplayManager.prototype = {
 		            this.mouseClickPos = {x: ((670 - 225)/15) * col + 225 + ((670 - 225)/15)/2, y: ((575 - 100)/15) * row + 100 + ((575 - 100)/15) / 2};
 		            //console.log("USED: ", this.movements[this.movements.length-1].selectedTile.getUsed())
 		            if (this.turn == true){
-			            if (this.movements[this.movements.length-1].selectedTile.getUsed())
-							this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '0';		            	
+		            	if (typeof this.movements[this.movements.length-1].selectedTile.row !== 'undefined')
+		            		this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '.';
+			    		// if (this.movements[this.movements.length-1].selectedTile.getUsed())
+							// this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '0';		            	
 			           	this.movements[this.movements.length-1].selectedTile.row = row;
 			    		this.movements[this.movements.length-1].selectedTile.col = col;
-			    		this.lastPlayed.push(this.movements[this.movements.length-1].selectedTile)
+			    		if (!this.lastPlayed.includes(this.movements[this.movements.length-1].selectedTile))
+			    			this.lastPlayed.push(this.movements[this.movements.length-1].selectedTile)
 			        }
 		            this.grid[row][col] = 'X';
 
@@ -265,15 +276,15 @@ GameplayManager.prototype = {
 	        			this.movements[this.movements.length-1].row = row;
 						this.movements[this.movements.length-1].col = col;
 		            	this.movements[this.movements.length-1].selectedTile.animationStartingPos = {x:this.movements[this.movements.length-1].selectedTile.container.position.x, y:this.movements[this.movements.length-1].selectedTile.container.position.y};
-		            	this.movements[this.movements.length-1].selectedTile.row = row;
-		    			this.movements[this.movements.length-1].selectedTile.col = col;
-		            	console.log("new animation added")
 						if (this.turn == true){
-				            if (this.movements[this.movements.length-1].selectedTile.getUsed())
-								this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '0';		            	
+				    		if (typeof this.movements[this.movements.length-1].selectedTile.row !== 'undefined')
+		            			this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '.';
+							// if (this.movements[this.movements.length-1].selectedTile.getUsed())
+								// this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '0';		            	
 				           	this.movements[this.movements.length-1].selectedTile.row = row;
 				    		this.movements[this.movements.length-1].selectedTile.col = col;
-				        	this.lastPlayed.push(this.movements[this.movements.length-1].selectedTile)
+				        	if (!this.lastPlayed.includes(this.movements[this.movements.length-1].selectedTile))
+			    				this.lastPlayed.push(this.movements[this.movements.length-1].selectedTile)
 				        }
 			            this.grid[row][col] = 'X';		        	}
 	        	}
@@ -284,19 +295,20 @@ GameplayManager.prototype = {
 
 				if (this.movements[this.movements.length-1].selectedTile != this.selectedTile){ //el condition da 3ashan ymnda3 el clicking 3la board fi kaza 7eta wel animation shaghal we m5trtesh tile gdida
 					// 3ashan this.selectedTile di wna fl animation mmkn tb2a new selected tile 3adi aw tkon el selected tile b3at l animation el fat 3ashn ba7oto fiha gowa el animation le 7agat Hager
-					this.movements[this.movements.length-1].selectedTile.row = row;
-		    		this.movements[this.movements.length-1].selectedTile.col = col;
 					this.movements.push({
 						'selectedTile': this.selectedTile,
 						'row': row,
 						'col': col
 					});
 					if (this.turn == true){
-			            if (this.movements[this.movements.length-1].selectedTile.getUsed())
-							this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '0';		            	
+			    		if (typeof this.movements[this.movements.length-1].selectedTile.row !== 'undefined')
+		            		this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '.';
+						// if (this.movements[this.movements.length-1].selectedTile.getUsed())
+							// this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '0';		            	
 			           	this.movements[this.movements.length-1].selectedTile.row = row;
 			    		this.movements[this.movements.length-1].selectedTile.col = col;
-			        	this.lastPlayed.push(this.movements[this.movements.length-1].selectedTile)
+			        	if (!this.lastPlayed.includes(this.movements[this.movements.length-1].selectedTile))
+			    			this.lastPlayed.push(this.movements[this.movements.length-1].selectedTile)
 			        }
 		            this.grid[row][col] = 'X';				
 		        }
@@ -311,7 +323,7 @@ GameplayManager.prototype = {
     	delta = delta*2;
     	// terminating condition
     	if (this.animationT1 >= 60 && this.animationT2 >= 60 && this.animationT3 >= 60) {
-    		console.log("this should mark ending animation")
+    		// console.log("this should mark ending animation")
             this.moving = false;
 			this.character=this.selectedTile.container.children[2].text;
 			this.movements.shift();
@@ -325,7 +337,7 @@ GameplayManager.prototype = {
 				this.app.ticker.remove(this._animationFunction);
 			else if (this.movements[0].row!=null){
 				//re initialize animation
-				console.log("new animation should start now")
+				// console.log("new animation should start now")
 				this.animationStartingPos = {x:this.hand.container.position.x, y:this.hand.container.position.y};
 		    	this.animationT1 = 0;
 		    	this.animationT2 = 0;
@@ -418,7 +430,7 @@ GameplayManager.prototype = {
 		this.exchange=!this.exchange;
 	},
 	isEmpty:function(row, col){
-		if (this.grid[row][col] == '0') return true;
+		if (this.grid[row][col] == '.') return true;
 		else return false;
 	},
 	aiTurn:function()
@@ -447,5 +459,39 @@ GameplayManager.prototype = {
 			GameplayManager.get().turnText.containerPointer.children[0].text = "Your turn"
 		else 
 			GameplayManager.get().turnText.containerPointer.children[0].text = "AI's turn"
+	},
+	checkValidity:function(){
+		console.log("validating")
+		if (!this.lastPlayed.length) return false;
+		let samerow = true; let samecol = true;
+ 		for (let i= 1; i < this.lastPlayed.length; i++){
+			if (this.lastPlayed[i].row != this.lastPlayed[i-1].row) samerow=false;
+			if (this.lastPlayed[i].col != this.lastPlayed[i-1].col) samecol=false;
+			if (!samerow && !samecol) 
+				return false;
+		}
+		this.lastPlayed.sort(function(a,b){ if (samerow) return a.col - b.col; if (samecol) return a.row - b.row; })
+		// for (let i= 1; i < this.lastPlayed.length; i++){
+		//	if ( ( samerow && this.lastPlayed[i].col - this.lastPlayed[i-1].col > 1 )
+		//	 		|| ( samecol && this.lastPlayed[i].row - this.lastPlayed[i-1].row > 1 ) ) return false;
+		// }
+		let col = this.lastPlayed[0].col;
+		let row = this.lastPlayed[0].row;
+		if (samerow){
+			while (col < this.lastPlayed[this.lastPlayed.length-1].col){
+				if (this.grid[row][col]!='X') return false;
+				console.log(col)
+				col++;
+			}
+		}
+		if (samecol){
+			while (row < this.lastPlayed[this.lastPlayed.length-1].row){
+				if (this.grid[row][col]!='X') return false;
+				console.log(row)
+				row++;
+			}
+		}
+
+		return true;
 	}
 };

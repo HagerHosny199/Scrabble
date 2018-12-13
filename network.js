@@ -1,5 +1,5 @@
 let Network = function () {
-Network.instance = this;
+	Network.instance = this;
 } 
 
 Network.prototype = {
