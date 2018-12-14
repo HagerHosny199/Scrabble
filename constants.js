@@ -6,13 +6,14 @@ const guiTransitions = {
     // dectement el time dyman , we e3ml set lel time fi ai wa2t byigi fih
 
     // todo:
-    // awel wa7da fl nos
+    // awel wa7da fl nos (hya di zy el t7tha kda? mina by2ol n5aliha trga3 invalid as-hal)
     // ai le3ba lazm tkamel 3la wa7da mwgoda mn l tiles (mina by2ol n5aliha trga3 invalid as-hal)
+    // el tiles el ana baraga3ha lel rack, mfrod tt7at fi a 3ashan tedom 3la e5watha lma al3ab el gmbhom ? 
 
     SERVER_SENT_START: 30, //{type,order,tiles,board,score,score,time,total}                            // done Bisho
     SERVER_SENT_END: 31,                                                                                // done Bisho
 
-    SERVER_SEND_INVALID: 32,//{type,reason,time,total}                                                  // done Bassem - [needs to be implemented]
+    SERVER_SEND_INVALID: 32,//{type,reason,time,total}                                                  // done Bassem
 
     MY_CHALLENGE_ACCEPTED: 53, //{type,column,row,direction,tiles,score,challengeTime,time,total}       // ? hn3mlha??
 
@@ -29,7 +30,7 @@ const guiTransitions = {
      * SEND MESSAGE WHILE GUI IS AWAIT_PLAY_RESPONSE
      */
 
-    OPPONENT_CHALLENEGE_ACCEPTED: 55,                                                                   // done Bassem - [needs to be implemented]
+    OPPONENT_CHALLENEGE_ACCEPTED: 55,                                                                   // done Bassem
     SEND_SCORE_TO_GUI: 56,//{score}                                                                     // done Bisho
 
     /**

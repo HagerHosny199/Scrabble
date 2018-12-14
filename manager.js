@@ -359,6 +359,7 @@ GameplayManager.prototype = {
 				this.waiting=false;
 				this.selectedTile = null;
 				// IMPORTANT - mkanha b2a msh hna , ba2et on play bta3et el AI 
+				this.lastPlayedCopy = this.lastPlayed.slice();
 				this.lastPlayed = [];
 
 			}
@@ -461,7 +462,7 @@ GameplayManager.prototype = {
 	},
 	setTurn:function(t){
 		this.turn=t
-		this.lastPlayed = [];
+		//this.lastPlayed = [];
 	},
 	showTurn:function(){
 		if (GameplayManager.get().turn)

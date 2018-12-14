@@ -61,6 +61,7 @@ window.onload = function(){
 
 			case guiTransitions.OPPONENT_CHALLENEGE_ACCEPTED:
 				net.challengeAccepted();
+				GameplayManager.get().board.updateScore(1,-GameplayManager.get().lastScore)
 				break;
 
 		}
