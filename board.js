@@ -12,6 +12,9 @@ let Board = function () {
 	this.button3=null;
 	this.button4=null;
 	this.score=null;
+    this.gameTime=20*60*1000;
+    this.user1Time=10*60*1000;
+    this.user2Time=10*60*1000;
     // todo: 
     // - el text score
     // - el asma2
@@ -48,11 +51,69 @@ Board.prototype = {
     },
     updateTime:function(playerNum,value)
 	{
+        var min;
 		if(playerNum==1)
-			this.timer.container.children[0].text=value;
+			{
+                //update the totl remaining time
+                this.user1Time=value
+                //convert time to the displaying format
+                min=this.convertTime(value);
+                
+                min[0]=min[0].toString();
+                min[1]=min[1].toString();
+
+                if(min[0].length==1)
+                    value='0'+min[0];
+                else
+                    value=min[0];
+
+                if(min[1].length==1)
+                    value+=':0'+min[1];
+                else
+                    value+=':'+min[1];
+                //update the time 
+                this.timer.container.children[0].text=value;
+            }
 		else
-			this.timer.container.children[1].text=value;
+			{
+                //update the totl remaining time
+                this.user2Time=value
+                //convert time to the displaying format
+                min=this.convertTime(value);
+
+                min[0]=min[0].toString();
+                min[1]=min[1].toString();
+
+                if(min[0].length==1)
+                    value='0'+min[0];
+                else
+                    value=min[0];
+
+                if(min[1].length==1)
+                    value+=':0'+min[1];
+                else
+                    value+=':'+min[1];
+                //update the time 
+                this.timer.container.children[1].text=value;
+            }
 	},
+    convertTime:function( ms ) 
+    {
+        // 1- Convert to seconds:
+        var seconds = ms / 1000;
+        // 2- Extract minutes:
+        var minutes = parseInt( seconds / 60 ); // 60 seconds in 1 minute
+        // 3- Keep only seconds not extracted to minutes:
+        seconds = seconds % 60;
+        seconds=Math.round(seconds)
+        minutes=Math.round(minutes)
+        console.log(minutes,seconds)
+        return [minutes,seconds]
+    },
+    updateGameTime:function(value)
+    {
+        this.gameTime=value;
+    },
 	updateScore:function(playerNum,value)
 	{
 		//human player

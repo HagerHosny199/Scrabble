@@ -32,8 +32,8 @@ Score.prototype={
 			dropShadowBlur: 4, dropShadowAngle: Math.PI / 6, dropShadowDistance: 0 });
 		let textStyle = new PIXI.TextStyle({ fill:'#ffa952',fontFamily: 'Arial', fontSize: 28, dropShadow: true, dropShadowColor: '#ffffff',
 			dropShadowBlur: 4, dropShadowAngle: Math.PI / 6, dropShadowDistance: 0 });
-		this.score1 = new PIXI.Text('11', style);
-		this.score2 = new PIXI.Text('16', style);
+		this.score1 = new PIXI.Text('0', style);
+		this.score2 = new PIXI.Text('0', style);
 		this.score1.position.set(735,187);
 		this.score2.position.set(815,187);
 		this.name1 = new PIXI.Text('YOU', textStyle);

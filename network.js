@@ -30,7 +30,7 @@ Network.prototype = {
 	//1-set the tiles (if there is a tile in the board skip this cell & if the index==0 skip it)
 	play:function(row,col,dir,tilesChars){
 		GameplayManager.get().lastPlayed = [];
-		if (GameplayManager.get().turn) GameplayManager.get().turn = false;
+		//if (GameplayManager.get().turn) GameplayManager.get().turn = false;
 		let currentLocation = {row: row, col:col}
 		for (let i = 0; i < tilesChars.length; i++){
 			while( !GameplayManager.get().isEmpty(currentLocation.row, currentLocation.col) ){
@@ -41,7 +41,9 @@ Network.prototype = {
 			}
 			GameplayManager.get().selectTile(tilesChars[i])
 			GameplayManager.get().boardClick(currentLocation.row, currentLocation.col)
+
 		}
+		//GameplayManager.get().turn=!GameplayManager.get().turn
 	},
 	//score: this function get the score needed to be parsed
 	score:function(userScore){
@@ -55,21 +57,25 @@ Network.prototype = {
 	},
 	//pass:this function tell the user to trigger the (turn) player flag
 	pass:function(){
-		//set the OK action
-		GameplayManager.get().boardClick(0,0,'OK')
+		// set the OK action
+		// da ghalat ??
+		// GameplayManager.get().boardClick(0,0,'OK')
+		GameplayManager.get().turn = true;
+		GameplayManager.get().waiting = false;
+		GameplayManager.get().lastPlayed = [];
+
 	},
 	//end:this is the termination of the game
 	end:function(){
 		let endGame=new End();
+		//empty the grid
+		for (let row = 0; row < 15; row++){
+    		GameplayManager.get().grid.push([]);
+    		for (let col = 0; col < 15; col++)
+    			GameplayManager.get().grid[row].push(".");
+    	}
 	},
 	challengeAccepted:function(){
-		// hna badal ma yshil l tiles l kanet played fl grid, byro7 shayel el tiles mn a5er el rack
-		// 3ashan lma bnel3ab tile asln byerga3o le wara kda we ytbadelo el text bta3hom , fana dlwa2ty
-		// msh 3aref amsek pointers 3la el tiles el ml3oba f3ln 3ashan bytbadelo
-
-		// TODO
-		// mmkn a3ml 7al eni ashof 3adad l played bs we arga3o le wra mn l a5er we yb2o homa dol, wel gom mkanhom fl rack
-		// dol hykono homa b2a el fl played fa kda m3aia el etneen, el etla3abo wel gom mkanhom
 		mngr = GameplayManager.get();
 		for (let i = 0; i < mngr.lastPlayed.length; i++){
 			mngr.grid[mngr.lastPlayed[i].row][mngr.lastPlayed[i].col]='0'
@@ -116,6 +122,51 @@ Network.prototype = {
 	},
 	//this function send pass to the server 
 	sendPass:function(){
-		
+		var move={};
+		move.index=guiTransitions.THINKING_SEND_PASS_TO_S;
+		GameplayManager.get().turn=false;
+		window.socket.send(JSON.stringify(move));
+
+	},
+	//this function send the human play to the server
+	sendPlay:function(row,col,dir,tiles)
+	{
+		var move={};
+		move.row=row+1;
+		move.col=col+1;
+		move.dir=dir;
+		move.tiles=tiles;
+		move.index=guiTransitions.THINKING_SEND_PLAY_TO_S;
+		console.log(move);
+		window.socket.send(JSON.stringify(move));
+	},
+	//this function get the score of the player and update the termination condition
+	setScore:function(myScore,time,totalTime)
+	{
+		//time ->remaining time for a user 
+		//totalTime->remainingTime for the game 
+		//getting the order
+		let order=1 //by defaukt human
+		if(GameplayManager.get().turn==false)order=2
+		//update the game remaining time
+		GameplayManager.get().board.updateGameTime(totalTime)
+		//update user remaintime for the user 
+		GameplayManager.get().board.updateTime(order,time)
+		//update user score 
+		GameplayManager.get().board.updateScore(order,myScore)
+		//trigger the turn
+		GameplayManager.get().turn=!GameplayManager.get().turn;
+		GameplayManager.get().waiting=false;
+	},
+	//this function update the game remaining time
+	setTime:function(time)
+	{
+		//update the game remaining time
+		GameplayManager.get().board.updateGameTime(totalTime)
+	},
+	completeTiles:function(tiles){
+		let mngr = GameplayManager.get();
+		if(mngr.turn==true)
+		[mngr.tileAppend, mngr.availableTiles, mngr.userTiles]= mngr.bag.completeTiles(mngr.userTiles, mngr.availableTiles, mngr.tileAppend, tiles);
 	}
 }
