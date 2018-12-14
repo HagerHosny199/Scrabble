@@ -78,9 +78,19 @@ Network.prototype = {
 	challengeAccepted:function(){
 		mngr = GameplayManager.get();
 		for (let i = 0; i < mngr.lastPlayed.length; i++){
-			mngr.grid[mngr.lastPlayed[i].row][mngr.lastPlayed[i].col]='0'
-			mngr.lastPlayed[i].container.position.x = 6000;
+			mngr.grid[mngr.lastPlayed[i].row][mngr.lastPlayed[i].col]='.'
+			mngr.lastPlayed[i].row = undefined;
+			mngr.lastPlayed[i].col = undefined;
+			mngr.lastPlayed[i].used = false;
 		}
+		for (let i = 0; i < 7; i++){
+			mngr.userTiles[i].container.position.x=145+29*(i);
+			mngr.userTiles[i].container.position.y=623;
+		}
+		//mngr.waiting = false;
+		//mngr.turn = true;
+		mngr.lastPlayed = [];
+
 	},
 	//exchnge:this function receive the exchanged tiles 
 	//1-update the tiles 
@@ -155,8 +165,11 @@ Network.prototype = {
 		//update user score 
 		GameplayManager.get().board.updateScore(order,myScore)
 		//trigger the turn
-		GameplayManager.get().turn=!GameplayManager.get().turn;
-		GameplayManager.get().waiting=false;
+		if (GameplayManager.get().turn){
+			GameplayManager.get().turn=!GameplayManager.get().turn;
+			GameplayManager.get().waiting=false;
+		}
+		GameplayManager.get().lastPlayed = [];
 	},
 	//this function update the game remaining time
 	setTime:function(time)
@@ -166,7 +179,6 @@ Network.prototype = {
 	},
 	completeTiles:function(tiles){
 		let mngr = GameplayManager.get();
-		if(mngr.turn==true)
 		[mngr.tileAppend, mngr.availableTiles, mngr.userTiles]= mngr.bag.completeTiles(mngr.userTiles, mngr.availableTiles, mngr.tileAppend, tiles);
 	}
 }

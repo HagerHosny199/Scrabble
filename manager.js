@@ -354,12 +354,13 @@ GameplayManager.prototype = {
 			}
 			if (this.turn == true && this.waiting==false)
 				this.destroyTiles();
-			if (!this.turn && !this.movements.length && this.waiting==false){ // dor l AI 5eles (5alas kol l animations)
-				//this.turn = !this.turn;
-				this.waiting=true;
+			if (!this.turn && !this.movements.length){ // dor l AI 5eles (5alas kol l animations)
+				this.turn = !this.turn;
+				this.waiting=false;
 				this.selectedTile = null;
 				// IMPORTANT - mkanha b2a msh hna , ba2et on play bta3et el AI 
-				// this.lastPlayed = [];
+				this.lastPlayed = [];
+
 			}
         }
         // starting condition

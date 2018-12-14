@@ -1,9 +1,18 @@
 const guiTransitions = {
+    
+
+    // Hager todo:  blank tiles selection
+    //              exhange network function
+    // dectement el time dyman , we e3ml set lel time fi ai wa2t byigi fih
+
+    // todo:
+    // awel wa7da fl nos
+    // ai le3ba lazm tkamel 3la wa7da mwgoda mn l tiles (mina by2ol n5aliha trga3 invalid as-hal)
 
     SERVER_SENT_START: 30, //{type,order,tiles,board,score,score,time,total}                            // done Bisho
     SERVER_SENT_END: 31,                                                                                // done Bisho
 
-    SERVER_SEND_INVALID: 32,//{type,reason,time,total}                                                  // done Bassem - [needs testing]
+    SERVER_SEND_INVALID: 32,//{type,reason,time,total}                                                  // done Bassem - [needs to be implemented]
 
     MY_CHALLENGE_ACCEPTED: 53, //{type,column,row,direction,tiles,score,challengeTime,time,total}       // ? hn3mlha??
 
@@ -20,14 +29,14 @@ const guiTransitions = {
      * SEND MESSAGE WHILE GUI IS AWAIT_PLAY_RESPONSE
      */
 
-    OPPONENT_CHALLENEGE_ACCEPTED: 55,                                                                   // done Bassem -[needs to be implemented]
-    SEND_SCORE_TO_GUI: 56,//{score}                                                                     // done Bisho - [needs more testing]
+    OPPONENT_CHALLENEGE_ACCEPTED: 55,                                                                   // done Bassem - [needs to be implemented]
+    SEND_SCORE_TO_GUI: 56,//{score}                                                                     // done Bisho
 
     /**
      * SEND MESSAGE WHILE GUI IS IDLE
      */
 
-    SEND_TILES_TO_GUI: 20,//{type,tiles}                                                                // doing Hager
+    SEND_TILES_TO_GUI: 20,//{type,tiles}                                                                // done Hager
 
 
     /**
