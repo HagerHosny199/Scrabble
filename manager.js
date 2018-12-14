@@ -46,6 +46,14 @@ let GameplayManager = function(){
 
     this.init();
     setInterval(this.showTurn, 700);
+    setInterval(function(){ 
+    if (GameplayManager.get().turn)
+    	GameplayManager.get().board.updateTime(1,GameplayManager.get().board.user1Time-1000)
+    else 
+    	GameplayManager.get().board.updateTime(2,GameplayManager.get().board.user2Time-1000)
+    GameplayManager.get().board.updateGameTime(GameplayManager.get().board.gameTime-1000)
+    }
+    , 1000);
 
 }
 //to get an instance from the manager

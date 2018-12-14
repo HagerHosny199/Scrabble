@@ -50,7 +50,7 @@ Board.prototype = {
 
     },
     updateTime:function(playerNum,value)
-	{
+	{  
         var min;
 		if(playerNum==1)
 			{
@@ -107,12 +107,29 @@ Board.prototype = {
         seconds = seconds % 60;
         seconds=Math.round(seconds)
         minutes=Math.round(minutes)
-        console.log(minutes,seconds)
+        //console.log(minutes,seconds)
         return [minutes,seconds]
     },
     updateGameTime:function(value)
     {
         this.gameTime=value;
+        //convert time to the displaying format
+        min=this.convertTime(value);
+                
+        min[0]=min[0].toString();
+        min[1]=min[1].toString();
+
+        if(min[0].length==1)
+            value='0'+min[0];
+        else
+            value=min[0];
+
+        if(min[1].length==1)
+            value+=':0'+min[1];
+        else
+            value+=':'+min[1];
+        //update the time 
+        this.timer.container.children[2].text=value;
     },
 	updateScore:function(playerNum,value)
 	{
@@ -159,3 +176,5 @@ Board.prototype = {
 
     }
 };
+
+

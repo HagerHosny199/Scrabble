@@ -46,6 +46,8 @@ window.onload = function(){
 			case guiTransitions.SERVER_SEND_INVALID:
 				net.setTime(msg.total);
 				console.log(msg.reason);
+				$.notify("Invalid move");	
+				$.notify(msg.reason);
 				net.challengeAccepted();
 				GameplayManager.get().waiting = false;
 				GameplayManager.get().turn = true;
@@ -61,14 +63,13 @@ window.onload = function(){
 
 			case guiTransitions.OPPONENT_CHALLENEGE_ACCEPTED:
 				net.challengeAccepted();
+				$.notify("Opponent challenge accepted", "info");
 				GameplayManager.get().board.updateScore(1,-GameplayManager.get().lastScore)
 				break;
 
 		}
 	}
-	
-	
-	
+
 	//n.exchange(['0','b','0','b','0','b','0'])
 	//n.end()
 
