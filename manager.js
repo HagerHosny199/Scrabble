@@ -49,6 +49,14 @@ let GameplayManager = function(){
 
     this.init();
     setInterval(this.showTurn, 700);
+    setInterval(function(){ 
+    if (GameplayManager.get().turn)
+    	GameplayManager.get().board.updateTime(1,GameplayManager.get().board.user1Time-1000)
+    else 
+    	GameplayManager.get().board.updateTime(2,GameplayManager.get().board.user2Time-1000)
+    GameplayManager.get().board.updateGameTime(GameplayManager.get().board.gameTime-1000)
+    }
+    , 1000);
 
 }
 //to get an instance from the manager
@@ -94,6 +102,7 @@ GameplayManager.prototype = {
 						tile.container.position.set(x,y);
 						//set the char
 						tile.container.children[2].text=initGrid[15*row+col];
+						tile.container.children[2].text=String.fromCharCode('A'.charCodeAt()+tile.container.children[2].text-1);
 						//set the char value
 						tile.container.children[3].text='3'; //this value should be changed 
 						//mark it as used
@@ -134,6 +143,7 @@ GameplayManager.prototype = {
 					this.exchangedTiles[i]=0;
 			}
 		}
+
 		else if (this.blankTile && this.waiting==true)
 		{
 			this.selectedTile=tile;
@@ -371,6 +381,8 @@ GameplayManager.prototype = {
 				this.waiting=false;
 				this.selectedTile = null;
 				// IMPORTANT - mkanha b2a msh hna , ba2et on play bta3et el AI 
+				this.lastPlayedCopy = this.lastPlayed.slice();
+
 				this.lastPlayed = [];
 
 			}
@@ -475,7 +487,7 @@ GameplayManager.prototype = {
 	},
 	setTurn:function(t){
 		this.turn=t
-		this.lastPlayed = [];
+		//this.lastPlayed = [];
 	},
 	showTurn:function(){
 		if (GameplayManager.get().turn)
@@ -525,6 +537,7 @@ GameplayManager.prototype = {
 		let col=this.lastPlayed[0].col
 		let dir=0 //zero if in the same row else 1
 		var i=0
+
 		for(i=0;i<this.lastPlayed.length-1;i++)
 		{
 			if(this.lastPlayed[i].row!=this.lastPlayed[i+1].row)
@@ -543,6 +556,7 @@ GameplayManager.prototype = {
 			tiles[i]=0
 			
 		return [row,col,dir,tiles]
+
 	},
 	//this function used by the blank tiles only 
 	setBlankWaiting:function(value)

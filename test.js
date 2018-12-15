@@ -5,8 +5,13 @@ window.onload = function(){
     let gfx = new Graphics();    
 	let net = new Network();
 	window.net = new Network(); 
+
 	net.start(1,['A','A','A','A','A',' ','B'],10*60*1000-2000,0,null)
 	/*window.socket=new WebSocket('ws://localhost:5202');
+
+	//net.start(2,['A','A','A','A','A','a','a'],10*60*1000-2000,0,null)
+	window.socket=new WebSocket('ws://localhost:5202');
+
 	socket.onopen=(event)=>{
 		console.log('connected to server');
 	}
@@ -46,6 +51,10 @@ window.onload = function(){
 			case guiTransitions.SERVER_SEND_INVALID:
 				net.setTime(msg.total);
 				console.log(msg.reason);
+
+				$.notify("Invalid move", {position: "top center"});	
+				$.notify(msg.reason);
+
 				net.challengeAccepted();
 				GameplayManager.get().waiting = false;
 				GameplayManager.get().turn = true;
@@ -61,11 +70,15 @@ window.onload = function(){
 
 			case guiTransitions.OPPONENT_CHALLENEGE_ACCEPTED:
 				net.challengeAccepted();
+
+				$.notify("Opponent challenge accepted", "info", {position: "top center"});
+				GameplayManager.get().board.updateScore(1,-GameplayManager.get().lastScore)
+
 				break;
 
 		}
 	}
-	
+
 	
 	*/
 	//n.exchange(['0','b','0','b','0','b','0'])

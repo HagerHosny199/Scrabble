@@ -140,8 +140,7 @@ Bag.prototype = {
 			value=this.values[value];
 		}	
 		console.log(character," = ",value)
-
-		return value
+	return value
 	},
 	//this function take an array of tiles and shuffle them 
 	shuffle:function(array)

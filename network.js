@@ -78,6 +78,7 @@ Network.prototype = {
 	challengeAccepted:function(){
 		mngr = GameplayManager.get();
 		for (let i = 0; i < mngr.lastPlayed.length; i++){
+
 			mngr.grid[mngr.lastPlayed[i].row][mngr.lastPlayed[i].col]='.'
 			mngr.lastPlayed[i].row = undefined;
 			mngr.lastPlayed[i].col = undefined;
@@ -183,12 +184,20 @@ Network.prototype = {
 			GameplayManager.get().waiting=false;
 		}
 		GameplayManager.get().lastPlayed = [];
+
+			GameplayManager.get().lastScore = myScore;
+			GameplayManager.get().turn=!GameplayManager.get().turn;
+			GameplayManager.get().waiting=false;
+		}
+		//GameplayManager.get().lastPlayed = [];
 	},
 	//this function update the game remaining time
 	setTime:function(time)
 	{
 		//update the game remaining time
-		GameplayManager.get().board.updateGameTime(totalTime)
+		//GameplayManager.get().board.updateGameTime(totalTime)
+
+		GameplayManager.get().board.updateGameTime(time)
 	},
 	completeTiles:function(tiles){
 		let mngr = GameplayManager.get();
