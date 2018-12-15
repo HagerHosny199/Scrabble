@@ -197,5 +197,7 @@ Network.prototype = {
 	completeTiles:function(tiles){
 		let mngr = GameplayManager.get();
 		[mngr.tileAppend, mngr.availableTiles, mngr.userTiles]= mngr.bag.completeTiles(mngr.userTiles, mngr.availableTiles, mngr.tileAppend, tiles);
+		if(mngr.exchange==true)
+			mngr.setExchange();
 	}
 }
