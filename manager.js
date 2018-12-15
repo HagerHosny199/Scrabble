@@ -210,6 +210,8 @@ GameplayManager.prototype = {
 		else if(action=='exchange'&& this.turn==true && !this.lastPlayed.length && this.waiting==false)
 		{
 			console.log("from exchange")
+			this.movements = []
+			this.selectedTile = null;
 			if(this.moving==false )//exchange condition
 				this.gen=new GenerateTiles(this.app,this.board,this.userTiles);
 		}
