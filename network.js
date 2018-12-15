@@ -176,7 +176,7 @@ Network.prototype = {
 			GameplayManager.get().board.updateGameTime(totalTime)
 		//update user remaintime for the user 
 		if (time)
-			GameplayManager.get().board.updateTime(order, time)
+			GameplayManager.get().board.updateTime(1, time)
 		//update user score 
 		GameplayManager.get().board.updateScore(order, myScore)
 		//trigger the turn

@@ -347,6 +347,7 @@ GameplayManager.prototype = {
 
     easeOutQuart: function (t) { return 1-(--t)*t*t*t },
     moveHandtoTile: function(delta){
+    	
     	delta = delta*3;
     	// terminating condition
     	if (this.animationT1 >= 60 && this.animationT2 >= 60 && this.animationT3 >= 60) {

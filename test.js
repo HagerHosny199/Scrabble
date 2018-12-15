@@ -13,8 +13,8 @@ var startgame = function(){
 
 
 	//net.start(1,['A','A','A','A','A','a','a'],10*60*1000-2000,0,null)
-	window.socket=new WebSocket('ws://'+ip+':'+port);
-
+	//window.socket=new WebSocket('ws://'+ip+':'+port);
+window.socket=new WebSocket(ip);
 
 	socket.onopen = (event) => {
 		console.log('connected to server');
@@ -44,7 +44,7 @@ var startgame = function(){
 				break;
 
 			case guiTransitions.SEND_SCORE_TO_GUI:
-				net.setScore(msg.score, null, null);
+				net.setScore(msg.score, msg.time, null);
 				break;
 
 			case guiTransitions.SEND_TILES_TO_GUI:

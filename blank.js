@@ -82,18 +82,20 @@ Blank.prototype={
 		
 	},
 	loop:function(app){
+		console.log("loop, blank")
 	app.render(this.container);
 		this.frameSprite.position.x += 60; 
-		if(this.frameSprite.position.x==1140)
+		if(this.frameSprite.position.x>=1140)
 			{
-				this.ticker.stop();
 				this.go= new Button(this.app,'go','go','go') ;
 				GameplayManager.get().setBlankWaiting(true);
+				this.ticker.stop();
 			}
 				
 		
 	},
 	loop2:function(app){
+		console.log("loop2, blank")
 	app.render(this.container);
 	this.go.sprite.y=-375;
 	this.frameSprite.position.x -= 70; 
@@ -106,6 +108,7 @@ Blank.prototype={
 		
 	},
 	loopTiles:function(app){
+		console.log("loopTiles, blank")
 	app.render(this.container);
 		for(var i=0;i<this.tiles.length;i++)
 		{  
