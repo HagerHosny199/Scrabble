@@ -181,16 +181,11 @@ Network.prototype = {
 		GameplayManager.get().board.updateScore(order,myScore)
 		//trigger the turn
 		if (GameplayManager.get().turn){
-			GameplayManager.get().turn=!GameplayManager.get().turn;
-			GameplayManager.get().waiting=false;
-		}
-		GameplayManager.get().lastPlayed = [];
-
 			GameplayManager.get().lastScore = myScore;
 			GameplayManager.get().turn=!GameplayManager.get().turn;
 			GameplayManager.get().waiting=false;
-		
-		//GameplayManager.get().lastPlayed = [];
+		}
+		//GameplayManager.get().lastPlayed = [];		
 	},
 	//this function update the game remaining time
 	setTime:function(time)
