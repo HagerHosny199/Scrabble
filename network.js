@@ -12,7 +12,8 @@ Network.prototype = {
 	start: function(order,initTiles,timer,score,initBoard){
 		let turn=true
 		//init the gameManager this will init the board 
-		let gameManager = new GameplayManager()
+		window.gameManager = new GameplayManager()
+		window.gameManager.init()
 		//set the first player
 		if(order==2) turn =false
 		gameManager.setTurn(turn)

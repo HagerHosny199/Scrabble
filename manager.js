@@ -64,11 +64,13 @@ GameplayManager.get = function(){
 GameplayManager.prototype = {
     init: function(){
     	//init the empty grid with 0
-    	for (let row = 0; row < 15; row++){
-    		this.grid.push([]);
-    		for (let col = 0; col < 15; col++)
-    			this.grid[row].push(".");
-    	}
+    	this.grid = [];
+	    for(let row = 0; row < 15; row++) {
+	        this.grid[row] = [];
+	        for(let col = 0; col < 15; col++) {
+	            this.grid[row][col] = '.';
+	        }
+	    }
     	this.network=new Network();
     },
 	initBoard:function(initGrid)
