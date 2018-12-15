@@ -25,6 +25,9 @@ var startgame = function(){
 	socket.onopen = (event) => {
 		console.log('connected to server');
 	}
+	socket.onclose = (event) => {
+		$.notify(event.reason, { position: "top center" });
+	}
 	socket.onmessage = (event) => {
 		console.log(event.data);
 		var msg = JSON.parse(event.data);

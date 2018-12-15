@@ -257,6 +257,8 @@ GameplayManager.prototype = {
     	else if (action == null && ! this.isEmpty(row, col))
     		return;
     	else if (action == null && this.movements.length){
+    		this.hands[0].refreshZ();
+    		this.hands[1].refreshZ();
 
     		if (this.selectedTile)
     			if (this.selectedTile.turn)

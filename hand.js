@@ -31,5 +31,9 @@ Hand.prototype = {
         this.container.scale.set(0.6);
         this.container.rotation = -0.25
 
+    },
+    refreshZ: function(){
+        this.app.stage.removeChild(this.container);
+        this.app.stage.addChild(this.container);        
     }
 };
