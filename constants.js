@@ -1,6 +1,5 @@
 const guiTransitions = {
-    
-<<<<<<< HEAD
+
 
     // Hager todo:  blank tiles selection
     //              exhange network function

@@ -188,7 +188,7 @@ Network.prototype = {
 			GameplayManager.get().lastScore = myScore;
 			GameplayManager.get().turn=!GameplayManager.get().turn;
 			GameplayManager.get().waiting=false;
-		}
+		
 		//GameplayManager.get().lastPlayed = [];
 	},
 	//this function update the game remaining time
