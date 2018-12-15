@@ -5,6 +5,13 @@ var startgame = function(){
 
 	var ip=document.getElementById("ip").value;
 	var port=document.getElementById("port").value;
+	var url;
+	if(port==="")
+	{
+		url='ws://'+ip;
+	}else{
+		url='ws://'+ip+':'+port;
+	}
 	document.getElementById("configform").style.display="none";	
 	//initializing PIXI
 	let gfx = new Graphics();
@@ -13,7 +20,7 @@ var startgame = function(){
 
 
 	//net.start(1,['A','A','A','A','A','a','a'],10*60*1000-2000,0,null)
-	window.socket=new WebSocket('ws://'+ip+':'+port);
+	window.socket=new WebSocket(url);
 
 
 	socket.onopen = (event) => {
