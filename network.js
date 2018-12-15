@@ -209,7 +209,10 @@ Network.prototype = {
 			if(mngr.userTiles[i].blank==true)
 				tilestoSend[i]=100+tilestoSend[i];
 		}
-
+		var move={};
+		move.index = guiTransitions.GUI_REQUEST_HINT;
+		move.tiles=tilestoSend;
+		window.socket.send(JSON.stringify(move));
 	}
 	
 }
