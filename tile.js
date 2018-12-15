@@ -9,6 +9,7 @@ let Tile= function(){
 	this.shadowSprite2; //used to add shadow to the tile
 	this.app=Graphics.get().app;
 	this.used=0;
+	this.blank=false;
 	this.tilePath = 'assets/blank-tile.png';
     this.shadowPath = 'assets/blank-tile-shadow.png';
     this.shadowPath2 = 'assets/blank-tile-shadow-red.png';

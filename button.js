@@ -36,6 +36,12 @@ Button.prototype = {
 			this.sprite.x=-400;
 			this.sprite.y=-220;
 		}
+		else if (this.mode=='go')
+		{
+			this.sprite.x=480;
+			this.sprite.y=375;
+			this.sprite.scale.set(0.12);
+		}
 		else if (this.mode=='play')
 		{
 			if(this.pos==1)
@@ -116,6 +122,10 @@ Button.prototype = {
 				console.log("first:AI");
 				GameplayManager.get().initBoard();
 			}
+		}
+		else if(this.mode=='go')
+		{
+			Blank.get().removeBorad();
 		}
 		else if(this.mode=='play')
 		{

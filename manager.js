@@ -10,6 +10,8 @@ let GameplayManager = function(){
 
 	this.turn = true; //my turn is true
 	this.waiting=false;
+	this.blankTile=false;
+	this.myBlank=null;
 	this.selectedTile = null;
 	this.movements = [];
 	this.hands = [null,null];
@@ -41,6 +43,7 @@ let GameplayManager = function(){
 	this.gen=null;
 	this.menu=null;
 	this.board=null;
+	this.blank;
     GameplayManager.instance = this;
     this.network=null;
 
@@ -141,6 +144,11 @@ GameplayManager.prototype = {
 				else
 					this.exchangedTiles[i]=0;
 			}
+		}
+
+		else if (this.blankTile && this.waiting==true)
+		{
+			this.selectedTile=tile;
 		}
     	else if (this.turn == true && this.waiting==false)
 		{
@@ -347,7 +355,12 @@ GameplayManager.prototype = {
 			this.movements.shift();
             //this.selectedTile = null; //da el satr el wa7id el bymna3 eni al3ab fi dor el odami , 3ashan hwa lw doro , we kan m3aia el selected tile hya hya we dost ai 7ta fl board , ana msh bas2al hna hwa dori wla la2 , 3ashan asln l mfrod el animation y7sal fi dori we msh dori kda kda
         	//this.turn = this.turn; //my turn is true
-			
+			if(this.selectedTile.blank==true)
+			{
+				console.log("from hand i got a blank");
+				this.blank=new Blank();
+				this.myBlank=this.selectedTile;
+			}
 			//mfrod b2a lw el queue msh fadya mashelsh di , lw msh fadia we awel wa7da 3ndha row kman
 			if (!this.movements.length)
 				this.app.ticker.remove(this._animationFunction);
@@ -371,6 +384,7 @@ GameplayManager.prototype = {
 				this.selectedTile = null;
 				// IMPORTANT - mkanha b2a msh hna , ba2et on play bta3et el AI 
 				this.lastPlayedCopy = this.lastPlayed.slice();
+
 				this.lastPlayed = [];
 
 			}
@@ -422,6 +436,8 @@ GameplayManager.prototype = {
 			tiles[i].container.position.set(145+29*i,623);
 			tiles[i].container.children[2].text=retTiles[i];
 			tiles[i].container.children[3].text=1;//this line should be updated
+			if(retTiles[i]==' ')
+				tiles[i].blank=true;
 		}
 		this.userTiles=tiles
 	},
@@ -523,26 +539,32 @@ GameplayManager.prototype = {
 		let col=this.lastPlayed[0].col
 		let dir=0 //zero if in the same row else 1
 		var i=0
-		console.log("len",this.lastPlayed.length)
+
 		for(i=0;i<this.lastPlayed.length-1;i++)
 		{
 			if(this.lastPlayed[i].row!=this.lastPlayed[i+1].row)
 				dir=1
 			tiles[i]=this.lastPlayed[i].container.children[2].text;
-			if(tiles[i]!=' ')
-				tiles[i]=tiles[i].charCodeAt(0) -64;
-			else
-				tiles[i]=100
+			tiles[i]=tiles[i].charCodeAt(0) -64;
+			if(this.lastPlayed[i].blank==true)
+				tiles[i]=100+tiles[i];
 		}
 		tiles[i]=this.lastPlayed[i].container.children[2].text;
-		if(tiles[i]!=' ')
-			tiles[i]=tiles[i].charCodeAt(0) -64;
-		else
-			tiles[i]=100
+		tiles[i]=tiles[i].charCodeAt(0) -64;
+		if(this.lastPlayed[i].blank==true)
+				tiles[i]=100+tiles[i];
 		//complete the array
 		for (i=i+1;i<7;i++)
 			tiles[i]=0
 			
 		return [row,col,dir,tiles]
+
+	},
+	//this function used by the blank tiles only 
+	setBlankWaiting:function(value)
+	{
+		this.waiting=value;
+		this.blankTile=value;
 	}
+
 };

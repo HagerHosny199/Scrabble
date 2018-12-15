@@ -50,7 +50,8 @@ Board.prototype = {
 
     },
     updateTime:function(playerNum,value)
-	{  
+
+	{
         var min;
 		if(playerNum==1)
 			{
@@ -107,7 +108,7 @@ Board.prototype = {
         seconds = seconds % 60;
         seconds=Math.round(seconds)
         minutes=Math.round(minutes)
-        //console.log(minutes,seconds)
+
         return [minutes,seconds]
     },
     updateGameTime:function(value)

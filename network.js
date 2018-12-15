@@ -79,7 +79,7 @@ Network.prototype = {
 	challengeAccepted:function(){
 		mngr = GameplayManager.get();
 		for (let i = 0; i < mngr.lastPlayed.length; i++){
-			console.log("hereeeeee challenge accepted")
+
 			mngr.grid[mngr.lastPlayed[i].row][mngr.lastPlayed[i].col]='.'
 			mngr.lastPlayed[i].row = undefined;
 			mngr.lastPlayed[i].col = undefined;
@@ -92,6 +92,7 @@ Network.prototype = {
 		//mngr.waiting = false;
 		//mngr.turn = true;
 		mngr.lastPlayed = [];
+
 	},
 	//exchnge:this function receive the exchanged tiles 
 	//1-update the tiles 
@@ -120,15 +121,28 @@ Network.prototype = {
 	},
 	//this function send request to the server to exchange 
 	sendExchange:function(tiles,exchangedTiles){
-		userTiles=[]
+		let userTiles=[]
+		let tempChar;
 		for(var i =0 ;i<7;i++)
 		{
 			if(exchangedTiles[i]==1)
-				userTiles[i]=tiles[i].container.children[2].text;
+				{
+					tempChar=tiles[i].container.children[2].text;
+					
+					if(tempChar != ' ')
+						userTiles[i]=tempChar.charCodeAt(0) -64 ;
+					else
+						userTiles[i]=100;
+				}
 			else
 				userTiles[i]='0'
 		}
 		//here send userTiles 
+		var move={};
+		move.tiles=userTiles;
+		move.index=guiTransitions.THINKING_SEND_EXCHANGE_TO_S;
+		console.log(move);
+		window.socket.send(JSON.stringify(move));
 
 	},
 	//this function send pass to the server 
@@ -167,16 +181,23 @@ Network.prototype = {
 		GameplayManager.get().board.updateScore(order,myScore)
 		//trigger the turn
 		if (GameplayManager.get().turn){
-			GameplayManager.get().lastScore = myScore;
 			GameplayManager.get().turn=!GameplayManager.get().turn;
 			GameplayManager.get().waiting=false;
 		}
+		GameplayManager.get().lastPlayed = [];
+
+			GameplayManager.get().lastScore = myScore;
+			GameplayManager.get().turn=!GameplayManager.get().turn;
+			GameplayManager.get().waiting=false;
+		
 		//GameplayManager.get().lastPlayed = [];
 	},
 	//this function update the game remaining time
 	setTime:function(time)
 	{
 		//update the game remaining time
+		//GameplayManager.get().board.updateGameTime(totalTime)
+
 		GameplayManager.get().board.updateGameTime(time)
 	},
 	completeTiles:function(tiles){

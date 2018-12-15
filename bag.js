@@ -102,7 +102,9 @@ Bag.prototype = {
 				tiles[tileAppend].container.children[3].text=tiles[i].container.children[3].text;
 				tiles[tileAppend].setUsed(1);
 				
-				
+				//check blank
+				if(newTiles[j]==' ')
+					tiles[i].blank=true;
 				//generate new tile 
 				temp=this.generateUserTiles(newTiles[j]);
 				tiles[i].container.children[2].text=newTiles[j++]; //char
@@ -119,7 +121,9 @@ Bag.prototype = {
 				tileAppend++;
 				availableTiles++;
 				//console.log(temp[1]);
+				console.log(tiles[i].blank);
 			}
+
 		}
 		
 		return [tileAppend,availableTiles,tiles];
@@ -127,11 +131,16 @@ Bag.prototype = {
 	//this function generates the n tiles of the user 
 	generateUserTiles:function(character){
 		var value=1;
-		//generate random 
-		value=character.charCodeAt(0) -65
-		value=this.values[value];
+		//generate value
+		if(character== ' ')//blank
+			value=this.values[26];
+		else
+		{
+			value=character.charCodeAt(0) -65
+			value=this.values[value];
+		}	
 		console.log(character," = ",value)
-		return value
+	return value
 	},
 	//this function take an array of tiles and shuffle them 
 	shuffle:function(array)
