@@ -42,6 +42,13 @@ Button.prototype = {
 			this.sprite.y=375;
 			this.sprite.scale.set(0.12);
 		}
+		else if (this.mode=='go2')
+		{
+			this.sprite.x=480;
+			this.sprite.y=375;
+			this.sprite.scale.set(0.12);
+			console.log("exchnge go")
+		}
 		else if (this.mode=='play')
 		{
 			if(this.pos==1)
@@ -126,6 +133,10 @@ Button.prototype = {
 		else if(this.mode=='go')
 		{
 			Blank.get().removeBorad();
+		}
+		else if(this.mode=='go2')
+		{
+			GenerateTiles.get().removeBorad();
 		}
 		else if(this.mode=='play')
 		{

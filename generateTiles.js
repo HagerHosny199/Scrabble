@@ -3,13 +3,14 @@ let GenerateTiles= function(app,board,userTiles){
 	this.board=board;
 	this.container;
 	this.bag;
+	this.go=null;
 	this.sound;
 	this.tiles=[];
 	this.chars=[];
 	this.bagValues=[];
 	this.values=[];
 	this.availableTiles=[];
-	this.framePath = 'assets/resultboard2.png';
+	this.framePath = 'assets/resultboard.png';
 	this.frameSprite;
 	this.userTiles=userTiles
 	GenerateTiles.instance=this;
@@ -101,15 +102,22 @@ GenerateTiles.prototype={
 	app.render(this.container);
 		this.frameSprite.position.x += 60; 
 		if(this.frameSprite.position.x==1140)
-			this.ticker.stop();
+			{
+				this.go= new Button(this.app,'go','go2','go2') ;
+				this.ticker.stop();
+			}
 		
 	},
 	loop2:function(app){
 	app.render(this.container);
+		this.go.sprite.y=-375;
 		this.frameSprite.position.x -= 70; 
 		if(this.frameSprite.position.x<=-420)
-			this.ticker.stop();
-		console.log("loop2");			
+			{
+				this.ticker.stop();		
+				this.container.destroy();
+				GameplayManager.get().boardClick(0, 0,null);
+			}
 		
 	},
 	loopTiles:function(app){
@@ -124,9 +132,7 @@ GenerateTiles.prototype={
 	app.render(this.container);
 		for(var i=0;i<this.tiles.length;i++)
 			this.tiles[i].container.position.y -= 30; 
-		console.log("loopTiles2");
 	},
-	
 	removeBorad:function(){
 	///create a ticker
 	this.ticker  =  new PIXI.ticker.Ticker();
