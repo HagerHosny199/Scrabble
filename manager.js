@@ -9,6 +9,9 @@ let GameplayManager = function(){
 	console.log("Initializing GameplayManager object")
 
 	this.turn = true; //my turn is true
+	this.waiting=false;
+	this.blankTile=false;
+	this.myBlank=null;
 	this.selectedTile = null;
 	this.movements = [];
 	this.hands = [null,null];
@@ -40,6 +43,7 @@ let GameplayManager = function(){
 	this.gen=null;
 	this.menu=null;
 	this.board=null;
+	this.blank;
     GameplayManager.instance = this;
     this.network=null;
 
@@ -58,7 +62,7 @@ GameplayManager.prototype = {
     	for (let row = 0; row < 15; row++){
     		this.grid.push([]);
     		for (let col = 0; col < 15; col++)
-    			this.grid[row].push("0");
+    			this.grid[row].push(".");
     	}
     	this.network=new Network();
     },
@@ -130,7 +134,11 @@ GameplayManager.prototype = {
 					this.exchangedTiles[i]=0;
 			}
 		}
-    	else if (this.turn == true)
+		else if (this.blankTile && this.waiting==true)
+		{
+			this.selectedTile=tile;
+		}
+    	else if (this.turn == true && this.waiting==false)
 		{
 			if (tile.getUsed() && !this.lastPlayed.includes(tile) )
 				return;
@@ -171,36 +179,50 @@ GameplayManager.prototype = {
     boardClick: function(row,col,action){
     	// NOTE: the network/communication module can call this function after setting the selected tile
     	// with the desired (row, col) position to simulate the mouse click on game board
-    	if(action=='shuffle'&& this.turn==true)
+    	if(action=='shuffle'&& this.turn==true && this.waiting==false)
 			//shuffle condition 
 			this.userTiles=this.bag.shuffle(this.userTiles);
-		else if(action=='exchange'&& this.turn==true && !this.lastPlayed.length)
+		else if(action=='exchange'&& this.turn==true && !this.lastPlayed.length && this.waiting==false)
 		{
 			if(this.moving==false && this.exchange==false )//exchange condition
 				this.gen=new GenerateTiles(this.app,this.board,this.userTiles);
 		}
 		
-		else if ( action=='ok' && this.turn==true)
+		else if ( action=='ok' && this.turn==true && this.waiting==false)
 		{
 			//OK cond 
 			if (this.moving==false )
 			{
+				let row=0
+				let col=0
+				let dir=0
+				let tiles=[]
+				// first check if the tiles are arranged in a correct format
+				// if not, return 
+				if (!this.checkValidity())
+					return;
+
+				//now this is not my turn 
+				//this.turn = !this.turn; 
+				this.waiting=true;
+				//send last play to the server TODO
+				[row,col,dir,tiles]=this.playInfo()
+				this.network.sendPlay(row,col,dir,tiles);
 				//check if the available tiles less than 7 
 				if(this.availableTiles<7)
 				{
-					//now this is not my turn 
-					this.turn = !this.turn; 
-					//send last play to the server
-
 					//complete the tiles to have 7
 					//this line should be changed based on the handler
-					[this.tileAppend,this.availableTiles,this.userTiles]=this.bag.completeTiles(this.userTiles,this.availableTiles,this.tileAppend);
+					// [this.tileAppend,this.availableTiles,this.userTiles]=this.bag.completeTiles(this.userTiles,this.availableTiles,this.tileAppend);
 				}
 			}
-				this.movements = [];
+
+			// mthya2li mfrod di t5osh gowa el if el fo2
+			this.movements = [];
 			//else ignore the press
+
 		}
-		else if (action=='pass' && this.turn==true  && !this.lastPlayed.length)
+		else if (action=='pass' && this.turn==true  && !this.lastPlayed.length && this.waiting==false)
 		{
 			this.network.sendPass();
 		}
@@ -229,7 +251,7 @@ GameplayManager.prototype = {
     		//el click l gdida mlhash => y3ni doosa gdida we lsa mlhash mkan 3l board . awel aw tani aw talet wa7da msh far2a 
     		if (this.movements[this.movements.length-1].row==null){ 
 	    		// el satreen dol lma nezlo ta7t 7sal error , we da ma3nah en function l animation bta3et ticker btbda2 ttndeh awellll ma a2olaha add , 3ashan kda ml7e2sh ywsal lel satren dol lma kaono ta7t we drab error en this.hand = null
-	            if (this.turn) this.hand = this.hands[0];
+	            if (this.turn && this.waiting==false) this.hand = this.hands[0];
 	            else this.hand = this.hands[1];
 
 	    		//logic of movement here ..
@@ -249,12 +271,15 @@ GameplayManager.prototype = {
 		            // note: animation function uses this value and i didnt want to change it so i recalculated what it needed
 		            this.mouseClickPos = {x: ((670 - 225)/15) * col + 225 + ((670 - 225)/15)/2, y: ((575 - 100)/15) * row + 100 + ((575 - 100)/15) / 2};
 		            //console.log("USED: ", this.movements[this.movements.length-1].selectedTile.getUsed())
-		            if (this.turn == true){
-			            if (this.movements[this.movements.length-1].selectedTile.getUsed())
-							this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '0';		            	
+		            if (this.turn == true && this.waiting==false){
+		            	if (typeof this.movements[this.movements.length-1].selectedTile.row !== 'undefined')
+		            		this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '.';
+			    		// if (this.movements[this.movements.length-1].selectedTile.getUsed())
+							// this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '0';		            	
 			           	this.movements[this.movements.length-1].selectedTile.row = row;
 			    		this.movements[this.movements.length-1].selectedTile.col = col;
-			    		this.lastPlayed.push(this.movements[this.movements.length-1].selectedTile)
+			    		if (!this.lastPlayed.includes(this.movements[this.movements.length-1].selectedTile))
+			    			this.lastPlayed.push(this.movements[this.movements.length-1].selectedTile)
 			        }
 		            this.grid[row][col] = 'X';
 
@@ -265,15 +290,15 @@ GameplayManager.prototype = {
 	        			this.movements[this.movements.length-1].row = row;
 						this.movements[this.movements.length-1].col = col;
 		            	this.movements[this.movements.length-1].selectedTile.animationStartingPos = {x:this.movements[this.movements.length-1].selectedTile.container.position.x, y:this.movements[this.movements.length-1].selectedTile.container.position.y};
-		            	this.movements[this.movements.length-1].selectedTile.row = row;
-		    			this.movements[this.movements.length-1].selectedTile.col = col;
-		            	console.log("new animation added")
-						if (this.turn == true){
-				            if (this.movements[this.movements.length-1].selectedTile.getUsed())
-								this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '0';		            	
+						if (this.turn == true && this.waiting==false){
+				    		if (typeof this.movements[this.movements.length-1].selectedTile.row !== 'undefined')
+		            			this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '.';
+							// if (this.movements[this.movements.length-1].selectedTile.getUsed())
+								// this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '0';		            	
 				           	this.movements[this.movements.length-1].selectedTile.row = row;
 				    		this.movements[this.movements.length-1].selectedTile.col = col;
-				        	this.lastPlayed.push(this.movements[this.movements.length-1].selectedTile)
+				        	if (!this.lastPlayed.includes(this.movements[this.movements.length-1].selectedTile))
+			    				this.lastPlayed.push(this.movements[this.movements.length-1].selectedTile)
 				        }
 			            this.grid[row][col] = 'X';		        	}
 	        	}
@@ -284,19 +309,20 @@ GameplayManager.prototype = {
 
 				if (this.movements[this.movements.length-1].selectedTile != this.selectedTile){ //el condition da 3ashan ymnda3 el clicking 3la board fi kaza 7eta wel animation shaghal we m5trtesh tile gdida
 					// 3ashan this.selectedTile di wna fl animation mmkn tb2a new selected tile 3adi aw tkon el selected tile b3at l animation el fat 3ashn ba7oto fiha gowa el animation le 7agat Hager
-					this.movements[this.movements.length-1].selectedTile.row = row;
-		    		this.movements[this.movements.length-1].selectedTile.col = col;
 					this.movements.push({
 						'selectedTile': this.selectedTile,
 						'row': row,
 						'col': col
 					});
-					if (this.turn == true){
-			            if (this.movements[this.movements.length-1].selectedTile.getUsed())
-							this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '0';		            	
+					if (this.turn == true && this.waiting==false){
+			    		if (typeof this.movements[this.movements.length-1].selectedTile.row !== 'undefined')
+		            		this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '.';
+						// if (this.movements[this.movements.length-1].selectedTile.getUsed())
+							// this.grid[this.movements[this.movements.length-1].selectedTile.row][this.movements[this.movements.length-1].selectedTile.col] = '0';		            	
 			           	this.movements[this.movements.length-1].selectedTile.row = row;
 			    		this.movements[this.movements.length-1].selectedTile.col = col;
-			        	this.lastPlayed.push(this.movements[this.movements.length-1].selectedTile)
+			        	if (!this.lastPlayed.includes(this.movements[this.movements.length-1].selectedTile))
+			    			this.lastPlayed.push(this.movements[this.movements.length-1].selectedTile)
 			        }
 		            this.grid[row][col] = 'X';				
 		        }
@@ -308,16 +334,21 @@ GameplayManager.prototype = {
 
     easeOutQuart: function (t) { return 1-(--t)*t*t*t },
     moveHandtoTile: function(delta){
-    	delta = delta*2;
+    	delta = delta*3;
     	// terminating condition
     	if (this.animationT1 >= 60 && this.animationT2 >= 60 && this.animationT3 >= 60) {
-    		console.log("this should mark ending animation")
+    		// console.log("this should mark ending animation")
             this.moving = false;
 			this.character=this.selectedTile.container.children[2].text;
 			this.movements.shift();
             //this.selectedTile = null; //da el satr el wa7id el bymna3 eni al3ab fi dor el odami , 3ashan hwa lw doro , we kan m3aia el selected tile hya hya we dost ai 7ta fl board , ana msh bas2al hna hwa dori wla la2 , 3ashan asln l mfrod el animation y7sal fi dori we msh dori kda kda
         	//this.turn = this.turn; //my turn is true
-			
+			if(this.selectedTile.blank==true)
+			{
+				console.log("from hand i got a blank");
+				this.blank=new Blank();
+				this.myBlank=this.selectedTile;
+			}
 			//mfrod b2a lw el queue msh fadya mashelsh di , lw msh fadia we awel wa7da 3ndha row kman
 			if (!this.movements.length)
 				this.app.ticker.remove(this._animationFunction);
@@ -325,7 +356,7 @@ GameplayManager.prototype = {
 				this.app.ticker.remove(this._animationFunction);
 			else if (this.movements[0].row!=null){
 				//re initialize animation
-				console.log("new animation should start now")
+				// console.log("new animation should start now")
 				this.animationStartingPos = {x:this.hand.container.position.x, y:this.hand.container.position.y};
 		    	this.animationT1 = 0;
 		    	this.animationT2 = 0;
@@ -333,13 +364,15 @@ GameplayManager.prototype = {
 		        this.mouseClickPos = {x: ((670 - 225)/15) * this.movements[0].col + 225 + ((670 - 225)/15)/2, y: ((575 - 100)/15) * this.movements[0].row + 100 + ((575 - 100)/15) / 2};
 		        this.moving = true;
 			}
-			if (this.turn == true)
+			if (this.turn == true && this.waiting==false)
 				this.destroyTiles();
 			if (!this.turn && !this.movements.length){ // dor l AI 5eles (5alas kol l animations)
 				this.turn = !this.turn;
+				this.waiting=false;
 				this.selectedTile = null;
 				// IMPORTANT - mkanha b2a msh hna , ba2et on play bta3et el AI 
-				// this.lastPlayed = [];
+				this.lastPlayed = [];
+
 			}
         }
         // starting condition
@@ -370,7 +403,7 @@ GameplayManager.prototype = {
         	}
             else {
 	            this.hand.container.position.x = this.mouseClickPos.x + this.easeOutQuart(this.animationT3/60) * (this.app.screen.width / 2 + 30 - this.mouseClickPos.x);
-	            if (this.turn)
+	            if (this.turn&& this.waiting==false)
 	            	this.hand.container.position.y = this.mouseClickPos.y + this.easeOutQuart(this.animationT3/60) * (this.app.screen.height + 120 - this.mouseClickPos.y); 
 	            else
 	            	this.hand.container.position.y = this.mouseClickPos.y + this.easeOutQuart(this.animationT3/60) * (-120 - this.mouseClickPos.y);	
@@ -389,6 +422,8 @@ GameplayManager.prototype = {
 			tiles[i].container.position.set(145+29*i,623);
 			tiles[i].container.children[2].text=retTiles[i];
 			tiles[i].container.children[3].text=1;//this line should be updated
+			if(retTiles[i]==' ')
+				tiles[i].blank=true;
 		}
 		this.userTiles=tiles
 	},
@@ -418,7 +453,7 @@ GameplayManager.prototype = {
 		this.exchange=!this.exchange;
 	},
 	isEmpty:function(row, col){
-		if (this.grid[row][col] == '0') return true;
+		if (this.grid[row][col] == '.') return true;
 		else return false;
 	},
 	aiTurn:function()
@@ -447,5 +482,73 @@ GameplayManager.prototype = {
 			GameplayManager.get().turnText.containerPointer.children[0].text = "Your turn"
 		else 
 			GameplayManager.get().turnText.containerPointer.children[0].text = "AI's turn"
+	},
+	checkValidity:function(){
+		console.log("validating")
+		if (!this.lastPlayed.length) return false;
+		let samerow = true; let samecol = true;
+ 		for (let i= 1; i < this.lastPlayed.length; i++){
+			if (this.lastPlayed[i].row != this.lastPlayed[i-1].row) samerow=false;
+			if (this.lastPlayed[i].col != this.lastPlayed[i-1].col) samecol=false;
+			if (!samerow && !samecol) 
+				return false;
+		}
+		this.lastPlayed.sort(function(a,b){ if (samerow) return a.col - b.col; if (samecol) return a.row - b.row; })
+		// for (let i= 1; i < this.lastPlayed.length; i++){
+		//	if ( ( samerow && this.lastPlayed[i].col - this.lastPlayed[i-1].col > 1 )
+		//	 		|| ( samecol && this.lastPlayed[i].row - this.lastPlayed[i-1].row > 1 ) ) return false;
+		// }
+		let col = this.lastPlayed[0].col;
+		let row = this.lastPlayed[0].row;
+		if (samerow){
+			while (col < this.lastPlayed[this.lastPlayed.length-1].col){
+				if (this.grid[row][col]!='X') return false;
+				console.log(col)
+				col++;
+			}
+		}
+		if (samecol){
+			while (row < this.lastPlayed[this.lastPlayed.length-1].row){
+				if (this.grid[row][col]!='X') return false;
+				console.log(row)
+				row++;
+			}
+		}
+
+		return true;
+	},
+	playInfo:function()
+	{
+		//this function extract the info of the last play to bbe sent to the server
+		let tiles=[]
+		let row=this.lastPlayed[0].row
+		let col=this.lastPlayed[0].col
+		let dir=0 //zero if in the same row else 1
+		var i=0
+		for(i=0;i<this.lastPlayed.length-1;i++)
+		{
+			if(this.lastPlayed[i].row!=this.lastPlayed[i+1].row)
+				dir=1
+			tiles[i]=this.lastPlayed[i].container.children[2].text;
+			tiles[i]=tiles[i].charCodeAt(0) -64;
+			if(this.lastPlayed[i].blank==true)
+				tiles[i]=100+tiles[i];
+		}
+		tiles[i]=this.lastPlayed[i].container.children[2].text;
+		tiles[i]=tiles[i].charCodeAt(0) -64;
+		if(this.lastPlayed[i].blank==true)
+				tiles[i]=100+tiles[i];
+		//complete the array
+		for (i=i+1;i<7;i++)
+			tiles[i]=0
+			
+		return [row,col,dir,tiles]
+	},
+	//this function used by the blank tiles only 
+	setBlankWaiting:function(value)
+	{
+		this.waiting=value;
+		this.blankTile=value;
 	}
+
 };

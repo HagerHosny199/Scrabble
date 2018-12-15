@@ -33,7 +33,7 @@ GenerateTiles.prototype={
 		// create a new Sprite from an image path
         this.frameSprite = PIXI.Sprite.fromImage(this.framePath); 
 		//this.frameSprite.position.set(1190,700);
-		this.frameSprite.position.set(-700,700);
+		this.frameSprite.position.set(-120,700);
 		this.container.scale.set(0.3); 
 		this.container.addChild(this.frameSprite);
 		
@@ -67,7 +67,7 @@ GenerateTiles.prototype={
 	loadTiles:function()
 	{
 		var x=394;
-		var y=-640;
+		var y=-350;
 		var j=0;
 		//create array of the tiles 
 		for(var i=0;i<this.userTiles.length;i++)
@@ -99,7 +99,7 @@ GenerateTiles.prototype={
 	},
 	loop:function(app){
 	app.render(this.container);
-		this.frameSprite.position.x += 20; 
+		this.frameSprite.position.x += 60; 
 		if(this.frameSprite.position.x==1140)
 			this.ticker.stop();
 				
@@ -107,8 +107,8 @@ GenerateTiles.prototype={
 	},
 	loop2:function(app){
 	app.render(this.container);
-		this.frameSprite.position.x -= 20; 
-		if(this.frameSprite.position.x==-700)
+		this.frameSprite.position.x -= 70; 
+		if(this.frameSprite.position.x==-420)
 			this.ticker.stop();
 				
 		
@@ -118,13 +118,13 @@ GenerateTiles.prototype={
 		for(var i=0;i<this.tiles.length;i++)
 		{  
 			if(this.userTiles[i].getUsed()==0)
-				this.tiles[i].container.position.y += 10; 
+				this.tiles[i].container.position.y += 30; 
 		}
 	},
 	loopTiles2:function(app){
 	app.render(this.container);
 		for(var i=0;i<this.tiles.length;i++)
-		this.tiles[i].container.position.y -= 10; 
+		this.tiles[i].container.position.y -= 30; 
 		
 	},
 	

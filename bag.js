@@ -81,9 +81,13 @@ Bag.prototype = {
 		}*/
 			
 	},
-	completeTiles:function(tiles,availableTiles,tileAppend)
+	completeTiles:function(tiles,availableTiles,tileAppend,newTiles)
 	{
+		// tiles da el array of tiles kolaha , we ba3adi 3la awel 7 a5alihom dol l tiles bto3 l rack
+		// tileAppend da el index bta3 el mkan l mfrod abda2 mno 
+		// available tiles da ?
 		var temp;
+		var j=0;
 		console.log("now ffrom comp ava:",availableTiles,"tileAppend=",tileAppend);
 		if (availableTiles<0)
 			availableTiles=0
@@ -95,44 +99,49 @@ Bag.prototype = {
 				tiles[tileAppend]=new Tile();
 				tiles[tileAppend].container.position.set(tiles[i].container.position.x,tiles[i].container.position.y);
 				tiles[tileAppend].container.children[2].text=tiles[i].container.children[2].text;
+				tiles[tileAppend].container.children[3].text=tiles[i].container.children[3].text;
 				tiles[tileAppend].setUsed(1);
 				
-				
+				//check blank
+				if(newTiles[j]==' ')
+					tiles[i].blank=true;
 				//generate new tile 
-				temp=this.generateUserTiles(1);
-				tiles[i].container.children[2].text=temp[1][0];
-				tiles[i].container.children[3].text=temp[0][0];
+				temp=this.generateUserTiles(newTiles[j]);
+				tiles[i].container.children[2].text=newTiles[j++]; //char
+				tiles[i].container.children[3].text=temp; //value
 				tiles[i].container.position.x=145+29*(availableTiles);
 				tiles[i].container.position.y=623;
 				tiles[i].container.rotation=0;
 				tiles[i].setUsed(0); //
+				// Bassem : 7atet da wna msh fahem awi 3ashan bs asala7 el kan by7sl fl grid , 3ashan kont bab2a bal3ab 
+				// mn l rack we byb2a lihom arkam row we col we da mynfa3sh 3ashan hy5aloha '.' fl grid
+				tiles[i].row = undefined;
+				tiles[i].col = undefined;
+				//--
 				tileAppend++;
 				availableTiles++;
 				//console.log(temp[1]);
+				console.log(tiles[i].blank);
 			}
+
 		}
 		
 		return [tileAppend,availableTiles,tiles];
 	},
 	//this function generates the n tiles of the user 
-	generateUserTiles:function(n){
-		var tiles={};
-		var value={};
-		var num=0;
-		//generate random 
-			while(num<n)
-			{
-				this.random=this.generateRandom();
-				if(availableTiles[this.random-1]>0)
-					{
-						//add the tile to the returned bag
-						tiles[num]=this.characters[this.random-1];
-						value[num]=this.values[this.random-1];
-						availableTiles[this.random-1]--;
-						num++;
-					}
-			}
-		return [value,tiles];
+	generateUserTiles:function(character){
+		var value=1;
+		//generate value
+		if(character== ' ')//blank
+			value=this.values[26];
+		else
+		{
+			value=character.charCodeAt(0) -65
+			value=this.values[value];
+		}	
+		console.log(character," = ",value)
+
+		return value
 	},
 	//this function take an array of tiles and shuffle them 
 	shuffle:function(array)
