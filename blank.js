@@ -102,7 +102,7 @@ Blank.prototype={
 	if(this.frameSprite.position.x<=-420)
 		{
 			this.ticker.stop();
-
+			this.container.destroy();
 		}
 				
 		
@@ -144,6 +144,8 @@ Blank.prototype={
 			mng.setBlankWaiting(false);
 			//update the tile value
 			mng.myBlank.container.children[2].text=mng.selectedTile.container.children[2].text;
+			this.container.destroy();
+			mng.blank=null;
 		}	
 	},
 }

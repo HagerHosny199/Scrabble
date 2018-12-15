@@ -107,7 +107,11 @@ GameplayManager.prototype = {
 						tile.container.children[2].text=initGrid[15*row+col];
 						//tile.container.children[2].text=String.fromCharCode('A'.charCodeAt()+tile.container.children[2].text-1);
 						//set the char value
-						tile.container.children[3].text='3'; //this value should be changed 
+						if(initGrid[15*row+col]==' ')tile.container.children[3].text=this.bag.values[26];
+						else
+							tile.container.children[3].text=this.bag.values[initGrid[15*row+col].charCodeAt()-65];  //this line should be changed
+						
+						//tile.container.children[3].text='3'; //this value should be changed 
 						//mark it as used
 						tile.setUsed();
 						//update the grid array
@@ -133,20 +137,24 @@ GameplayManager.prototype = {
 		//check exchange condition
 		if(this.exchange == true) 
 		{
-			//getting not used tiles
-			var genTiles=this.gen.getTiles();
-			//highlight the tile only
-			tile=tile.addShadow();
-			//to handle the check and uncheck case
-			for(var i =0;i<7;i++)
-			{
-				if(genTiles[i].getSelected()==true)
-					this.exchangedTiles[i]=1;
-				else
-					this.exchangedTiles[i]=0;
-			}
+			let x=-1
+			x=(tile.container.position.x -394 ) /40;
+			if(x>=0 && x<4)
+				{//getting not used tiles
+				var genTiles=this.gen.getTiles();
+				//highlight the tile only
+				tile=tile.addShadow();
+				//to handle the check and uncheck case
+				for(var i =0;i<7;i++)
+				{
+					if(genTiles[i].getSelected()==true)
+						this.exchangedTiles[i]=1;
+					else
+						this.exchangedTiles[i]=0;
+				}
+				genTiles=null;
+		}	
 		}
-
 		else if (this.blankTile && this.waiting==true)
 		{
 			this.selectedTile=tile;
@@ -181,7 +189,9 @@ GameplayManager.prototype = {
     	let t = new Tile();
 		t.container.position.set(500,-100);
 		t.container.children[2].text=tile_char;
-		t.container.children[3].text='3';  //this line should be changed
+		if(tile_char==' ')t.container.children[3].text=this.bag.values[26];
+		else
+			t.container.children[3].text=this.bag.values[tile_char.charCodeAt()-65];  //this line should be changed
 		t.turn = true;
 		t.setUsed();
 		this.movements.push({ 'selectedTile': t, 'row': null, 'col': null });	
@@ -190,6 +200,8 @@ GameplayManager.prototype = {
     getmovingornot: function(){return this.moving},
 
     boardClick: function(row,col,action){
+
+    	console.log("exchange",this.exchange)
     	// NOTE: the network/communication module can call this function after setting the selected tile
     	// with the desired (row, col) position to simulate the mouse click on game board
     	if(action=='shuffle'&& this.turn==true && this.waiting==false)
@@ -197,7 +209,8 @@ GameplayManager.prototype = {
 			this.userTiles=this.bag.shuffle(this.userTiles);
 		else if(action=='exchange'&& this.turn==true && !this.lastPlayed.length && this.waiting==false)
 		{
-			if(this.moving==false && this.exchange==false )//exchange condition
+			console.log("from exchange")
+			if(this.moving==false )//exchange condition
 				this.gen=new GenerateTiles(this.app,this.board,this.userTiles);
 		}
 		
@@ -241,16 +254,29 @@ GameplayManager.prototype = {
 		}
 		else if (row>14 || col>14) return;
 		//check if exchange and go 
-		else if (this.exchange==true && row>=8 && row <=9 && col>=8 && col <=9  && !this.lastPlayed.length)
+		else if (this.exchange==true  && !this.lastPlayed.length)
 		{
+			let flag=false;
 			//remove the board 
 			GenerateTiles.get().removeBorad();
-			//toggle exchange
-			//this.setExchange();
+			//check if there is no tile to be changed
+			for(var i =0; i<7;i++)
+			{
+				if(this.exchangedTiles[i]==1)flag=true;
+			}
+			if(!flag)
+			{
+				//toggle exchange
+				this.setExchange();
+				console.log(this.exchange)
+			}
+			else
+			{
 			//exchange the tiles -> send request to the network
 			this.network.sendExchange(this.userTiles,this.exchangedTiles)
 			//this.userTiles=this.bag.exchange(this.userTiles,this.exchangedTiles);
 			this.turn = false;
+			}
 			
 			
 		} 
@@ -439,7 +465,9 @@ GameplayManager.prototype = {
 			tiles[i]=new Tile();
 			tiles[i].container.position.set(145+29*i,623);
 			tiles[i].container.children[2].text=retTiles[i];
-			tiles[i].container.children[3].text=1;//this line should be updated
+			if(retTiles[i]==' ')tiles[i].container.children[3].text=this.bag.values[26];
+			else
+			tiles[i].container.children[3].text=this.bag.values[retTiles[i].charCodeAt()-65];  //this line should be changed
 			if(retTiles[i]==' ')
 				tiles[i].blank=true;
 		}

@@ -88,11 +88,13 @@ Network.prototype = {
 			mngr.grid[mngr.lastPlayed[i].row][mngr.lastPlayed[i].col] = '.'
 			mngr.lastPlayed[i].row = undefined;
 			mngr.lastPlayed[i].col = undefined;
-			mngr.lastPlayed[i].used = false;
+			mngr.availableTiles++;
+			//mngr.lastPlayed[i].used = false;
 		}
 		for (let i = 0; i < 7; i++) {
 			mngr.userTiles[i].container.position.x = 145 + 29 * (i);
 			mngr.userTiles[i].container.position.y = 623;
+			mngr.userTiles[i].setUsed(0);
 		}
 		//mngr.waiting = false;
 		//mngr.turn = true;
