@@ -43,4 +43,6 @@ const guiTransitions = {
     THINKING_SEND_PLAY_TO_S: 10,//{column,row,direction,tiles,score=-1}
     THINKING_SEND_EXCHANGE_TO_S: 11,//{tiles}
     THINKING_SEND_PASS_TO_S: 12,//Nothing
+    GUI_REQUEST_HINT:80,//{tiles}
+    AGENT_SEND_HINT:85//{column,row,direction,tiles,score}
 }

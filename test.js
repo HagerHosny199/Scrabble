@@ -84,11 +84,13 @@ var startgame = function(){
 
 			case guiTransitions.OPPONENT_CHALLENEGE_ACCEPTED:
 				net.challengeAccepted();
-
 				$.notify("Opponent challenge accepted", "info", { position: "top center" });
 				GameplayManager.get().board.updateScore(1, -GameplayManager.get().lastScore)
-
 				break;
+			case guiTransitions.AGENT_SEND_HINT:
+				console.log(msg);
+				
+
 
 		}
 	}
