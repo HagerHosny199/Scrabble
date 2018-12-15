@@ -99,6 +99,7 @@ GameplayManager.prototype = {
 						tile.container.position.set(x,y);
 						//set the char
 						tile.container.children[2].text=initGrid[15*row+col];
+						tile.container.children[2].text=String.fromCharCode('A'.charCodeAt()+tile.container.children[2].text-1);
 						//set the char value
 						tile.container.children[3].text='3'; //this value should be changed 
 						//mark it as used
