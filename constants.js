@@ -1,14 +1,5 @@
 const guiTransitions = {
 
-
-    // Hager todo:  blank tiles selection
-    //              exhange network function
-    // dectement el time dyman , we e3ml set lel time fi ai wa2t byigi fih
-
-    // todo:
-    // awel wa7da fl nos
-    // ai le3ba lazm tkamel 3la wa7da mwgoda mn l tiles (mina by2ol n5aliha trga3 invalid as-hal)
-
     // ip, port fl awel 
     // el tiles el ana baraga3ha lel rack, mfrod tt7at fi a 3ashan tedom 3la e5watha lma al3ab el gmbhom ? 
 
