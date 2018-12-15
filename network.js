@@ -200,5 +200,16 @@ Network.prototype = {
 		[mngr.tileAppend, mngr.availableTiles, mngr.userTiles] = mngr.bag.completeTiles(mngr.userTiles, mngr.availableTiles, mngr.tileAppend, tiles);
 		if (mngr.exchange == true)
 			mngr.setExchange();
+	},
+	requestHint:function(){
+		let tilestoSend = [];
+		for (let i = 0; i < 7; i++){
+			tilestoSend[i] = mngr.userTiles[i].container.children[2].text;
+			tilestoSend[i]=tilestoSend[i].charCodeAt(0) -64;
+			if(mngr.userTiles[i].blank==true)
+				tilestoSend[i]=100+tilestoSend[i];
+		}
+
 	}
+	
 }
