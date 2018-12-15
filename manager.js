@@ -245,7 +245,7 @@ GameplayManager.prototype = {
 			//remove the board 
 			GenerateTiles.get().removeBorad();
 			//toggle exchange
-			this.setExchange();
+			//this.setExchange();
 			//exchange the tiles -> send request to the network
 			this.network.sendExchange(this.userTiles,this.exchangedTiles)
 			//this.userTiles=this.bag.exchange(this.userTiles,this.exchangedTiles);

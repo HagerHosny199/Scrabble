@@ -185,7 +185,6 @@ Network.prototype = {
 			GameplayManager.get().turn=!GameplayManager.get().turn;
 			GameplayManager.get().waiting=false;
 		}
-		//GameplayManager.get().lastPlayed = [];		
 	},
 	//this function update the game remaining time
 	setTime:function(time)
@@ -198,5 +197,7 @@ Network.prototype = {
 	completeTiles:function(tiles){
 		let mngr = GameplayManager.get();
 		[mngr.tileAppend, mngr.availableTiles, mngr.userTiles]= mngr.bag.completeTiles(mngr.userTiles, mngr.availableTiles, mngr.tileAppend, tiles);
+		if(mngr.exchange==true)
+			mngr.setExchange();
 	}
 }
