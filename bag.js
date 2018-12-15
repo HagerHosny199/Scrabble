@@ -88,6 +88,7 @@ Bag.prototype = {
 		// available tiles da ?
 		var temp;
 		var j=0;
+		var k=0;
 		var mng=GameplayManager.get();
 		console.log("now ffrom comp ava:",availableTiles,"tileAppend=",tileAppend);
 		if (availableTiles<0)
@@ -128,7 +129,7 @@ Bag.prototype = {
 			{
 				if(mng.exchangedTiles[i]!=0)
 				{
-				tiles[i].container.children[2].text=tiles[i];
+				tiles[i].container.children[2].text=newTiles[k++];
 				tiles[i].container.children[3].text=5;
 				}
 			}
