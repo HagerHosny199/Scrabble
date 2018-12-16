@@ -593,6 +593,12 @@ GameplayManager.prototype = {
 		this.waiting=value;
 		this.blankTile=value;
 	},
+	findMatch:function(row, col){
+		for (i=0; i<this.lastPlayed.length; i++)
+			if (this.lastPlayed[i].row == row && this.lastPlayed[i].col == col)
+				return true;
+		return false;
+	},
 	showHint:function(row,col,direction,tiles){
 		if (row == -1 || col == -1 || direction==2) return;
 		row--;
@@ -611,6 +617,9 @@ GameplayManager.prototype = {
 			if (direction == 0) col++;
 			else if (direction == 1) row++;
 			while(!this.isEmpty(row,col)){
+				// if l bt3a di mwgoda fi lastPlayed
+				// break
+				if (this.findMatch(row,col)) break;
 				if (direction == 0) col++;
 				else if (direction == 1) row++;
 				if (row > 15 || col > 15) break;
