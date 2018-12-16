@@ -85,18 +85,38 @@
 
 
         }
-        
+        .center {
+            margin: auto;
+            margin-top: 70px;
+            text-align: center;
+            width: 35%;
+            background-color: #00ffff;
+            border-radius: 25px;
+            padding-top: 1.5%;
+            padding-bottom: 1.5%;
+            }
+            .image{
+                margin-top:100px; 
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 30%;
+                height: 30%;
+
+            }
     </style>
 
 </head>
 <body>
-<div id="container"> </div>
+<div style="display:none;" id="container"> </div>
 <p id="msg"> please flip your device into landscape orientation or if you're using a desktop browser, maximize your window</p>
 <!-- <img src="assets/ai.png" style="transform: translate(-500px, 0)  scale(0.5);"> -->
-<div id="configform">
-IP: <input type="text" id="ip" value="localhost"><br>
-port: <input type="text" id="port" value=""><br>
-<button onclick="startgame()">Start Game</button>
+<img id="logo" src="assets/logo.jpg" class="image">
+<div class="center" id="configform">
+    <p>Enter the IP and port of the agent</p>
+    IP: <input type="text" id="ip" value="localhost"><br>
+    port: <input  type="text" id="port" value=""><br>
+    <button onclick="startgame()">Start Game</button>
 </div>
 </body>
 </html>

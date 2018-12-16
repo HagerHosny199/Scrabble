@@ -1,10 +1,16 @@
 
 var tiles=[];
+window.onload=function(){
+	document.getElementById("ip").value=localStorage.getItem('IP');
+	document.getElementById("port").value=localStorage.getItem('port');
+};
 var startgame = function(){ 
 
 
 	var ip=document.getElementById("ip").value;
 	var port=document.getElementById("port").value;
+	localStorage.setItem('IP',ip);
+	localStorage.setItem('port',port);
 	var url;
 	if(port==="")
 	{
@@ -13,6 +19,8 @@ var startgame = function(){
 		url='ws://'+ip+':'+port;
 	}
 	document.getElementById("configform").style.display="none";	
+	document.getElementById("logo").style.display="none";	
+	document.getElementById("container").style.display="block";	
 	//initializing PIXI
 	let gfx = new Graphics();
 
@@ -71,9 +79,19 @@ var startgame = function(){
 				if (msg.reason)
 					$.notify(msg.reason,  { position: "top center" });
 
-				net.challengeAccepted();
-				GameplayManager.get().waiting = false;
-				GameplayManager.get().turn = true;
+				if (GameplayManager.get().exchange == true)
+					{
+						console.log("exchnge invvaild",GameplayManager.get().turn)
+						GameplayManager.get().setExchange();
+						GameplayManager.get().turn=true;
+					}
+				else
+				{
+					console.log("challenge invvaild")
+					net.challengeAccepted();
+					GameplayManager.get().waiting = false;
+					GameplayManager.get().turn = true;
+				}
 				break;
 
 			case guiTransitions.OPPONENT_PLAY_PASS:
