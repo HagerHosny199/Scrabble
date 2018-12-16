@@ -265,6 +265,8 @@ GameplayManager.prototype = {
 			this.movements = []
 			this.selectedTile = null;
 			this.network.sendPass();
+		}else if(action=='hint' && this.turn==true){
+			this.network.requestHint();
 		}
 		else if (row>14 || col>14) return;
 		//check if exchange and go 
