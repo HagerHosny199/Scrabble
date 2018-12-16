@@ -91,7 +91,10 @@ var startgame = function(){
 				break;
 			case guiTransitions.AGENT_SEND_HINT:
 				console.log(msg);
-				
+				msg.tiles = removeZeros(msg.tiles);
+				msg.tiles = changeTilesToChar(msg.tiles);
+				GameplayManager.get().showHint(msg.row, msg.col, msg.dir, msg.tiles);
+				break;
 
 
 		}

@@ -47,6 +47,8 @@ let GameplayManager = function(){
     GameplayManager.instance = this;
     this.network=null;
 
+    this.hint = [];
+
     this.init();
     setInterval(this.showTurn, 700);
     setInterval(function(){ 
@@ -589,6 +591,38 @@ GameplayManager.prototype = {
 		this.waiting=value;
 		this.blankTile=value;
 	},
+	showHint:function(row,col,direction,tiles){
+		if (row == -1 || col == -1 || direction==2) return;
+		row--;
+		col--;
+		// ha3ml l tiles we a5alihom msh clickable 3adi we a7othom fi array this.hint
+		for (let i = 0; i < tiles.length; i++){
+			let pos = {x: ((670 - 225)/15) * col + 225 + ((670 - 225)/15)/2, y: ((575 - 100)/15) * row + 100 + ((575 - 100)/15) / 2};
+			let a = new Tile();
+			a.tileSprite.interactive = false;
+			a.tileSprite.buttonMode = false;
+			a.tileSprite.alpha = 0.4;
+			this.hint.push(a);
+			a.container.position.x = pos.x;
+			a.container.position.y = pos.y;
+			a.container.children[2].text = tiles[i]
+			if (direction == 0) col++;
+			else if (direction == 1) row++;
+			while(!this.isEmpty(row,col)){
+				if (direction == 0) col++;
+				else if (direction == 1) row++;
+				if (row > 15 || col > 15) break;
+			}
+		}
+
+		//ha3ml setinterval 7aba kda , awl ma y5laso , asheel l tiles container removechild di , we ashelhom mn l array this.hint
+		setTimeout(function(){ 
+			for (let i = 0; i < GameplayManager.get().hint.length; i++){
+		    	GameplayManager.get().hint[i].app.stage.removeChild(GameplayManager.get().hint[i].container);
+			}
+			GameplayManager.get().hint = [];
+		} , 3000);
+	},
 	sendExchange:function()
 	{
 		console.log("set exchange")
@@ -613,5 +647,6 @@ GameplayManager.prototype = {
 			}
 			
 	}
+
 
 };
