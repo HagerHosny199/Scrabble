@@ -8,13 +8,13 @@ let Graphics = function() {
 
 	//initializing PIXI
 	console.log("Initializing graphics PIXI object")
-    this.app = new PIXI.Application(1355, 690, {backgroundColor : 0x16D6EB, antialias: true, forceFXAA: true});
+    this.app = new PIXI.Application(1355, 690, {backgroundColor : 0x16D6EB, antialias: false, forceFXAA: false});
     
     //document.body.appendChild(this.app.view);
     document.getElementById('container').appendChild(this.app.view);
     
     //PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST; // Scale mode for all textures, will retain pixelation, da 7lw lel pixel art bs bye3ml alias fl sewar el 3adia
-    PIXI.settings.RENDER_OPTIONS.antialias = true;
+    //PIXI.settings.RENDER_OPTIONS.antialias = true;
 
     //Make outer <div> to position: relative and inner <div> to position: absolute. It should work for you.
     this.app.renderer.view.style.position = 'absolute'

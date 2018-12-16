@@ -11,8 +11,11 @@ let Tile= function(){
 	this.used=0;
 	this.blank=false;
 	this.tilePath = 'assets/blank-tile.png';
+	this.tiletexture = PIXI.Texture.fromImage('assets/blank-tile.png');
     this.shadowPath = 'assets/blank-tile-shadow.png';
+    this.shadowtexture = PIXI.Texture.fromImage('assets/blank-tile-shadow.png');
     this.shadowPath2 = 'assets/blank-tile-shadow-red.png';
+    this.shadowtexture2 = PIXI.Texture.fromImage('assets/blank-tile-shadow-red.png');
     this.tileSound = null;
     this.clickable = true; //true on my turn only
     this.visible = true;
@@ -20,7 +23,7 @@ let Tile= function(){
     this.exchangeTiles=[0,0,0,0,0,0,0];
 	this.init();
 }
-
+Tile.loaded = false;
 Tile.prototype = {
     init: function(){
 		//create container
@@ -31,9 +34,9 @@ Tile.prototype = {
 		//adding sound effect 
 		this.tileSound = PIXI.sound.Sound.from('assets/tile-sound-effect.mp3');
 		// create a new Sprite from an image path
-        this.tileSprite = PIXI.Sprite.fromImage(this.tilePath);          
-        this.shadowSprite = PIXI.Sprite.fromImage(this.shadowPath);
-		this.shadowSprite2 = PIXI.Sprite.fromImage(this.shadowPath2);
+        this.tileSprite = new PIXI.Sprite(this.tiletexture);          
+        this.shadowSprite = new PIXI.Sprite(this.shadowtexture);
+		this.shadowSprite2 = new PIXI.Sprite(this.shadowtexture2);
 		
 		//create text style
 		let style = new PIXI.TextStyle({ fontFamily: 'Arial', fontSize: 28, dropShadow: true, dropShadowColor: '#000000',
