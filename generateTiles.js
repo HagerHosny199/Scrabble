@@ -112,12 +112,13 @@ GenerateTiles.prototype={
 	app.render(this.container);
 		this.go.sprite.y=-375;
 		this.frameSprite.position.x -= 70; 
-		if(this.frameSprite.position.x<=-420)
-			{
-				this.ticker.stop();	  // el error hna , bsbab en boardclick hna gowa loop, we fi error by7sl gwa by5liha matekmalsh fa my3mlsh stop el ticker HAGER	
-				this.container.destroy();
-				GameplayManager.get().boardClick(0, 0,null);
-			}
+		if(this.frameSprite.position.x<-420)
+		{
+			this.ticker.stop();	  // el error hna , bsbab en boardclick hna gowa loop, we fi error by7sl gwa by5liha matekmalsh fa my3mlsh stop el ticker HAGER	
+			//this.container.destroy();
+			console.log("termination cond in gen",typeof (this.frameSprite.position.x))
+			GameplayManager.get().sendExchange();
+		}
 		
 	},
 	loopTiles:function(app){
@@ -134,6 +135,7 @@ GenerateTiles.prototype={
 			this.tiles[i].container.position.y -= 30; 
 	},
 	removeBorad:function(){
+		console.log("remove")
 	///create a ticker
 	this.ticker  =  new PIXI.ticker.Ticker();
 	this.ticker.add((deltaTime) => {
@@ -143,6 +145,7 @@ GenerateTiles.prototype={
 	this.ticker.add((deltaTime) => {
 		this.loopTiles2(this.app);
 	});
+
 	},
 	getTiles:function()
 	{

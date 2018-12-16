@@ -136,6 +136,7 @@ Button.prototype = {
 		}
 		else if(this.mode=='go2')
 		{
+			console.log("go2");
 			GenerateTiles.get().removeBorad();
 		}
 		else if(this.mode=='play')

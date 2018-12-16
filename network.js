@@ -105,7 +105,7 @@ Network.prototype = {
 	//1-update the tiles 
 	//2-Pass the game 
 	exchange: function (tiles) {
-
+	console.log("from rec exchange")
 		//check if it is valid or not 
 		if (tiles.length == 0)
 			//not valid state 
@@ -125,6 +125,7 @@ Network.prototype = {
 	},
 	//this function send request to the server to exchange 
 	sendExchange: function (tiles, exchangedTiles) {
+		console.log("from send exchange")
 		let userTiles = []
 		let tempChar;
 		for (var i = 0; i < 7; i++) {
@@ -196,6 +197,7 @@ Network.prototype = {
 		GameplayManager.get().board.updateGameTime(time)
 	},
 	completeTiles: function (tiles) {
+		console.log("from rec exchange")
 		let mngr = GameplayManager.get();
 		[mngr.tileAppend, mngr.availableTiles, mngr.userTiles] = mngr.bag.completeTiles(mngr.userTiles, mngr.availableTiles, mngr.tileAppend, tiles);
 		if (mngr.exchange == true)
