@@ -74,12 +74,23 @@ Network.prototype = {
 	//end:this is the termination of the game
 	end: function () {
 		let endGame = new End();
+		let score=Score.get();
+		let AI=parseInt(score.score2.text);
+		let human=parseInt(score.score1.text);
 		//empty the grid
 		for (let row = 0; row < 15; row++) {
 			GameplayManager.get().grid.push([]);
 			for (let col = 0; col < 15; col++)
 				GameplayManager.get().grid[row].push(".");
 		}
+		if(AI>human)
+			$.notify("LoOoOoOoser yeeeee :P ",  { position: "top center" });
+		else if(human>AI)
+			$.notify("Congratulations msh bnfs -_-",  { position: "top center" });
+		else
+			$.notify("Draw !!",  { position: "top center" });
+		
+		
 	},
 	challengeAccepted: function () {
 		mngr = GameplayManager.get();
