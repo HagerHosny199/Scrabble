@@ -67,7 +67,8 @@ var startgame = function(){
 				console.log(msg.reason);
 
 				$.notify("Invalid move", { position: "top center" });
-				$.notify(msg.reason);
+				if (msg.reason)
+					$.notify(msg.reason,  { position: "top center" });
 
 				net.challengeAccepted();
 				GameplayManager.get().waiting = false;

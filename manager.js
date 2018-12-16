@@ -204,9 +204,11 @@ GameplayManager.prototype = {
     	console.log("exchange",this.exchange)
     	// NOTE: the network/communication module can call this function after setting the selected tile
     	// with the desired (row, col) position to simulate the mouse click on game board
-    	if(action=='shuffle'&& this.turn==true && this.waiting==false)
-			//shuffle condition 
+    	if(action=='shuffle'&& this.turn==true && this.waiting==false){
+    		this.movements = []
+			this.selectedTile = null;
 			this.userTiles=this.bag.shuffle(this.userTiles);
+    	}
 		else if(action=='exchange'&& this.turn==true && !this.lastPlayed.length && this.waiting==false)
 		{
 			console.log("from exchange")
@@ -225,10 +227,16 @@ GameplayManager.prototype = {
 				let col=0
 				let dir=0
 				let tiles=[]
+				
+				if (this.lastPlayed.length == 0) {
+					this.movements = [];
+					this.selectedTile = null;
+					return;
+				}
 				// first check if the tiles are arranged in a correct format
 				// if not, return 
-				if (!this.checkValidity())
-					return;
+				//if (!this.checkValidity())
+				//	return;
 
 				//now this is not my turn 
 				//this.turn = !this.turn; 
@@ -252,6 +260,8 @@ GameplayManager.prototype = {
 		}
 		else if (action=='pass' && this.turn==true  && !this.lastPlayed.length && this.waiting==false)
 		{
+			this.movements = []
+			this.selectedTile = null;
 			this.network.sendPass();
 		}
 		else if (row>14 || col>14) return;

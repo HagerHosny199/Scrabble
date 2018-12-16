@@ -202,6 +202,7 @@ Network.prototype = {
 			mngr.setExchange();
 	},
 	requestHint:function(){
+		let mngr = GameplayManager.get();
 		let tilestoSend = [];
 		for (let i = 0; i < 7; i++){
 			tilestoSend[i] = mngr.userTiles[i].container.children[2].text;

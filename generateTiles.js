@@ -114,7 +114,7 @@ GenerateTiles.prototype={
 		this.frameSprite.position.x -= 70; 
 		if(this.frameSprite.position.x<=-420)
 			{
-				this.ticker.stop();		
+				this.ticker.stop();	  // el error hna , bsbab en boardclick hna gowa loop, we fi error by7sl gwa by5liha matekmalsh fa my3mlsh stop el ticker HAGER	
 				this.container.destroy();
 				GameplayManager.get().boardClick(0, 0,null);
 			}
