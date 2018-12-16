@@ -197,7 +197,7 @@ Network.prototype = {
 		GameplayManager.get().board.updateGameTime(time)
 	},
 	completeTiles: function (tiles) {
-		console.log("from rec exchange")
+		console.log("from rec exchange",tiles)
 		let mngr = GameplayManager.get();
 		[mngr.tileAppend, mngr.availableTiles, mngr.userTiles] = mngr.bag.completeTiles(mngr.userTiles, mngr.availableTiles, mngr.tileAppend, tiles);
 		if (mngr.exchange == true)

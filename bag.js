@@ -129,13 +129,15 @@ Bag.prototype = {
 			{
 				if(mng.exchangedTiles[i]!=0)
 				{
+					console.log(newTiles[k]);
 				tiles[i].container.children[2].text=newTiles[k];
 				//check blank
-				if(newTiles[j]==' ')
+				if(newTiles[k]==' ')
 					{
 						console.log("we found a blank")
 						tiles[i].blank=true;
 						tiles[i].container.children[3].text=this.values[26];
+						k++;
 					}
 				else
 					{
