@@ -268,32 +268,11 @@ GameplayManager.prototype = {
 		}
 		else if (row>14 || col>14) return;
 		//check if exchange and go 
-		else if (this.exchange==true  && !this.lastPlayed.length)
+		/*else if (this.exchange==true  && !this.lastPlayed.length)
 		{
-			let flag=false;
-			//remove the board 
-			GenerateTiles.get().removeBorad();
-			//check if there is no tile to be changed
-			for(var i =0; i<7;i++)
-			{
-				if(this.exchangedTiles[i]==1)flag=true;
-			}
-			if(!flag)
-			{
-				//toggle exchange
-				this.setExchange();
-				console.log(this.exchange)
-			}
-			else
-			{
-			//exchange the tiles -> send request to the network
-			this.network.sendExchange(this.userTiles,this.exchangedTiles)
-			//this.userTiles=this.bag.exchange(this.userTiles,this.exchangedTiles);
-			this.turn = false;
-			}
+
 			
-			
-		} 
+		} */
     	else if (action == null && ! this.isEmpty(row, col))
     		return;
     	else if (action == null && this.movements.length){
@@ -643,6 +622,30 @@ GameplayManager.prototype = {
 			}
 			GameplayManager.get().hint = [];
 		} , 3000);
+	},
+	sendExchange:function()
+	{
+		console.log("set exchange")
+			let flag=false;
+			//check if there is no tile to be changed
+			for(var i =0; i<7;i++)
+			{
+				if(this.exchangedTiles[i]==1)flag=true;
+			}
+			if(!flag)
+			{
+				//toggle exchange
+				this.setExchange();
+				console.log(this.exchange)
+			}
+			else
+			{
+			//exchange the tiles -> send request to the network
+			this.network.sendExchange(this.userTiles,this.exchangedTiles)
+			//this.userTiles=this.bag.exchange(this.userTiles,this.exchangedTiles);
+			this.turn = false;
+			}
+			
 	}
 
 
