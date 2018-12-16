@@ -139,7 +139,7 @@ GameplayManager.prototype = {
 		{
 			let x=-1
 			x=(tile.container.position.x -394 ) /40;
-			if(x>=0 && x<4)
+			if(x>=0 && x<3)
 				{//getting not used tiles
 				var genTiles=this.gen.getTiles();
 				//highlight the tile only

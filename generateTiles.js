@@ -35,6 +35,7 @@ GenerateTiles.prototype={
         this.frameSprite = PIXI.Sprite.fromImage(this.framePath); 
 		//this.frameSprite.position.set(1190,700);
 		this.frameSprite.position.set(-120,700);
+		this.frameSprite.interactive= true;
 		this.container.scale.set(0.3); 
 		this.container.addChild(this.frameSprite);
 		
