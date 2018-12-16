@@ -95,8 +95,8 @@ Network.prototype = {
 			mngr.userTiles[i].container.position.x = 145 + 29 * (i);
 			mngr.userTiles[i].container.position.y = 623;
 			mngr.userTiles[i].setUsed(0);
-			if(mngr.userTiles[i].blank==true)
-				mngr.userTiles[i].container.children[2].text=' ';
+			if (mngr.userTiles[i].blank == true)
+				mngr.userTiles[i].container.children[2].text = ' ';
 		}
 		//mngr.waiting = false;
 		//mngr.turn = true;
@@ -107,7 +107,7 @@ Network.prototype = {
 	//1-update the tiles 
 	//2-Pass the game 
 	exchange: function (tiles) {
-	console.log("from rec exchange")
+		console.log("from rec exchange")
 		//check if it is valid or not 
 		if (tiles.length == 0)
 			//not valid state 
@@ -199,26 +199,30 @@ Network.prototype = {
 		GameplayManager.get().board.updateGameTime(time)
 	},
 	completeTiles: function (tiles) {
-		console.log("from rec exchange",tiles)
+		console.log("from rec exchange", tiles)
 		let mngr = GameplayManager.get();
 		[mngr.tileAppend, mngr.availableTiles, mngr.userTiles] = mngr.bag.completeTiles(mngr.userTiles, mngr.availableTiles, mngr.tileAppend, tiles);
 		if (mngr.exchange == true)
 			mngr.setExchange();
 	},
-	requestHint:function(){
+	requestHint: function () {
 		let mngr = GameplayManager.get();
 		let tilestoSend = [];
-		for (let i = 0; i < 7; i++){
+		for (let i = 0; i < 7; i++) {
 			tilestoSend[i] = mngr.userTiles[i].container.children[2].text;
-			tilestoSend[i]=tilestoSend[i].charCodeAt(0) -64;
-			if(mngr.userTiles[i].blank==true)
-				tilestoSend[i]=0;
+			if (tilestoSend[i] == " ") tilestoSend[i] = 0;
+			else
+				if (tilestoSend[i] >= "A" && tilestoSend[i] <= "Z")
+					tilestoSend[i] = tilestoSend[i].charCodeAt(0) - 'A'.charCodeAt(0) + 1;
+				else
+					tilestoSend[i] = tilestoSend[i].charCodeAt(0) - 'a'.charCodeAt(0) + 100 + 1;
+
 		}
-		var move={};
+		var move = {};
 		move.index = guiTransitions.GUI_REQUEST_HINT;
-		move.tiles=tilestoSend;
+		move.tiles = tilestoSend;
 		console.log(move.tiles);
 		window.socket.send(JSON.stringify(move));
 	}
-	
+
 }

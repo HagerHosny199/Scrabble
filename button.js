@@ -73,22 +73,26 @@ Button.prototype = {
 			if(this.pos==1) //exchange button
 			{
 				this.sprite.x=694;
-				this.sprite.y=465;
+				this.sprite.y=460;
 			}
 			else if (this.pos==2) //suffle button
 			{
 				this.sprite.x=780;
-				this.sprite.y=465;
+				this.sprite.y=460;
 			}
 			else if(this.pos==3) //ok button
 			{
 				this.sprite.x=692;
-				this.sprite.y=520;
+				this.sprite.y=515;
 			}
-			else //pass button
+			else if(this.pos==4)//pass button
 			{
 				this.sprite.x=783;
-				this.sprite.y=520;
+				this.sprite.y=515;
+			}
+			else{
+				this.sprite.x=740;
+				this.sprite.y=555;
 			}
 			
 		}
