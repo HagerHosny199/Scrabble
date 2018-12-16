@@ -71,9 +71,19 @@ var startgame = function(){
 				if (msg.reason)
 					$.notify(msg.reason,  { position: "top center" });
 
-				net.challengeAccepted();
-				GameplayManager.get().waiting = false;
-				GameplayManager.get().turn = true;
+				if (GameplayManager.get().exchange == true)
+					{
+						console.log("exchnge invvaild",GameplayManager.get().turn)
+						GameplayManager.get().setExchange();
+						GameplayManager.get().turn=true;
+					}
+				else
+				{
+					console.log("challenge invvaild")
+					net.challengeAccepted();
+					GameplayManager.get().waiting = false;
+					GameplayManager.get().turn = true;
+				}
 				break;
 
 			case guiTransitions.OPPONENT_PLAY_PASS:
