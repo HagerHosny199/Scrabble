@@ -208,11 +208,12 @@ Network.prototype = {
 			tilestoSend[i] = mngr.userTiles[i].container.children[2].text;
 			tilestoSend[i]=tilestoSend[i].charCodeAt(0) -64;
 			if(mngr.userTiles[i].blank==true)
-				tilestoSend[i]=100+tilestoSend[i];
+				tilestoSend[i]=0;
 		}
 		var move={};
 		move.index = guiTransitions.GUI_REQUEST_HINT;
 		move.tiles=tilestoSend;
+		console.log(move.tiles);
 		window.socket.send(JSON.stringify(move));
 	}
 	
