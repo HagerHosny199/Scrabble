@@ -47,7 +47,6 @@ Button.prototype = {
 			this.sprite.x=480;
 			this.sprite.y=375;
 			this.sprite.scale.set(0.12);
-			console.log("exchnge go")
 		}
 		else if (this.mode=='play')
 		{
@@ -138,6 +137,9 @@ Button.prototype = {
 		{
 			console.log("go2");
 			GenerateTiles.get().removeBorad();
+
+			//GameplayManager.get().exchange=false;
+			console.log("exchnge go",GameplayManager.get().exchange)
 		}
 		else if(this.mode=='play')
 		{

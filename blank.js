@@ -29,6 +29,7 @@ Blank.prototype={
         this.frameSprite = PIXI.Sprite.fromImage(this.framePath); 
 		//this.frameSprite.position.set(1190,700);
 		this.frameSprite.position.set(-120,700);
+		this.frameSprite.interactive= true;
 		this.container.scale.set(0.3); 
 		this.container.addChild(this.frameSprite);
 		
@@ -127,7 +128,7 @@ Blank.prototype={
 				x=(mng.selectedTile.container.position.x -369 ) /25;
 				console.log(x,mng.selectedTile.container.children[2].text)
 			}
-		if( x>=0 && x<6)
+		if( x>=0 && x<5)
 		{
 			///create a ticker
 			this.ticker  =  new PIXI.ticker.Ticker();

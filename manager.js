@@ -216,7 +216,7 @@ GameplayManager.prototype = {
 			console.log("from exchange")
 			this.movements = []
 			this.selectedTile = null;
-			if(this.moving==false )//exchange condition
+			if(this.moving==false && this.exchange==false )//exchange condition
 				this.gen=new GenerateTiles(this.app,this.board,this.userTiles);
 		}
 		

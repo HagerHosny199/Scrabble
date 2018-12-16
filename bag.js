@@ -104,9 +104,7 @@ Bag.prototype = {
 				tiles[tileAppend].container.children[3].text=tiles[i].container.children[3].text;
 				tiles[tileAppend].setUsed(1);
 				
-				//check blank
-				if(newTiles[j]==' ')
-					tiles[i].blank=true;
+				
 				//generate new tile 
 				temp=this.generateUserTiles(newTiles[j]);
 				tiles[i].container.children[2].text=newTiles[j++]; //char
@@ -115,6 +113,10 @@ Bag.prototype = {
 				tiles[i].container.position.y=623;
 				tiles[i].container.rotation=0;
 				tiles[i].setUsed(0); //
+				tiles[i].blank=false;
+				//check blank
+				if(newTiles[j]==' ')
+					tiles[i].blank=true;
 				// Bassem : 7atet da wna msh fahem awi 3ashan bs asala7 el kan by7sl fl grid , 3ashan kont bab2a bal3ab 
 				// mn l rack we byb2a lihom arkam row we col we da mynfa3sh 3ashan hy5aloha '.' fl grid
 				tiles[i].row = undefined;
@@ -141,6 +143,7 @@ Bag.prototype = {
 					}
 				else
 					{
+						tiles[i].blank=false;
 						tiles[i].container.children[3].text=this.values[newTiles[k++].charCodeAt()-65];
 					}
 				}

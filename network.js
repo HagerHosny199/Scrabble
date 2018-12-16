@@ -95,6 +95,8 @@ Network.prototype = {
 			mngr.userTiles[i].container.position.x = 145 + 29 * (i);
 			mngr.userTiles[i].container.position.y = 623;
 			mngr.userTiles[i].setUsed(0);
+			if(mngr.userTiles[i].blank==true)
+				mngr.userTiles[i].container.children[2].text=' ';
 		}
 		//mngr.waiting = false;
 		//mngr.turn = true;
