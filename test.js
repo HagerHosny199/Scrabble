@@ -1,10 +1,16 @@
 
 var tiles=[];
+window.onload=function(){
+	document.getElementById("ip").value=localStorage.getItem('IP');
+	document.getElementById("port").value=localStorage.getItem('port');
+};
 var startgame = function(){ 
 
 
 	var ip=document.getElementById("ip").value;
 	var port=document.getElementById("port").value;
+	localStorage.setItem('IP',ip);
+	localStorage.setItem('port',port);
 	var url;
 	if(port==="")
 	{
@@ -13,6 +19,8 @@ var startgame = function(){
 		url='ws://'+ip+':'+port;
 	}
 	document.getElementById("configform").style.display="none";	
+	document.getElementById("logo").style.display="none";	
+	document.getElementById("container").style.display="block";	
 	//initializing PIXI
 	let gfx = new Graphics();
 
