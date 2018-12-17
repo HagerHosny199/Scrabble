@@ -618,6 +618,7 @@ GameplayManager.prototype = {
 			a.tileSprite.interactive = false;
 			a.tileSprite.buttonMode = false;
 			a.tileSprite.alpha = 0.4;
+			a.shadowSprite.alpha = 0.4;
 			this.hint.push(a);
 			a.container.position.x = pos.x;
 			a.container.position.y = pos.y;
