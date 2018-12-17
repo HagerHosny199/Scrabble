@@ -9,8 +9,12 @@ let Score = function(app){
 	this.score2;
 	this.name1;
 	this.name2;
+	Score.instance=this;
 }
-
+Score.get=function()
+{
+	return Score.instance;
+}
 Score.prototype={
 	init: function(app)
 	{
