@@ -560,6 +560,14 @@ GameplayManager.prototype = {
 	},
 	playInfo:function()
 	{
+
+		let samerow = true; let samecol = true;
+ 		for (let i= 1; i < this.lastPlayed.length; i++){
+			if (this.lastPlayed[i].row != this.lastPlayed[i-1].row) samerow=false;
+			if (this.lastPlayed[i].col != this.lastPlayed[i-1].col) samecol=false;
+		}
+		this.lastPlayed.sort(function(a,b){ if (samerow) return a.col - b.col; if (samecol) return a.row - b.row; })
+
 		//this function extract the info of the last play to bbe sent to the server
 		let tiles=[]
 		let row=this.lastPlayed[0].row

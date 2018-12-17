@@ -67,6 +67,7 @@ var startgame = function(){
 			case guiTransitions.SEND_TILES_TO_GUI:
 				msg.tiles = removeZeros(msg.tiles);
 				msg.tiles = changeTilesToChar(msg.tiles);
+				if (!msg.tiles.length) break;
 				console.log(msg.tiles)
 				net.completeTiles(msg.tiles);
 				break;
